@@ -25,7 +25,6 @@
                     android:layout_height="45dp"
                     android:background="@drawable/tabbar_background"
                     android:layout_alignParentBottom="true"
-                    android:layout_gravity="center"
                     android:orientation="horizontal"
                     >
                 <RadioButton
