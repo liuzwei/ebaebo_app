@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="android-support-v13">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/android-support-v13.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/gson-2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/image-loader.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
