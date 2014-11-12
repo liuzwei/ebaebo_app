@@ -90,7 +90,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 mRequestQueue.add(jr);
                 break;
             case R.id.login_forgetpass://忘记密码
-
+                Intent forgetPass = new Intent(this, ForgetPassOneActivity.class);
+                startActivity(forgetPass);
                 break;
         }
     }

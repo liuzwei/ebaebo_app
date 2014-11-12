@@ -22,8 +22,8 @@
             <RadioGroup
                     android:id="@+id/main_radiogroups"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:background="@drawable/tabbar_background"
+                    android:layout_height="60dp"
+                    android:background="#A8A8A8"
                     android:layout_alignParentBottom="true"
                     android:orientation="horizontal"
                     >
@@ -31,7 +31,7 @@
                         android:id="@+id/main_message"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:drawableTop="@drawable/message"
+                        android:drawableTop="@drawable/footwenzi"
                         android:button="@null"
                         android:textColor="#000000"
                         android:textSize="13sp"
@@ -45,7 +45,20 @@
                         android:id="@+id/main_photo"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:drawableTop="@drawable/photo"
+                        android:drawableTop="@drawable/footzhaoxiang"
+                        android:button="@null"
+                        android:textColor="#000000"
+                        android:textSize="13sp"
+                        android:layout_weight="1.0"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:layout_marginTop="5dp"
+                        />
+                <RadioButton
+                        android:id="@+id/main_video"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:drawableTop="@drawable/footshexiang"
                         android:button="@null"
                         android:textColor="#000000"
                         android:textSize="13sp"
@@ -58,7 +71,7 @@
                         android:id="@+id/main_record"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:drawableTop="@drawable/record"
+                        android:drawableTop="@drawable/footluyin"
                         android:button="@null"
                         android:textColor="#000000"
                         android:textSize="13sp"
@@ -71,7 +84,7 @@
                         android:id="@+id/main_picture"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:drawableTop="@drawable/picture"
+                        android:drawableTop="@drawable/foottuku"
                         android:button="@null"
                         android:textColor="#000000"
                         android:textSize="13sp"
@@ -80,7 +93,6 @@
                         android:singleLine="true"
                         android:layout_marginTop="5dp"
                         />
-
             </RadioGroup>
     </LinearLayout>
 </LinearLayout>

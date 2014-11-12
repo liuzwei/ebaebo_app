@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="login_user_bgcolor">#ffffff</color>
+    <color name="login_bacolor">#ffffff</color>
+    <color name="login_main_bt_title_color">#ffffff</color>
+    <color name="login_disan_zhuce_color">#ea5036</color>
+    <color name="zhuce_mainbg">#f7f7f7</color>
+    <color name="zhuce_titlecolor">#878787</color>
+    <color name="zhuce_xieyicolor">#000000</color>
+    <color name="zhuce_ok3color">#131313</color>
+
+    <color name="index_item_bg">#ffe7e7e7</color>
+    <color name="top_back_bg">#a40b0b</color>
+    <color name="denglu_bt_bg">#ec3f31</color>
+    <color name="denglu_bt_bgp">#a40b0b</color>
+
+    <color name="bule_overlay">#660D92DD</color>
+    <color name="zhuye_fh_bg">#5d5d5d</color>
+    <color name="tuizhu_border">#fdb201</color>
+    <color name="logout_but_bg">#d1d1d1</color>
+
+    <color name="zhuye_item_bgh">#f1f1f1</color>
+    <color name="zhuye_zhuanfa_content">#3385ff</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="bq_bg">#000000</color>
+    <color name="color_2">#2a4253</color>
+    <color name="font_red">#C71585</color>
+</resources>
