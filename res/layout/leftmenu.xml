@@ -4,17 +4,18 @@
               android:layout_height="fill_parent"
               android:orientation="vertical" >
 
-    <TextView
-            android:layout_width="240dip"
-            android:layout_height="28.0dip"
-            android:background="@drawable/leftmenubackground"
-            android:gravity="center_vertical"
-            android:paddingLeft="15.0dip"
+    <!--<TextView-->
+            <!--android:layout_width="240dip"-->
+            <!--android:layout_height="28.0dip"-->
+            <!--android:background="@drawable/leftmenubackground"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:paddingLeft="15.0dip"-->
 
-            android:textColor="#ff959595"
-            android:textSize="14.0sp" />
+            <!--android:textColor="#ff959595"-->
+            <!--android:textSize="14.0sp" />-->
 
     <TextView
+            android:id="@+id/leftmenu_user"
             android:layout_width="240dip"
             android:layout_height="50.0dip"
             android:background="@drawable/leftmenubackground"
@@ -34,6 +35,7 @@
             android:background="#FFFFFF" />
 
     <TextView
+            android:id="@+id/leftmenu_growup"
             android:layout_width="240dip"
             android:layout_height="50.0dip"
             android:background="@drawable/leftmenubackground"
@@ -52,6 +54,7 @@
             android:layout_height="2.0dip"
             android:background="#FFFFFF" />
     <TextView
+            android:id="@+id/leftmenu_message"
             android:layout_width="240dip"
             android:layout_height="50.0dip"
             android:background="@drawable/leftmenubackground"
@@ -70,6 +73,7 @@
             android:layout_height="2.0dip"
             android:background="#FFFFFF" />
     <TextView
+            android:id="@+id/leftmenu_photo_album"
             android:layout_width="240dip"
             android:layout_height="50.0dip"
             android:background="@drawable/leftmenubackground"
@@ -88,6 +92,7 @@
             android:layout_height="2.0dip"
             android:background="#FFFFFF" />
     <TextView
+            android:id="@+id/leftmenu_school_car"
             android:layout_width="240dip"
             android:layout_height="50.0dip"
             android:background="@drawable/leftmenubackground"
@@ -106,6 +111,7 @@
             android:layout_height="2.0dip"
             android:background="#FFFFFF" />
     <TextView
+            android:id="@+id/leftmenu_address_book"
             android:layout_width="240dip"
             android:layout_height="50.0dip"
             android:background="@drawable/leftmenubackground"
@@ -124,6 +130,7 @@
             android:layout_height="2.0dip"
             android:background="#FFFFFF" />
     <TextView
+            android:id="@+id/leftmenu_info"
             android:layout_width="240dip"
             android:layout_height="50.0dip"
             android:background="@drawable/leftmenubackground"
@@ -142,6 +149,7 @@
             android:layout_height="2.0dip"
             android:background="#FFFFFF" />
     <TextView
+            android:id="@+id/leftmenu_callname"
             android:layout_width="240dip"
             android:layout_height="50.0dip"
             android:background="@drawable/leftmenubackground"
@@ -160,6 +168,7 @@
             android:layout_height="2.0dip"
             android:background="#FFFFFF" />
     <TextView
+            android:id="@+id/leftmenu_setting"
             android:layout_width="240dip"
             android:layout_height="50.0dip"
             android:background="@drawable/leftmenubackground"

@@ -1,5 +1,6 @@
 package com.app.ebaebo.ui;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +27,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     private EditText password;//密码
     private TextView loginBtn;//登陆按钮
     private TextView forgetPass;//忘记密码
+    private ProgressDialog progressDialog;
 
     private RequestQueue mRequestQueue;
     @Override
@@ -52,18 +54,22 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.login_btn://登陆按钮
+                progressDialog = new ProgressDialog(LoginActivity.this);
+                progressDialog.setTitle(R.string.login_progress_dialog);
+                progressDialog.show();
                 String name = username.getText().toString();
                 String pass = password.getText().toString();
 
                 if (name.isEmpty()){
+                    progressDialog.dismiss();
                     Toast.makeText(this, "用户名不能为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (pass.isEmpty()){
+                    progressDialog.dismiss();
                     Toast.makeText(this, "密码不能为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                String jsonParams = "{\"user_name\":"+name+"\"password\":"+pass+"}";
                 JSONObject params = new JSONObject();
                 try {
                     params.put("user_name", name);
@@ -76,6 +82,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                     @Override
                     public void onResponse(JSONObject response) {
                         System.out.println("jsonObject：" + response);
+                        progressDialog.dismiss();
                         //登陆成功后跳转到主页面
                         Intent main = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(main);
