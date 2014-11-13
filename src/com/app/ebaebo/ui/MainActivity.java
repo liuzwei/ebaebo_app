@@ -1,5 +1,6 @@
 package com.app.ebaebo.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -62,7 +63,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         schoolCar = (TextView) slideMenu.findViewById(R.id.leftmenu_school_car);
         addressBook = (TextView) slideMenu.findViewById(R.id.leftmenu_address_book);
         yuyingInfo = (TextView) slideMenu.findViewById(R.id.leftmenu_info);
-        callName = (TextView) slideMenu.findViewById(R.id.slide_menu);
+        callName = (TextView) slideMenu.findViewById(R.id.leftmenu_callname);
         setting = (TextView) slideMenu.findViewById(R.id.leftmenu_setting);
 
         user.setOnClickListener(this);
@@ -114,7 +115,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 break;
 
             case R.id.leftmenu_setting://设置
-
+                Intent setting = new Intent(MainActivity.this, SettingActivity.class);
+                startActivity(setting);
                 break;
         }
     }
