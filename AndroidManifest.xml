@@ -19,6 +19,9 @@
         <activity android:name=".ui.SettingActivity"/>
         <activity android:name=".ui.NotificationActivity"></activity>
         <activity android:name=".ui.PhotosActivity"></activity>
+        <activity android:name=".ui.BabySettingActivity"></activity>
+        <activity android:name=".ui.MumSettingActivity"></activity>
+
         <activity android:name=".ui.YuyingMessageActivity"/>
         <activity android:name=".ui.SchoolBusActivity"/>
         <activity android:name=".ui.JiaohuActivity"/>
