@@ -96,20 +96,23 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
                 break;
             case R.id.leftmenu_message://交互信息
-
+                Intent jiaohu = new Intent(MainActivity.this, JiaohuActivity.class);
+                startActivity(jiaohu);
                 break;
             case R.id.leftmenu_photo_album://班级相册
                 Intent photo = new Intent(this, PhotosActivity.class);
                 startActivity(photo);
                 break;
             case R.id.leftmenu_school_car://校车通知
-
+                Intent schoolbus = new Intent(MainActivity.this, SchoolBusActivity.class);
+                startActivity(schoolbus);
                 break;
             case R.id.leftmenu_address_book://通讯簿
 
                 break;
             case R.id.leftmenu_info://育英信息
-
+                Intent yuying = new Intent(MainActivity.this, YuyingMessageActivity.class);
+                startActivity(yuying);
                 break;
             case R.id.leftmenu_callname://点名
 
