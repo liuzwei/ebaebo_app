@@ -9,5 +9,5 @@
     <string name="release_to_refresh">松开可以刷新</string>
 
     <string name="login_progress_dialog">登录中</string>
-
+    <string name="error1">无数据</string>
 </resources>

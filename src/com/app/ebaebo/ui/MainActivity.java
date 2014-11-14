@@ -99,7 +99,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
                 break;
             case R.id.leftmenu_photo_album://班级相册
-
+                Intent photo = new Intent(this, PhotosActivity.class);
+                startActivity(photo);
                 break;
             case R.id.leftmenu_school_car://校车通知
 

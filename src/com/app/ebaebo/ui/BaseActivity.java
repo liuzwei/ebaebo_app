@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import com.app.ebaebo.util.ToastUtil;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -41,5 +42,12 @@ public class BaseActivity extends Activity {
 
     protected Context getContext() {
         return mContext;
+    }
+    /**
+     * 根据资源ID
+     * @param resId
+     */
+    public void alert(int resId){
+        ToastUtil.show(getApplicationContext(), resId);
     }
 }
