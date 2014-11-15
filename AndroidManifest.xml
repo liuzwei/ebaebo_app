@@ -22,5 +22,6 @@
         <activity android:name=".ui.YuyingMessageActivity"/>
         <activity android:name=".ui.SchoolBusActivity"/>
         <activity android:name=".ui.JiaohuActivity"/>
+        <activity android:name=".ui.DianmingActivity"/>
     </application>
 </manifest>

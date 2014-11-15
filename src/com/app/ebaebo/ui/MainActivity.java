@@ -93,7 +93,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
                 break;
             case R.id.leftmenu_growup://成长记录
-
+                if (slideMenu.isMainScreenShowing()) {
+                    slideMenu.openMenu();
+                } else {
+                    slideMenu.closeMenu();
+                }
                 break;
             case R.id.leftmenu_message://交互信息
                 Intent jiaohu = new Intent(MainActivity.this, JiaohuActivity.class);
@@ -115,7 +119,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 startActivity(yuying);
                 break;
             case R.id.leftmenu_callname://点名
-
+                Intent dianming = new Intent(this, DianmingActivity.class);
+                startActivity(dianming);
                 break;
 
             case R.id.leftmenu_setting://设置

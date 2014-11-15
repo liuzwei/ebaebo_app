@@ -21,10 +21,8 @@
                      android:layout_width="wrap_content"
                      android:layout_height="match_parent"
                      android:layout_alignParentLeft="true"
-                     android:layout_marginLeft="10dp"
                      android:layout_weight="1"
                      android:gravity="center" >
-
                  <ImageView
                          android:id="@+id/foot_homePage"
                          android:layout_width="wrap_content"
@@ -32,7 +30,7 @@
                          android:background="@drawable/footwenzi"/>
                  <TextView android:layout_width="wrap_content"
                            android:layout_below="@id/foot_homePage"
-                           android:text="文字"
+                           android:text="  文字"
                            android:textColor="@color/font_red"
                            android:layout_height="wrap_content"/>
              </RelativeLayout>
@@ -55,7 +53,7 @@
                 />
               <TextView android:layout_width="wrap_content"
                         android:layout_below="@id/foot_message"
-                        android:text="照相"
+                        android:text="  照相"
                         android:textColor="@color/font_red"
                         android:layout_height="wrap_content"/>
         </RelativeLayout>
@@ -77,7 +75,7 @@
                 />
                <TextView android:layout_width="wrap_content"
                          android:layout_below="@id/foot_plus"
-                         android:text="摄像"
+                         android:text="  摄像"
                          android:textColor="@color/font_red"
                          android:layout_height="wrap_content"/>
         </RelativeLayout>
@@ -97,7 +95,7 @@
                 />
              <TextView android:layout_width="wrap_content"
                        android:layout_below="@id/foot_find"
-                       android:text="录音"
+                       android:text="  录音"
                        android:textColor="@color/font_red"
                        android:layout_height="wrap_content"/>
         </RelativeLayout>
@@ -119,7 +117,7 @@
                 />
              <TextView android:layout_width="wrap_content"
                        android:layout_below="@id/foot_mine"
-                       android:text="图库"
+                       android:text="  图库"
                        android:gravity="center"
                        android:textColor="@color/font_red"
                        android:layout_height="wrap_content"/>
