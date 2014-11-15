@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:padding="10dp"
+              android:clickable="true"
+              android:background="@drawable/zhuye_item_select"
+        >
+        <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/searchLayoutTx">
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/head"
+                    android:maxWidth="60dp"
+                    android:maxHeight="60dp"
+                    android:adjustViewBounds="true"
+                    android:layout_marginRight="10dp"
+                    android:id="@+id/searchItemTx"
+                    />
+        </RelativeLayout>
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginLeft="10dp"
+                android:id="@+id/searchLayout"
+                >
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="李老师【老师】"
+                    android:textSize="15sp"
+                    android:textColor="#333333"
+                    android:id="@+id/searchItemName"
+                    />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:layout_marginTop="10dp"
+                    android:text="欢迎加入本幼儿园"
+                    android:textColor="#999999"
+                    android:id="@+id/buluonum"
+                    />
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:id="@+id/searchFriendAddGz"
+                >
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2014-05-05 20:00"
+                    android:textSize="12sp"
+                    android:textColor="#333333"
+                    android:padding="5dp"
+                    android:id="@+id/submitAddIn"
+                    />
+
+        </LinearLayout>
+
+            </LinearLayout>
+
+
