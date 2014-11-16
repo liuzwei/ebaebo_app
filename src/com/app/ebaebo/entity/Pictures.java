@@ -7,8 +7,26 @@ package com.app.ebaebo.entity;
  * 类的功能、说明写在此处.
  */
 public class Pictures {
-    private String pic;//相册 照片地址
-    private String dateline;//相册 照片列表 时间戳 日期
+    private String id;//照片ID
+    private String album_id;//所属相册ID
+    private String pic;//照片地址
+    private String dateline;//时间戳
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getAlbum_id() {
+        return album_id;
+    }
+
+    public void setAlbum_id(String album_id) {
+        this.album_id = album_id;
+    }
 
     public String getPic() {
         return pic;
@@ -26,7 +44,9 @@ public class Pictures {
         this.dateline = dateline;
     }
 
-    public Pictures(String pic, String dateline) {
+    public Pictures(String id, String album_id, String pic, String dateline) {
+        this.id = id;
+        this.album_id = album_id;
         this.pic = pic;
         this.dateline = dateline;
     }

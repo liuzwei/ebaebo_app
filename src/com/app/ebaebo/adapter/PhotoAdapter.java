@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 import com.app.ebaebo.EbaeboApplication;
 import com.app.ebaebo.R;
 import com.app.ebaebo.entity.Photos;
@@ -58,31 +59,34 @@ public class PhotoAdapter extends BaseAdapter {
         if(convertView == null){
             holder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.photo_item,null);
-            holder.picture = (ImageView)convertView.findViewById(R.id.picture);
+            holder.picture = (ImageView)convertView.findViewById(R.id.giftpic);
+            holder.name = (TextView) convertView.findViewById(R.id.gifttitle);
+            holder.detailphoto = (ImageView) convertView.findViewById(R.id.detailphoto);
             convertView.setTag(holder);
         }else{
             holder=(ViewHolder)convertView.getTag();
         }
 
         final Photos cell = list.get(position);
-        String picurl = "";
-        if(cell!=null){
-            List<Pictures> pictures = cell.getList();
-            if(pictures!=null && pictures.size()>0){
-                Pictures  picture = pictures.get(0);
-                picurl = picture.getPic()==null?"":picture.getPic();
-                try {
-                imageLoader.displayImage(picurl, holder.picture, EbaeboApplication.options, animateFirstListener);
-                }catch (Exception e){
-                    Log.d("没有网络图片", e.getMessage());
-                }
-            }
+        holder.name.setText(cell.getName());
+        try {
+            imageLoader.displayImage(cell.getCover(), holder.picture, EbaeboApplication.options, animateFirstListener);
+        }catch (Exception e){
+            Log.d("没有网络图片", e.getMessage());
         }
+        holder.detailphoto.setOnClickListener(new View.OnClickListener(){//兑换
+            @Override
+            public void onClick(View v) {
+                onClickContentItemListener.onClickContentItem(position, 1, null);
+            }
+        });
         return convertView;
     }
 
     class ViewHolder{
         ImageView picture;
+        TextView name;
+        ImageView detailphoto;
 
     }
 }
