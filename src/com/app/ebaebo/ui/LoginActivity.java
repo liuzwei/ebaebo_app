@@ -3,7 +3,6 @@ package com.app.ebaebo.ui;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -15,7 +14,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.ebaebo.R;
-import com.app.ebaebo.util.InternetAPI;
+import com.app.ebaebo.util.InternetURL;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -78,7 +77,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                     e.printStackTrace();
                 }
 
-                JsonObjectRequest jr = new JsonObjectRequest(Request.Method.GET,InternetAPI.LOGIN_API,params,new Response.Listener<JSONObject>() {
+                JsonObjectRequest jr = new JsonObjectRequest(Request.Method.GET, InternetURL.LOGIN_API,params,new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         System.out.println("jsonObject：" + response);

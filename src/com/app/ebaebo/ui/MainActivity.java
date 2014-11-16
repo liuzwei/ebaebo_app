@@ -6,14 +6,27 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.*;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.app.ebaebo.R;
 import com.app.ebaebo.adapter.FragmentTabAdapter;
+import com.app.ebaebo.adapter.OnClickContentItemListener;
+import com.app.ebaebo.data.GrowingDATA;
+import com.app.ebaebo.entity.Growing;
 import com.app.ebaebo.fragment.*;
+import com.app.ebaebo.util.InternetURL;
+import com.google.gson.Gson;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends FragmentActivity implements View.OnClickListener {
+public class MainActivity extends FragmentActivity implements View.OnClickListener,OnClickContentItemListener {
 //    public List<Fragment> fragments = new ArrayList<Fragment>();
 //    RadioGroup radioGroups;
     private ImageView leftbutton;
@@ -27,11 +40,18 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private TextView yuyingInfo;//育英信息
     private TextView callName;//点名
     private TextView setting;//设置
+
+    private List<Growing> growingList = new ArrayList<Growing>();
+    private RequestQueue mRequestQueue;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+
+        mRequestQueue = Volley.newRequestQueue(this);
+
+        getData();
 //        radioGroups = (RadioGroup) findViewById(R.id.main_radiogroups);
 //
 //        fragments.add(new MessageFragment());
@@ -49,6 +69,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 //
 //            }
 //        });
+
+
     }
 
     private void initView() {
@@ -128,5 +150,38 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 startActivity(setting);
                 break;
         }
+    }
+
+    @Override
+    public void onClickContentItem(int position, int flag, Object object) {
+
+    }
+
+    private void getData(){
+        JSONObject params = new JSONObject();
+        try {
+            params.put("uid", 73);
+            params.put("pageindex", 1);
+            params.put("pageSize", 20);
+            params.put("child_id", 2);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jr = new JsonObjectRequest(Request.Method.GET, InternetURL.GROWING_MANAGER_API,params,new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                System.out.println("jsonObject：" + response);
+                Gson gson = new Gson();
+                GrowingDATA data = gson.fromJson(response.toString(), GrowingDATA.class);
+                List<Growing> list = data.getData();
+            }
+        },new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        mRequestQueue.add(jr);
     }
 }
