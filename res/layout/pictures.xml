@@ -16,7 +16,7 @@
             android:layout_marginBottom="5dp"
             >
         <ImageView
-                android:id="@+id/yuyingback"
+                android:id="@+id/picturesback"
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
                 android:src="@drawable/forgetpassback"
@@ -26,11 +26,12 @@
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="育英信息"
+                android:text="相册详情"
                 android:gravity="center_vertical"
                 android:layout_centerHorizontal="true"
                 android:textColor="#ffffff"
                 android:textSize="18sp"
+                android:id="@+id/title"
                 />
     </RelativeLayout>
     <!-- head结束 -->
@@ -40,7 +41,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             >
-        <com.app.ebaebo.widget.ContentListView
+        <ListView
                 android:id="@+id/lstv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

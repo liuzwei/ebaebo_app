@@ -22,12 +22,12 @@ import java.util.List;
  * Time: 21:33
  * 类的功能、说明写在此处.
  */
-public class PhotoAdapter extends BaseAdapter {
+public class PictureAdapter extends BaseAdapter {
     private ViewHolder holder;
-    private List<Photos> list;
+    private List<Pictures> list;
     private Context context;
 
-    public PhotoAdapter(List<Photos> list, Context context) {
+    public PictureAdapter(List<Pictures> list, Context context) {
         this.list = list;
         this.context = context;
     }
@@ -58,35 +58,26 @@ public class PhotoAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         if(convertView == null){
             holder = new ViewHolder();
-            convertView = LayoutInflater.from(context).inflate(R.layout.photo_item,null);
-            holder.picture = (ImageView)convertView.findViewById(R.id.giftpic);
-            holder.name = (TextView) convertView.findViewById(R.id.gifttitle);
-            holder.detailphoto = (ImageView) convertView.findViewById(R.id.detailphoto);
+            convertView = LayoutInflater.from(context).inflate(R.layout.pic_item,null);
+            holder.picture = (ImageView)convertView.findViewById(R.id.picture);
             convertView.setTag(holder);
         }else{
             holder=(ViewHolder)convertView.getTag();
         }
 
-        final Photos cell = list.get(position);
-        holder.name.setText(cell.getName());
+        final Pictures cell = list.get(position);
         try {
-            imageLoader.displayImage(cell.getCover(), holder.picture, EbaeboApplication.options, animateFirstListener);
+            imageLoader.displayImage(cell.getPic(), holder.picture, EbaeboApplication.options, animateFirstListener);
         }catch (Exception e){
             Log.d("没有网络图片", e.getMessage());
         }
-        holder.detailphoto.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                onClickContentItemListener.onClickContentItem(position, 1, null);
-            }
-        });
+
         return convertView;
     }
 
     class ViewHolder{
         ImageView picture;
-        TextView name;
-        ImageView detailphoto;
+
 
     }
 }

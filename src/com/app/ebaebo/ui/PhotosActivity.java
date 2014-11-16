@@ -168,7 +168,14 @@ public class PhotosActivity extends BaseActivity implements OnClickContentItemLi
     public void onClickContentItem(int position, int flag, Object object) {
         pos = position;
         photo = list.get(position);
-
+        switch (flag)
+        {
+            case 1:
+                Intent pic = new Intent(this, PictureActivity.class);
+                pic.putExtra("photo", photo);
+                startActivity(pic);
+                break;
+        }
     }
 
     @Override
@@ -194,4 +201,5 @@ public class PhotosActivity extends BaseActivity implements OnClickContentItemLi
         }
 
     };
+
 }

@@ -19,4 +19,9 @@ public class StringUtil {
         Matcher mat = pattern.matcher(str);
         return !mat.find();
     }
+//    public static String switchDoubleLine(String str)
+//    {
+//        String strr = str.replaceAll("\\","/");
+//        return "";
+//    }
 }

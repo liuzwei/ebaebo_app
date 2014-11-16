@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.app.ebaebo.EbaeboApplication;
 import com.app.ebaebo.R;
-import com.app.ebaebo.entity.Photos;
 import com.app.ebaebo.entity.Pictures;
+import com.app.ebaebo.entity.Yuying;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
@@ -22,12 +22,12 @@ import java.util.List;
  * Time: 21:33
  * 类的功能、说明写在此处.
  */
-public class PhotoAdapter extends BaseAdapter {
+public class YuyingAdapter extends BaseAdapter {
     private ViewHolder holder;
-    private List<Photos> list;
+    private List<Yuying> list;
     private Context context;
 
-    public PhotoAdapter(List<Photos> list, Context context) {
+    public YuyingAdapter(List<Yuying> list, Context context) {
         this.list = list;
         this.context = context;
     }
@@ -58,23 +58,28 @@ public class PhotoAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         if(convertView == null){
             holder = new ViewHolder();
-            convertView = LayoutInflater.from(context).inflate(R.layout.photo_item,null);
-            holder.picture = (ImageView)convertView.findViewById(R.id.giftpic);
-            holder.name = (TextView) convertView.findViewById(R.id.gifttitle);
-            holder.detailphoto = (ImageView) convertView.findViewById(R.id.detailphoto);
+            convertView = LayoutInflater.from(context).inflate(R.layout.yuying_item,null);
+            holder.pic = (ImageView)convertView.findViewById(R.id.pic);
+            holder.title = (TextView) convertView.findViewById(R.id.title);
+            holder.content = (TextView) convertView.findViewById(R.id.content);
+            holder.time = (TextView) convertView.findViewById(R.id.time);
+            holder.detail = (ImageView) convertView.findViewById(R.id.detail);
             convertView.setTag(holder);
         }else{
             holder=(ViewHolder)convertView.getTag();
         }
 
-        final Photos cell = list.get(position);
-        holder.name.setText(cell.getName());
+        final Yuying cell = list.get(position);
+        holder.title.setText(cell.getTitle()) ;
+        holder.content.setText(cell.getContent());
+        holder.time.setText(cell.getDateline());
+
         try {
-            imageLoader.displayImage(cell.getCover(), holder.picture, EbaeboApplication.options, animateFirstListener);
+            imageLoader.displayImage(cell.getPic(), holder.pic, EbaeboApplication.options, animateFirstListener);
         }catch (Exception e){
             Log.d("没有网络图片", e.getMessage());
         }
-        holder.detailphoto.setOnClickListener(new View.OnClickListener(){
+        holder.detail.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 onClickContentItemListener.onClickContentItem(position, 1, null);
@@ -84,9 +89,11 @@ public class PhotoAdapter extends BaseAdapter {
     }
 
     class ViewHolder{
-        ImageView picture;
-        TextView name;
-        ImageView detailphoto;
+        ImageView pic;
+        ImageView detail;
+        TextView title;
+        TextView content;
+        TextView time;
 
     }
 }

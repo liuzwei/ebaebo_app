@@ -1,12 +1,14 @@
 package com.app.ebaebo.entity;
 
+import java.io.Serializable;
+
 /**
  * author: ${zhanghailong}
  * Date: 2014/11/13
  * Time: 23:52
  * 类的功能、说明写在此处.
  */
-public class Pictures {
+public class Pictures implements Serializable {
     private String id;//照片ID
     private String album_id;//所属相册ID
     private String pic;//照片地址

@@ -1,5 +1,6 @@
 package com.app.ebaebo.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
  * Time: 23:52
  * 类的功能、说明写在此处.
  */
-public class Photos {
+public class Photos implements Serializable {
     private String id;//相册ID
     private String name;//相册名称
     private String publisher;//相册建立者

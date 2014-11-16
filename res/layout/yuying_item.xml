@@ -37,7 +37,7 @@
                          <TextView android:layout_width="wrap_content"
                                   android:layout_height="wrap_content"
                                   android:text="title00000000000000000000000"
-                                  android:id="@+id/MUZname"
+                                  android:id="@+id/title"
                                   android:textSize="16sp"
                                   android:textColor="#000000"/>
 
@@ -46,14 +46,14 @@
 	                <TextView android:layout_width="wrap_content"
 	                    android:layout_height="wrap_content"
 	                    android:text="容内容内容内容内容内容内容内容内容内容内容"
-                        android:id="@+id/musictime"
+                        android:id="@+id/content"
 	                    android:textSize="12sp"
                         />
 
 	                <TextView android:layout_width="match_parent"
 	                    android:layout_height="match_parent"
 	                    android:text="2013-05-01"
-                        android:id="@+id/musiccontext"
+                        android:id="@+id/time"
 	                    android:textSize="12sp"
                         android:singleLine="true"
 	                    android:textColor="#333333"/>
@@ -64,7 +64,7 @@
                            android:layout_height="match_parent"
                            android:src="@drawable/right"
                            android:layout_gravity="right"
-                           android:id="@+id/yyListSel"
+                           android:id="@+id/detail"
                            android:layout_marginRight="5dp"
                            android:paddingRight="10dp"
                            android:paddingLeft="10dp"
