@@ -184,6 +184,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,O
                 break;
             case R.id.leftmenu_photo_album://班级相册
                 Intent photo = new Intent(this, PhotosActivity.class);
+                photo.putExtra("uid", uid);
                 startActivity(photo);
                 break;
             case R.id.leftmenu_school_car://校车通知

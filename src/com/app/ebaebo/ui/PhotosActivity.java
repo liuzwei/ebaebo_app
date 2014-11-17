@@ -44,6 +44,7 @@ public class PhotosActivity extends BaseActivity implements OnClickContentItemLi
     private Map<String,String> map = new HashMap<String,String>();
     Account account = (Account) ShellContext.getAttribute(ShellContext.ACCOUNT);
     private ImageView photosback;//返回按钮
+    private String uid = "";
     final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -71,12 +72,9 @@ public class PhotosActivity extends BaseActivity implements OnClickContentItemLi
         adapter = new PhotoAdapter(list, this);
         clv.setAdapter(adapter);
         adapter.setOnClickContentItemListener(this);
-//        if(account != null){
-//            map.put("uid", account.getUid());
-            map.put("uid", "102");
-            loadData();
-//        }
-
+        uid = getIntent().getExtras().getString("uid");//会员ID
+        map.put("uid", uid);
+        loadData();
     }
 
     private void initView() {
