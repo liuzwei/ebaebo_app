@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.app.ebaebo.EbaeboApplication;
 import com.app.ebaebo.R;
 import com.app.ebaebo.entity.Growing;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -68,8 +69,12 @@ public class GrowingAdapter extends BaseAdapter {
         Growing growing = list.get(position);
         viewHolder.publisher.setText(growing.getPublisher());
         viewHolder.time.setText(growing.getTime());
+        //todo  加载图片
+//        EbaeboApplication.imageLoader.displayImage(growing.getUrl(), viewHolder.photo, EbaeboApplication.txOptions);
 
-        switch (Integer.parseInt(growing.getType()) ){
+        //todo   type类型返回的为空
+//        switch (Integer.parseInt(growing.getType()) ){
+        switch (0){
             case 0://文字
                 viewHolder.content.setText(growing.getDept());
                 break;

@@ -39,18 +39,10 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             >
-        <com.handmark.pulltorefresh.library.PullToRefreshListView
+        <com.app.ebaebo.widget.ContentListView
                 android:id="@+id/index_pull_refresh_lsv"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:cacheColorHint="#00000000"
-                android:divider="#19000000"
-                android:dividerHeight="4dp"
-                android:fadingEdge="none"
-                android:fastScrollEnabled="false"
-                android:footerDividersEnabled="false"
-                android:headerDividersEnabled="false"
-                android:smoothScrollbar="true" />
+                android:layout_height="fill_parent" />
 
         <LinearLayout
                 android:id="@+id/ll_main_progress"

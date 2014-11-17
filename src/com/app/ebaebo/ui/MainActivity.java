@@ -2,9 +2,6 @@ package com.app.ebaebo.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
@@ -12,30 +9,24 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.ebaebo.R;
-import com.app.ebaebo.adapter.FragmentTabAdapter;
 import com.app.ebaebo.adapter.GrowingAdapter;
 import com.app.ebaebo.adapter.OnClickContentItemListener;
-import com.app.ebaebo.data.AccountDATA;
 import com.app.ebaebo.data.ErrorDATA;
 import com.app.ebaebo.data.GrowingDATA;
 import com.app.ebaebo.entity.Account;
 import com.app.ebaebo.entity.Growing;
-import com.app.ebaebo.fragment.*;
 import com.app.ebaebo.util.InternetURL;
+import com.app.ebaebo.widget.ContentListView;
 import com.google.gson.Gson;
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener,OnClickContentItemListener {
+public class MainActivity extends BaseActivity implements
+        View.OnClickListener,OnClickContentItemListener,ContentListView.OnRefreshListener, ContentListView.OnLoadListener {
 //    public List<Fragment> fragments = new ArrayList<Fragment>();
 //    RadioGroup radioGroups;
     private ImageView leftbutton;
@@ -50,7 +41,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,O
     private TextView callName;//点名
     private TextView setting;//设置
 
-    private PullToRefreshListView mPullRefreshListView;
+    private ContentListView listView;
     private GrowingAdapter adapter;
 
     private String uid;
@@ -58,6 +49,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,O
     private int pageSize;
     private int child_id;
     private Account account;
+    private static boolean IS_REFRESH = true;
 
     private List<Growing> growingList = new ArrayList<Growing>();
     private RequestQueue mRequestQueue;
@@ -81,31 +73,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,O
         }
 
         mRequestQueue = Volley.newRequestQueue(this);
-
-        mPullRefreshListView.setMode(PullToRefreshBase.Mode.BOTH);
-
-        // Set a listener to be invoked when the list should be refreshed.
-        mPullRefreshListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
-            @Override
-            public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-                String label = DateUtils.formatDateTime(getApplicationContext(), System.currentTimeMillis(),
-                        DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_ABBREV_ALL);
-
-                // Update the LastUpdatedLabel
-                refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-
-                if (mPullRefreshListView.isHeaderShown()){
-                    pageIndex = 1;
-                    getData();
-                }else {
-                    pageIndex++;
-                    getData();
-                }
-
-            }
-        });
         adapter = new GrowingAdapter(growingList, mContext);
-        mPullRefreshListView.setAdapter(adapter);
+        listView.setAdapter(adapter);
         getData();
 //        radioGroups = (RadioGroup) findViewById(R.id.main_radiogroups);
 //
@@ -143,7 +112,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,O
         callName = (TextView) slideMenu.findViewById(R.id.leftmenu_callname);
         setting = (TextView) slideMenu.findViewById(R.id.leftmenu_setting);
 
-        mPullRefreshListView = (PullToRefreshListView) slideMenu.findViewById(R.id.index_pull_refresh_lsv);
+        listView = (ContentListView) slideMenu.findViewById(R.id.index_pull_refresh_lsv);
+        listView.setOnRefreshListener(this);
+        listView.setOnLoadListener(this);
 
         user.setOnClickListener(this);
         growup.setOnClickListener(this);
@@ -154,6 +125,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,O
         yuyingInfo.setOnClickListener(this);
         callName.setOnClickListener(this);
         setting.setOnClickListener(this);
+
+
 
 
     }
@@ -227,12 +200,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,O
                         try {
                             //todo   json解析异常
                             GrowingDATA data = gson.fromJson(s, GrowingDATA.class);
-                            if (pageIndex == 1){
+                            if (IS_REFRESH){
                                 growingList.clear();
                             }
                             growingList.addAll(data.getData());
-                            mPullRefreshListView.onRefreshComplete();
                             adapter.notifyDataSetChanged();
+                            if (data.getData().size() < 10){
+                                listView.setResultSize(0);
+                            }
+                            listView.onRefreshComplete();
+                            listView.onLoadComplete();
+
                         }catch (Exception e){
                             ErrorDATA errorDATA = gson.fromJson(s, ErrorDATA.class);
                             if (errorDATA.getMsg().equals("failed")){
@@ -247,5 +225,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,O
             }
         });
         mRequestQueue.add(request);
+    }
+
+    //下拉刷新
+    @Override
+    public void onRefresh() {
+        IS_REFRESH = true;
+        pageIndex = 1;
+        getData();
+    }
+
+    //上拉加载
+    @Override
+    public void onLoad() {
+        IS_REFRESH = false;
+        pageIndex++;
+        getData();
     }
 }
