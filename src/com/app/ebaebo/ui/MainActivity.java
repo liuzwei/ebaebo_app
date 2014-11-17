@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import com.android.volley.Request;
@@ -11,22 +13,29 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.ebaebo.R;
 import com.app.ebaebo.adapter.FragmentTabAdapter;
+import com.app.ebaebo.adapter.GrowingAdapter;
 import com.app.ebaebo.adapter.OnClickContentItemListener;
+import com.app.ebaebo.data.AccountDATA;
+import com.app.ebaebo.data.ErrorDATA;
 import com.app.ebaebo.data.GrowingDATA;
+import com.app.ebaebo.entity.Account;
 import com.app.ebaebo.entity.Growing;
 import com.app.ebaebo.fragment.*;
 import com.app.ebaebo.util.InternetURL;
 import com.google.gson.Gson;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends FragmentActivity implements View.OnClickListener,OnClickContentItemListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener,OnClickContentItemListener {
 //    public List<Fragment> fragments = new ArrayList<Fragment>();
 //    RadioGroup radioGroups;
     private ImageView leftbutton;
@@ -41,6 +50,15 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private TextView callName;//点名
     private TextView setting;//设置
 
+    private PullToRefreshListView mPullRefreshListView;
+    private GrowingAdapter adapter;
+
+    private String uid;
+    private int pageIndex;
+    private int pageSize;
+    private int child_id;
+    private Account account;
+
     private List<Growing> growingList = new ArrayList<Growing>();
     private RequestQueue mRequestQueue;
     @Override
@@ -48,9 +66,46 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+        String accountStr = sp.getString("account", "");
+        if (!accountStr.isEmpty()){
+            try{
+                account =getGson().fromJson(accountStr, Account.class);
+                if (account != null){
+                    uid = account.getUid();
+                    pageIndex = 1;
+                    pageSize = 20;
+                }
+            }catch (Exception e){
+                Log.i("Account Gson Exception", "Account转换异常");
+            }
+        }
 
         mRequestQueue = Volley.newRequestQueue(this);
 
+        mPullRefreshListView.setMode(PullToRefreshBase.Mode.BOTH);
+
+        // Set a listener to be invoked when the list should be refreshed.
+        mPullRefreshListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
+            @Override
+            public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+                String label = DateUtils.formatDateTime(getApplicationContext(), System.currentTimeMillis(),
+                        DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_ABBREV_ALL);
+
+                // Update the LastUpdatedLabel
+                refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
+
+                if (mPullRefreshListView.isHeaderShown()){
+                    pageIndex = 1;
+                    getData();
+                }else {
+                    pageIndex++;
+                    getData();
+                }
+
+            }
+        });
+        adapter = new GrowingAdapter(growingList, mContext);
+        mPullRefreshListView.setAdapter(adapter);
         getData();
 //        radioGroups = (RadioGroup) findViewById(R.id.main_radiogroups);
 //
@@ -87,6 +142,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         yuyingInfo = (TextView) slideMenu.findViewById(R.id.leftmenu_info);
         callName = (TextView) slideMenu.findViewById(R.id.leftmenu_callname);
         setting = (TextView) slideMenu.findViewById(R.id.leftmenu_setting);
+
+        mPullRefreshListView = (PullToRefreshListView) slideMenu.findViewById(R.id.index_pull_refresh_lsv);
 
         user.setOnClickListener(this);
         growup.setOnClickListener(this);
@@ -158,30 +215,36 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     }
 
     private void getData(){
-        JSONObject params = new JSONObject();
-        try {
-            params.put("uid", 73);
-            params.put("pageindex", 1);
-            params.put("pageSize", 20);
-            params.put("child_id", 2);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        JsonObjectRequest jr = new JsonObjectRequest(Request.Method.GET, InternetURL.GROWING_MANAGER_API,params,new Response.Listener<JSONObject>() {
+        String uri = String.format(InternetURL.GROWING_MANAGER_API+"?uid=%s&pageIndex=%d&pageSize=%d&child_id=%d",uid, pageIndex, pageSize, child_id);
+
+        StringRequest request = new StringRequest(Request.Method.GET,
+                uri,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        Gson gson = new Gson();
+                        try {
+                            //todo   json解析异常
+                            GrowingDATA data = gson.fromJson(s, GrowingDATA.class);
+                            if (pageIndex == 1){
+                                growingList.clear();
+                            }
+                            growingList.addAll(data.getData());
+                            mPullRefreshListView.onRefreshComplete();
+                            adapter.notifyDataSetChanged();
+                        }catch (Exception e){
+                            ErrorDATA errorDATA = gson.fromJson(s, ErrorDATA.class);
+                            if (errorDATA.getMsg().equals("failed")){
+                                Toast.makeText(mContext, "网络错误", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                },new Response.ErrorListener() {
             @Override
-            public void onResponse(JSONObject response) {
-                System.out.println("jsonObject：" + response);
-                Gson gson = new Gson();
-                GrowingDATA data = gson.fromJson(response.toString(), GrowingDATA.class);
-                List<Growing> list = data.getData();
-            }
-        },new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onErrorResponse(VolleyError volleyError) {
 
             }
         });
-
-        mRequestQueue.add(jr);
+        mRequestQueue.add(request);
     }
 }

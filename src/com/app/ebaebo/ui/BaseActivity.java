@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import com.app.ebaebo.util.ToastUtil;
+import com.google.gson.Gson;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -21,13 +22,15 @@ public class BaseActivity extends Activity {
 
     private ExecutorService appThread = Executors.newSingleThreadExecutor();
 
+    private Gson gson = new Gson();
+
     ConnectivityManager connectMgr ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getApplicationContext();
-        sp = getSharedPreferences("liangxunApp", Context.MODE_PRIVATE);
+        sp = getSharedPreferences("ebaebo", Context.MODE_PRIVATE);
         inflater = LayoutInflater.from(mContext);
         connectMgr = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
     }
@@ -38,6 +41,10 @@ public class BaseActivity extends Activity {
      */
     public ExecutorService getAppThread() {
         return appThread;
+    }
+
+    public Gson getGson(){
+        return gson;
     }
 
     protected Context getContext() {

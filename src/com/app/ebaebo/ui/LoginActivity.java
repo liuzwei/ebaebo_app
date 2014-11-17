@@ -2,21 +2,30 @@ package com.app.ebaebo.ui;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.*;
+import com.android.volley.toolbox.JsonRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.ebaebo.R;
+import com.app.ebaebo.data.AccountDATA;
+import com.app.ebaebo.data.ErrorDATA;
+import com.app.ebaebo.entity.Account;
 import com.app.ebaebo.util.InternetURL;
+import com.app.ebaebo.util.StringUtil;
+import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.lang.reflect.Method;
 
 /**
  * Created by liuzwei on 2014/11/11.
@@ -29,6 +38,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     private ProgressDialog progressDialog;
 
     private RequestQueue mRequestQueue;
+
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +64,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
         loginBtn.setOnClickListener(this);
         forgetPass.setOnClickListener(this);
+
+        username.setText(sp.getString("username", ""));
+        password.setText(sp.getString("password", ""));
     }
 
     @Override
@@ -56,8 +76,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 progressDialog = new ProgressDialog(LoginActivity.this);
                 progressDialog.setTitle(R.string.login_progress_dialog);
                 progressDialog.show();
-                String name = username.getText().toString();
-                String pass = password.getText().toString();
+                final String name = username.getText().toString();
+                final String pass = password.getText().toString();
 
                 if (name.isEmpty()){
                     progressDialog.dismiss();
@@ -69,31 +89,43 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                     Toast.makeText(this, "密码不能为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                JSONObject params = new JSONObject();
-                try {
-                    params.put("user_name", name);
-                    params.put("password", pass);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                //组装请求url
+                String uri = String.format(InternetURL.LOGIN_API + "?user_name=%s&password=%s", name, pass);
+                StringRequest request = new StringRequest(
+                        Request.Method.GET,
+                        uri,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String s) {
+                                Gson gson = new Gson();
+                                try {
+                                    AccountDATA data = gson.fromJson(s, AccountDATA.class);
+                                    Account account = data.getData();
+                                    saveAccount(name, pass, account);
 
-                JsonObjectRequest jr = new JsonObjectRequest(Request.Method.GET, InternetURL.LOGIN_API,params,new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        System.out.println("jsonObject：" + response);
-                        progressDialog.dismiss();
-                        //登陆成功后跳转到主页面
-                        Intent main = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(main);
-                    }
-                },new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
+                                    Intent main = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(main);
+//                                    String accountJson = sp.getString("account", "");
+//                                    if (!accountJson.isEmpty()){
+//                                        Account account1 = new Gson().fromJson(accountJson, Account.class);
+//                                        Log.i("Account", account1.getCover());
+//                                    }
+                                }catch (Exception e){
+                                    ErrorDATA errorDATA = gson.fromJson(s, ErrorDATA.class);
+                                    if (errorDATA.getMsg().equals("failed")){
+                                        Toast.makeText(mContext, "用户名或密码错误", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                                progressDialog.dismiss();
+                            }
+                        },new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError volleyError) {
 
-                    }
+                            }
                 });
 
-                mRequestQueue.add(jr);
+                mRequestQueue.add(request);
                 break;
             case R.id.login_forgetpass://忘记密码
                 Intent forgetPass = new Intent(this, ForgetPassOneActivity.class);
@@ -106,5 +138,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     protected void onStop() {
         super.onStop();
         mRequestQueue.cancelAll(this);
+    }
+
+    private void saveAccount(String username, String password, Account account){
+        SharedPreferences.Editor editor = sp.edit();
+        Gson gson = new Gson();
+        editor.putString("username", username);
+        editor.putString("password", password);
+        editor.putString("account", gson.toJson(account));
+        editor.commit();
     }
 }
