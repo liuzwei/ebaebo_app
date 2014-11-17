@@ -190,7 +190,6 @@ public class MainActivity extends BaseActivity implements
 
     private void getData(){
         String uri = String.format(InternetURL.GROWING_MANAGER_API+"?uid=%s&pageIndex=%d&pageSize=%d&child_id=%d",uid, pageIndex, pageSize, child_id);
-
         StringRequest request = new StringRequest(Request.Method.GET,
                 uri,
                 new Response.Listener<String>() {
@@ -198,7 +197,6 @@ public class MainActivity extends BaseActivity implements
                     public void onResponse(String s) {
                         Gson gson = new Gson();
                         try {
-                            //todo   json解析异常
                             GrowingDATA data = gson.fromJson(s, GrowingDATA.class);
                             if (IS_REFRESH){
                                 growingList.clear();
