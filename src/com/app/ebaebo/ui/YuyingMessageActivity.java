@@ -11,15 +11,25 @@ import android.os.Message;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.app.ebaebo.R;
 import com.app.ebaebo.adapter.OnClickContentItemListener;
 import com.app.ebaebo.adapter.PhotoAdapter;
 import com.app.ebaebo.adapter.YuyingAdapter;
-import com.app.ebaebo.entity.Photos;
-import com.app.ebaebo.entity.Pictures;
-import com.app.ebaebo.entity.Yuying;
+import com.app.ebaebo.data.AccountDATA;
+import com.app.ebaebo.data.ErrorDATA;
+import com.app.ebaebo.data.GrowingDATA;
+import com.app.ebaebo.data.YuyingDATA;
+import com.app.ebaebo.entity.*;
 import com.app.ebaebo.util.HttpUtils;
+import com.app.ebaebo.util.InternetURL;
 import com.app.ebaebo.widget.ContentListView;
+import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,40 +49,11 @@ public class YuyingMessageActivity extends BaseActivity implements OnClickConten
     private ImageView yuyingback;//返回按钮
     private YuyingAdapter adapter;
     private ContentListView clv;
-    private int index = 1;
-    private Map<String,String> map = new HashMap<String,String>();
-    List<Yuying> list = new ArrayList<Yuying>();
-    final Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case ContentListView.REFRESH:
-                    List resultcont = (List) msg.obj;
-                    clv.onRefreshComplete();
-                    NetworkInfo networkInfo = connectMgr.getActiveNetworkInfo();
-                    if (networkInfo != null) {
-                        list.clear();
-                    }else {
-                        Toast.makeText(mContext, "当前网络不可用", Toast.LENGTH_SHORT).show();
-                    }
-                    list.addAll(resultcont);
-                    clv.setResultSize(resultcont.size());
-                    adapter.notifyDataSetChanged();
-                    break;
-                case ContentListView.LOAD:
-                    List resultcont1 = new ArrayList();
-                    if(msg.obj!=null && !msg.obj.equals("") ){
-                        resultcont1 = (List) msg.obj;
-                    }
-                    clv.onLoadComplete();
-                    list.addAll(resultcont1);
-                    clv.setResultSize(resultcont1.size());
-                    adapter.notifyDataSetChanged();
-                    break;
-            }
-        }
-    };
+    private int pageIndex = 1;
+    private static boolean IS_REFRESH = true;
+
+    private List<Yuying> list = new ArrayList<Yuying>();
+    private RequestQueue mRequestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,13 +61,12 @@ public class YuyingMessageActivity extends BaseActivity implements OnClickConten
         setContentView(R.layout.yuyingmessages);
         initView();
         setTheme(R.style.index_theme);
-        registerBoradcastReceiver();
         adapter = new YuyingAdapter(list, this);
+        mRequestQueue = Volley.newRequestQueue(this);
         clv.setAdapter(adapter);
-        clv.setOnRefreshListener(this);
-        clv.setOnLoadListener(this);
+        getData();
         adapter.setOnClickContentItemListener(this);
-        loadData(ContentListView.LOAD);
+
     }
 
     private void initView() {
@@ -104,103 +84,71 @@ public class YuyingMessageActivity extends BaseActivity implements OnClickConten
                 break;
         }
     }
-    public void registerBoradcastReceiver(){
-        IntentFilter myIntentFilter = new IntentFilter();
-        myIntentFilter.addAction(Constants.SEND_SUCCESS);
-        //注册广播
-        registerReceiver(mBroadcastReceiver, myIntentFilter);
-    }
-    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver(){
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            loadData(ContentListView.REFRESH);
-        }
 
-    };
+    private void getData(){
+        String uri = String.format(InternetURL.GET_YUYING_MESSAGE+"?school_id=%s&pageIndex=%d&pageSize=%d",1, pageIndex, 20 );
+        StringRequest request = new StringRequest(Request.Method.GET,
+                uri,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        Gson gson = new Gson();
+                        try {
+                            YuyingDATA data = gson.fromJson(s, YuyingDATA.class);
+                            if (IS_REFRESH){
+                                list.clear();
+                            }
+                            list.addAll(data.getData());
+                            adapter.notifyDataSetChanged();
+                            if (data.getData().size() < 10){
+                                clv.setResultSize(0);
+                            }
+                            clv.onRefreshComplete();
+                            clv.onLoadComplete();
 
-    /**
-     * 加载数据监听实现
-     */
-    @Override
-    public void onLoad() {
-        index++;
-        loadData(ContentListView.LOAD);
-    }
-
-    /**
-     * 刷新数据监听实现
-     */
-    @Override
-    public void onRefresh() {
-        index = 1;
-        loadData(ContentListView.REFRESH);
-    }
-    private void loadData(final int what) {
-        getAppThread().execute(new Runnable() {
+                        }catch (Exception e){
+                            ErrorDATA errorDATA = gson.fromJson(s, ErrorDATA.class);
+                            if (errorDATA.getMsg().equals("failed")){
+                                Toast.makeText(mContext, "网络错误", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                },new Response.ErrorListener() {
             @Override
-            public void run() {
-                Message msg = mHandler.obtainMessage();
-                msg.what=what;
-                msg.obj = getData();
-                mHandler.sendMessage(msg);
+            public void onErrorResponse(VolleyError volleyError) {
+
             }
         });
+        mRequestQueue.add(request);
     }
-    public List<Yuying> getData()
-    {
-        List<Yuying> datalist =  new ArrayList<Yuying>();
-        map.put("school_id", "1");
-        map.put("pageSize", "20");
-        map.put("pageIndex", String.valueOf(index));
-        String result  = HttpUtils.postRequest("http://yey.xqb668.com/index/ServiceJson/news", map);
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = new JSONObject(result);
-            String code = jsonObject.getString("code");
-            if(code.equals("200")){//如果成功的话
-                JSONArray jsonArray = jsonObject.getJSONArray("data");
-                if(jsonArray!=null && jsonArray.length()>0){
-                    String id = "";
-                    String title = "";
-                    String pic = "";
-                    String summary = "";
-                    String content = "";
-                    String publish_uid = "";
-                    String publisher = "";
-                    String school_id = "";
-                    String dateline = "";
-                    Yuying yuying = null;
-                    for(int i=0;i<jsonArray.length();i++){
-                        JSONObject jsonObject1 = (JSONObject)jsonArray.opt(i);
-                        id = jsonObject1.getString("id");
-                        title = jsonObject1.getString("title");
-                        pic = jsonObject1.getString("pic");
-                        summary = jsonObject1.getString("summary");
-                        content = jsonObject1.getString("content");
-                        publish_uid = jsonObject1.getString("publish_uid");
-                        publisher = jsonObject1.getString("publisher");
-                        school_id = jsonObject1.getString("school_id");
-                        dateline = jsonObject1.getString("dateline");
-                        yuying = new Yuying(id, title, pic, summary, content, publish_uid, publisher, school_id, dateline);
-                        datalist.add(yuying);
-                    }
-                }
-            }
-            return datalist;
-        } catch (JSONException e) {
-            e.printStackTrace();
-           return null;
+
+    //下拉刷新
+    @Override
+    public void onRefresh() {
+        IS_REFRESH = true;
+        pageIndex = 1;
+        getData();
+    }
+
+    //上拉加载
+    @Override
+    public void onLoad() {
+        IS_REFRESH = false;
+        pageIndex++;
+        getData();
+    }
+    Yuying yy = null;
+    @Override
+    public void onClickContentItem(int position, int flag, Object object) {
+        switch (flag)
+        {
+            case 1:
+                yy = list.get(position);
+                Intent detailYY =  new Intent(this, YuYiingDetailActivity.class);
+                detailYY.putExtra("yy", yy );
+                startActivity(detailYY);
+                break;
         }
     }
 
-    @Override
-    public void onClickContentItem(int position, int flag, Object object) {
-
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(mBroadcastReceiver);
-    }
 }

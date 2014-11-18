@@ -70,8 +70,16 @@ public class YuyingAdapter extends BaseAdapter {
         }
 
         final Yuying cell = list.get(position);
-        holder.title.setText(cell.getTitle()) ;
-        holder.content.setText(cell.getContent());
+        String title  = cell.getTitle();
+        if(cell.getTitle().length() > 25){
+            title = cell.getTitle().substring(0,25);
+        }
+        holder.title.setText(title) ;
+        String cont = cell.getContent();
+        if(cell.getContent().length() > 40){
+            cont = cell.getContent().substring(0,40);
+        }
+        holder.content.setText(cont);
         holder.time.setText(cell.getDateline());
 
         try {
@@ -94,6 +102,5 @@ public class YuyingAdapter extends BaseAdapter {
         TextView title;
         TextView content;
         TextView time;
-
     }
 }

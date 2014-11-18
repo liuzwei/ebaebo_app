@@ -17,10 +17,8 @@
 	            android:layout_height="wrap_content"
 	            android:orientation="horizontal"
 	            android:layout_margin="5dp">
-	            <ImageView android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"
-	                android:maxWidth="60dp"
-	                android:maxHeight="60dp"
+	            <ImageView android:layout_width="60dp"
+	                android:layout_height="60dp"
 	                android:adjustViewBounds="true"
                     android:id="@+id/pic"
 	                android:src="@drawable/head"/>
@@ -45,7 +43,7 @@
 
 	                <TextView android:layout_width="wrap_content"
 	                    android:layout_height="wrap_content"
-	                    android:text="容内容内容内容内容内容内容内容内容内容内容"
+	                    android:text="容内容内容内容内容内容内容内容内容内容内ssdfssadfsdaf"
                         android:id="@+id/content"
 	                    android:textSize="12sp"
                         />

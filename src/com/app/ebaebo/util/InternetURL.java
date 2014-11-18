@@ -12,4 +12,6 @@ public class InternetURL {
 
     //成长管理获取
     public static String GROWING_MANAGER_API = "http://yey.xqb668.com/index/ServiceJson/growinglist";
+
+    public static String GET_YUYING_MESSAGE = "http://yey.xqb668.com/index/ServiceJson/news";
 }

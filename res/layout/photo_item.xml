@@ -12,9 +12,8 @@
                   android:gravity="center_vertical"
                   android:orientation="horizontal">
         <ImageView android:layout_width="100dp"
-                   android:layout_height="wrap_content"
+                   android:layout_height="60dp"
                    android:src="@drawable/ic_launcher"
-                   android:maxWidth="50dp"
                    android:id="@+id/giftpic"
                    android:adjustViewBounds="true"/>
         <LinearLayout android:layout_width="wrap_content"

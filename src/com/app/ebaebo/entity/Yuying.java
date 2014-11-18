@@ -1,12 +1,14 @@
 package com.app.ebaebo.entity;
 
+import java.io.Serializable;
+
 /**
  * author: ${zhanghailong}
  * Date: 2014/11/16
  * Time: 23:36
  * 类的功能、说明写在此处.
  */
-public class Yuying {
+public class Yuying implements Serializable {
     private String id;
     private String title;
     private String pic;

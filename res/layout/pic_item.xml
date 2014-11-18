@@ -5,7 +5,7 @@
               android:orientation="horizontal"
               android:padding="10dp"
               android:background="@drawable/zhuye_item_select"  >
-    <ImageView android:layout_width="wrap_content"
+    <ImageView android:layout_width="fill_parent"
                android:id="@+id/picture"
                android:src="@drawable/white"
                android:layout_height="100dp"/>
