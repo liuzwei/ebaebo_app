@@ -73,6 +73,8 @@ public class YuyingMessageActivity extends BaseActivity implements OnClickConten
         yuyingback = (ImageView) this.findViewById(R.id.yuyingback);
         yuyingback.setOnClickListener(this);
         clv = (ContentListView) this.findViewById(R.id.lstv);
+        clv.setOnRefreshListener(this);
+        clv.setOnLoadListener(this);
     }
 
     @Override
@@ -99,12 +101,12 @@ public class YuyingMessageActivity extends BaseActivity implements OnClickConten
                                 list.clear();
                             }
                             list.addAll(data.getData());
-                            adapter.notifyDataSetChanged();
                             if (data.getData().size() < 10){
                                 clv.setResultSize(0);
                             }
                             clv.onRefreshComplete();
                             clv.onLoadComplete();
+                            adapter.notifyDataSetChanged();
 
                         }catch (Exception e){
                             ErrorDATA errorDATA = gson.fromJson(s, ErrorDATA.class);

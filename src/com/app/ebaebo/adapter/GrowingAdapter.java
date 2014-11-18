@@ -24,13 +24,13 @@ public class GrowingAdapter extends BaseAdapter {
     private Context context;
     private ViewHolder viewHolder;
 
+    ImageLoader imageLoader = ImageLoader.getInstance();//图片加载类
+    private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
+
     public GrowingAdapter(List<Growing> list, Context context){
         this.list = list;
         this.context = context;
     }
-
-    private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
-    ImageLoader imageLoader = ImageLoader.getInstance();//图片加载类
 
     private OnClickContentItemListener onClickContentItemListener;
     public void setOnClickContentItemListener(OnClickContentItemListener onClickContentItemListener) {
@@ -69,9 +69,7 @@ public class GrowingAdapter extends BaseAdapter {
         Growing growing = list.get(position);
         viewHolder.publisher.setText(growing.getPublisher());
         viewHolder.time.setText(growing.getTime());
-        //todo  加载图片
-//        EbaeboApplication.imageLoader.displayImage(growing.getUrl(), viewHolder.photo, EbaeboApplication.txOptions);
-
+        imageLoader.displayImage(growing.getUrl(), viewHolder.photo, EbaeboApplication.txOptions, animateFirstListener);
         //todo   type类型返回的为空
 //        switch (Integer.parseInt(growing.getType()) ){
         switch (0){

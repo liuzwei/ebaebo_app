@@ -49,7 +49,6 @@ public class MainActivity extends BaseActivity implements
     private int pageSize;
     private int child_id;
     private Account account;
-    private static boolean IS_REFRESH = true;
 
     private List<Growing> growingList = new ArrayList<Growing>();
     private RequestQueue mRequestQueue;
@@ -75,7 +74,7 @@ public class MainActivity extends BaseActivity implements
         mRequestQueue = Volley.newRequestQueue(this);
         adapter = new GrowingAdapter(growingList, mContext);
         listView.setAdapter(adapter);
-        getData();
+        getData(ContentListView.REFRESH);
 //        radioGroups = (RadioGroup) findViewById(R.id.main_radiogroups);
 //
 //        fragments.add(new MessageFragment());
@@ -188,7 +187,7 @@ public class MainActivity extends BaseActivity implements
 
     }
 
-    private void getData(){
+    private void getData(final int tag){
         String uri = String.format(InternetURL.GROWING_MANAGER_API+"?uid=%s&pageIndex=%d&pageSize=%d&child_id=%d",uid, pageIndex, pageSize, child_id);
         StringRequest request = new StringRequest(Request.Method.GET,
                 uri,
@@ -198,17 +197,20 @@ public class MainActivity extends BaseActivity implements
                         Gson gson = new Gson();
                         try {
                             GrowingDATA data = gson.fromJson(s, GrowingDATA.class);
-                            if (IS_REFRESH){
-                                growingList.clear();
-                            }
-                            growingList.addAll(data.getData());
-                            adapter.notifyDataSetChanged();
                             if (data.getData().size() < 10){
                                 listView.setResultSize(0);
                             }
-                            listView.onRefreshComplete();
-                            listView.onLoadComplete();
-
+                            switch (tag){
+                                case ContentListView.REFRESH://刷新
+                                    listView.onRefreshComplete();
+                                    growingList.clear();
+                                    break;
+                                case ContentListView.LOAD://加载更多
+                                    listView.onLoadComplete();
+                                    break;
+                            }
+                            growingList.addAll(data.getData());
+                            adapter.notifyDataSetChanged();
                         }catch (Exception e){
                             ErrorDATA errorDATA = gson.fromJson(s, ErrorDATA.class);
                             if (errorDATA.getMsg().equals("failed")){
@@ -228,16 +230,14 @@ public class MainActivity extends BaseActivity implements
     //下拉刷新
     @Override
     public void onRefresh() {
-        IS_REFRESH = true;
         pageIndex = 1;
-        getData();
+        getData(ContentListView.REFRESH);
     }
 
     //上拉加载
     @Override
     public void onLoad() {
-        IS_REFRESH = false;
         pageIndex++;
-        getData();
+        getData(ContentListView.LOAD);
     }
 }
