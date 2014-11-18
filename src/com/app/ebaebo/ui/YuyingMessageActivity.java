@@ -48,6 +48,7 @@ public class YuyingMessageActivity extends BaseActivity implements OnClickConten
             super.handleMessage(msg);
             switch (msg.what) {
                 case ContentListView.REFRESH:
+                    List resultcont = (List) msg.obj;
                     clv.onRefreshComplete();
                     NetworkInfo networkInfo = connectMgr.getActiveNetworkInfo();
                     if (networkInfo != null) {
@@ -55,14 +56,18 @@ public class YuyingMessageActivity extends BaseActivity implements OnClickConten
                     }else {
                         Toast.makeText(mContext, "当前网络不可用", Toast.LENGTH_SHORT).show();
                     }
-                    list.addAll(datalist);
-                    clv.setResultSize(datalist.size());
+                    list.addAll(resultcont);
+                    clv.setResultSize(resultcont.size());
                     adapter.notifyDataSetChanged();
                     break;
                 case ContentListView.LOAD:
+                    List resultcont1 = new ArrayList();
+                    if(msg.obj!=null && !msg.obj.equals("") ){
+                        resultcont1 = (List) msg.obj;
+                    }
                     clv.onLoadComplete();
-                    list.addAll(datalist);
-                    clv.setResultSize(datalist.size());
+                    list.addAll(resultcont1);
+                    clv.setResultSize(resultcont1.size());
                     adapter.notifyDataSetChanged();
                     break;
             }
@@ -132,70 +137,70 @@ public class YuyingMessageActivity extends BaseActivity implements OnClickConten
         loadData(ContentListView.REFRESH);
     }
     private void loadData(final int what) {
-            Message msg = mHandler.obtainMessage();
-            msg.what = what;
-            getData();
-    }
-    List<Yuying> datalist = null;
-    public void getData()
-    {
         getAppThread().execute(new Runnable() {
             @Override
             public void run() {
-                datalist =  new ArrayList<Yuying>();
-                map.put("school_id", "1");
-                map.put("pageSize", "20");
-                map.put("pageIndex", String.valueOf(index));
-                String result  = HttpUtils.postRequest("http://yey.xqb668.com/index/ServiceJson/news", map);
-                JSONObject jsonObject = null;
-                try {
-                    jsonObject = new JSONObject(result);
-                    String code = jsonObject.getString("code");
-                    if(code.equals("200")){//如果成功的话
-                        JSONArray jsonArray = jsonObject.getJSONArray("data");
-                        if(jsonArray!=null && jsonArray.length()>0){
-                            String id = "";
-                            String title = "";
-                            String pic = "";
-                            String summary = "";
-                            String content = "";
-                            String publish_uid = "";
-                            String publisher = "";
-                            String school_id = "";
-                            String dateline = "";
-                            Yuying yuying = null;
-                            for(int i=0;i<jsonArray.length();i++){
-                                JSONObject jsonObject1 = (JSONObject)jsonArray.opt(i);
-                                id = jsonObject1.getString("id");
-                                title = jsonObject1.getString("title");
-                                pic = jsonObject1.getString("pic");
-                                summary = jsonObject1.getString("summary");
-                                content = jsonObject1.getString("content");
-                                publish_uid = jsonObject1.getString("publish_uid");
-                                publisher = jsonObject1.getString("publisher");
-                                school_id = jsonObject1.getString("school_id");
-                                dateline = jsonObject1.getString("dateline");
-                                yuying = new Yuying(id, title, pic, summary, content, publish_uid, publisher, school_id, dateline);
-                                datalist.add(yuying);
-                            }
-                            mHandler.sendMessage(mHandler.obtainMessage(Constants.SUCCESS));
-                        }else{
-                            //相册为空
-                            mHandler.sendMessage(mHandler.obtainMessage(Constants.SUCCESS));
-                        }
-                    }else{
-                        mHandler.sendMessage(mHandler.obtainMessage(Constants.FAIL));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    mHandler.sendMessage(mHandler.obtainMessage(Constants.FAIL));
-                }
+                Message msg = mHandler.obtainMessage();
+                msg.what=what;
+                msg.obj = getData();
+                mHandler.sendMessage(msg);
             }
         });
+    }
+    public List<Yuying> getData()
+    {
+        List<Yuying> datalist =  new ArrayList<Yuying>();
+        map.put("school_id", "1");
+        map.put("pageSize", "20");
+        map.put("pageIndex", String.valueOf(index));
+        String result  = HttpUtils.postRequest("http://yey.xqb668.com/index/ServiceJson/news", map);
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(result);
+            String code = jsonObject.getString("code");
+            if(code.equals("200")){//如果成功的话
+                JSONArray jsonArray = jsonObject.getJSONArray("data");
+                if(jsonArray!=null && jsonArray.length()>0){
+                    String id = "";
+                    String title = "";
+                    String pic = "";
+                    String summary = "";
+                    String content = "";
+                    String publish_uid = "";
+                    String publisher = "";
+                    String school_id = "";
+                    String dateline = "";
+                    Yuying yuying = null;
+                    for(int i=0;i<jsonArray.length();i++){
+                        JSONObject jsonObject1 = (JSONObject)jsonArray.opt(i);
+                        id = jsonObject1.getString("id");
+                        title = jsonObject1.getString("title");
+                        pic = jsonObject1.getString("pic");
+                        summary = jsonObject1.getString("summary");
+                        content = jsonObject1.getString("content");
+                        publish_uid = jsonObject1.getString("publish_uid");
+                        publisher = jsonObject1.getString("publisher");
+                        school_id = jsonObject1.getString("school_id");
+                        dateline = jsonObject1.getString("dateline");
+                        yuying = new Yuying(id, title, pic, summary, content, publish_uid, publisher, school_id, dateline);
+                        datalist.add(yuying);
+                    }
+                }
+            }
+            return datalist;
+        } catch (JSONException e) {
+            e.printStackTrace();
+           return null;
+        }
     }
 
     @Override
     public void onClickContentItem(int position, int flag, Object object) {
 
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mBroadcastReceiver);
     }
 }

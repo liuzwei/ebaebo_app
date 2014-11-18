@@ -199,5 +199,9 @@ public class PhotosActivity extends BaseActivity implements OnClickContentItemLi
         }
 
     };
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mBroadcastReceiver);
+    }
 }

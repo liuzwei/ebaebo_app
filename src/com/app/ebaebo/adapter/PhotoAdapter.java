@@ -70,7 +70,7 @@ public class PhotoAdapter extends BaseAdapter {
         final Photos cell = list.get(position);
         holder.name.setText(cell.getName());
         try {
-            imageLoader.displayImage("http://www.liangxunwang.com:80/show/boke/touxiang/0445649/1117024642709.jpg", holder.picture, EbaeboApplication.options, animateFirstListener);
+            imageLoader.displayImage(cell.getCover() , holder.picture, EbaeboApplication.options, animateFirstListener);
         }catch (Exception e){
             Log.d("没有网络图片", e.getMessage());
         }
