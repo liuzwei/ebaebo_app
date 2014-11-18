@@ -187,7 +187,17 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onClickContentItem(int position, int flag, Object object) {
+        switch (flag){
+            case 1://收藏
 
+                break;
+            case 2://评论
+
+                break;
+            case 3://分享
+
+                break;
+        }
     }
 
     private void getData(final int tag){

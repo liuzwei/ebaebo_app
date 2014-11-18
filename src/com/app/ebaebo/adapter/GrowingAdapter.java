@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.app.ebaebo.EbaeboApplication;
 import com.app.ebaebo.R;
@@ -53,7 +54,7 @@ public class GrowingAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         if (convertView == null){
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.growing_item,null);
@@ -61,6 +62,10 @@ public class GrowingAdapter extends BaseAdapter {
             viewHolder.publisher = (TextView) convertView.findViewById(R.id.growing_item_name);
             viewHolder.time = (TextView) convertView.findViewById(R.id.growing_item_time);
             viewHolder.content = (TextView) convertView.findViewById(R.id.growing_item_content);
+            viewHolder.favours = (LinearLayout) convertView.findViewById(R.id.growing_item_favours);
+            viewHolder.comment = (LinearLayout) convertView.findViewById(R.id.growing_item_comment);
+            viewHolder.share = (ImageView) convertView.findViewById(R.id.growing_item_share);
+            viewHolder.picture = (ImageView) convertView.findViewById(R.id.growing_item_picture);
             convertView.setTag(viewHolder);
         }else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -70,6 +75,7 @@ public class GrowingAdapter extends BaseAdapter {
         viewHolder.publisher.setText(growing.getPublisher());
         viewHolder.time.setText(growing.getTime());
         imageLoader.displayImage(growing.getUrl(), viewHolder.photo, EbaeboApplication.txOptions, animateFirstListener);
+        imageLoader.displayImage(growing.getUrl(), viewHolder.picture, EbaeboApplication.txOptions, animateFirstListener);
         //todo   type类型返回的为空
 //        switch (Integer.parseInt(growing.getType()) ){
         switch (0){
@@ -84,6 +90,25 @@ public class GrowingAdapter extends BaseAdapter {
                 break;
         }
 
+        viewHolder.favours.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickContentItemListener.onClickContentItem(position, 1, null);
+            }
+        });
+        viewHolder.comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickContentItemListener.onClickContentItem(position, 2, null);
+            }
+        });
+        viewHolder.share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickContentItemListener.onClickContentItem(position, 3, null);
+            }
+        });
+
         return convertView;
     }
 
@@ -92,5 +117,9 @@ public class GrowingAdapter extends BaseAdapter {
         TextView publisher;
         TextView time;
         TextView content;
+        LinearLayout favours;//收藏
+        LinearLayout comment;//评论
+        ImageView share;//分享
+        ImageView picture;
     }
 }
