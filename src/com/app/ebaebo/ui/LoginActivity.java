@@ -102,14 +102,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                                     AccountDATA data = gson.fromJson(s, AccountDATA.class);
                                     Account account = data.getData();
                                     saveAccount(name, pass, account);
-
-                                    Intent main = new Intent(LoginActivity.this, MainActivity.class);
-                                    startActivity(main);
-//                                    String accountJson = sp.getString("account", "");
-//                                    if (!accountJson.isEmpty()){
-//                                        Account account1 = new Gson().fromJson(accountJson, Account.class);
-//                                        Log.i("Account", account1.getCover());
-//                                    }
+                                    if ("1".equals(account.getIs_student())){//如果是家长登陆，选择身份
+                                        Intent setIdentity = new Intent(LoginActivity.this, SelectIdentityActivity.class);
+                                        setIdentity.putExtra("account", account);
+                                        startActivity(setIdentity);
+                                    }else {//老师登陆直接跳转到主页面
+                                        Intent main = new Intent(LoginActivity.this, MainActivity.class);
+                                        startActivity(main);
+                                    }
                                 }catch (Exception e){
                                     ErrorDATA errorDATA = gson.fromJson(s, ErrorDATA.class);
                                     if (errorDATA.getMsg().equals("failed")){

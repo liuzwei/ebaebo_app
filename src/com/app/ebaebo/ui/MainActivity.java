@@ -14,9 +14,11 @@ import com.android.volley.toolbox.Volley;
 import com.app.ebaebo.R;
 import com.app.ebaebo.adapter.GrowingAdapter;
 import com.app.ebaebo.adapter.OnClickContentItemListener;
+import com.app.ebaebo.data.BabyDATA;
 import com.app.ebaebo.data.ErrorDATA;
 import com.app.ebaebo.data.GrowingDATA;
 import com.app.ebaebo.entity.Account;
+import com.app.ebaebo.entity.Baby;
 import com.app.ebaebo.entity.Growing;
 import com.app.ebaebo.util.InternetURL;
 import com.app.ebaebo.widget.ContentListView;
@@ -40,6 +42,8 @@ public class MainActivity extends BaseActivity implements
     private TextView yuyingInfo;//育英信息
     private TextView callName;//点名
     private TextView setting;//设置
+    private Spinner growingManager;//成长管理下拉
+    private ArrayAdapter<String> spinnerAdapter;
 
     private ContentListView listView;
     private GrowingAdapter adapter;
@@ -51,6 +55,7 @@ public class MainActivity extends BaseActivity implements
     private Account account;
 
     private List<Growing> growingList = new ArrayList<Growing>();
+    private List<Baby> babies = new ArrayList<Baby>();//下拉列表宝宝
     private RequestQueue mRequestQueue;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,6 +80,7 @@ public class MainActivity extends BaseActivity implements
         adapter = new GrowingAdapter(growingList, mContext);
         listView.setAdapter(adapter);
         getData(ContentListView.REFRESH);
+        getBaby();
 //        radioGroups = (RadioGroup) findViewById(R.id.main_radiogroups);
 //
 //        fragments.add(new MessageFragment());
@@ -110,6 +116,7 @@ public class MainActivity extends BaseActivity implements
         yuyingInfo = (TextView) slideMenu.findViewById(R.id.leftmenu_info);
         callName = (TextView) slideMenu.findViewById(R.id.leftmenu_callname);
         setting = (TextView) slideMenu.findViewById(R.id.leftmenu_setting);
+        growingManager = (Spinner) slideMenu.findViewById(R.id.growing_manager_spinner);
 
         listView = (ContentListView) slideMenu.findViewById(R.id.index_pull_refresh_lsv);
         listView.setOnRefreshListener(this);
@@ -124,10 +131,6 @@ public class MainActivity extends BaseActivity implements
         yuyingInfo.setOnClickListener(this);
         callName.setOnClickListener(this);
         setting.setOnClickListener(this);
-
-
-
-
     }
 
     @Override
@@ -224,6 +227,55 @@ public class MainActivity extends BaseActivity implements
 
             }
         });
+        mRequestQueue.add(request);
+    }
+
+    private void getBaby(){
+        String uid = account.getUid();
+        String uri = String.format(InternetURL.GET_BABY_URL +"?uid=%s", uid);
+        StringRequest request = new StringRequest(
+                Request.Method.GET,
+                uri,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        Gson gson = new Gson();
+                        try{
+//                            BabyDATA data = gson.fromJson(s, BabyDATA.class);
+//                            babies.addAll(data.getData());
+                            List<String> names = new ArrayList<String>();
+                            for (int i=0; i<babies.size()+1; i++){
+                                if (i==0){
+                                    names.add("成长管理");
+                                }else {
+                                    names.add(babies.get(i-1).getName());
+                                }
+                            }
+                            spinnerAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, names);
+                            spinnerAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
+                            growingManager.setAdapter(spinnerAdapter);
+                            growingManager.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                                }
+                            });
+                        }catch (Exception e){
+//                            ErrorDATA data = gson.fromJson(s, ErrorDATA.class);
+//                            if (data.getCode() == 500){
+//                                Log.i("ErrorData", "获取baby信息数据错误");
+//                            }
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+
+                    }
+                }
+        );
         mRequestQueue.add(request);
     }
 

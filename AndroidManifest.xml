@@ -37,5 +37,6 @@
         <activity android:name=".ui.DianmingActivity"/>
         <activity android:name=".ui.PictureActivity"/>
         <activity android:name=".ui.YuYiingDetailActivity"/>
+        <activity android:name=".ui.SelectIdentityActivity"/>
     </application>
 </manifest>
