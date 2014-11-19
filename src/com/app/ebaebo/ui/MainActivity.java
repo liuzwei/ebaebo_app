@@ -194,6 +194,7 @@ public class MainActivity extends BaseActivity implements
                 break;
             case 2://评论
                 Intent comment = new Intent(MainActivity.this, CommentActivity.class);
+                comment.putExtra(Constants.GROWING_KEY, growingList.get(position));
                 startActivity(comment);
                 break;
             case 3://分享

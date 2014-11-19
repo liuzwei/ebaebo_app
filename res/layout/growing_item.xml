@@ -119,7 +119,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:layout_weight="1"
-                    android:background="@drawable/zhuye_item_select"
+                    android:background="@drawable/footbackground"
                     >
                 <ImageView
                         android:id="@+id/red_heart"
@@ -140,7 +140,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:layout_weight="1"
-                    android:background="@drawable/zhuye_item_select"
+                    android:background="@drawable/footbackground"
                     >
 
                 <ImageView
@@ -162,7 +162,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:layout_weight="1"
-                    android:background="@drawable/zhuye_item_select"
+                    android:background="@drawable/footbackground"
                     >
 
                 <ImageView
