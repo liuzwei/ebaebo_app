@@ -41,7 +41,7 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
         growing = (Growing) getIntent().getSerializableExtra(Constants.GROWING_KEY);
         account =getGson().fromJson(sp.getString(Constants.ACCOUNT_KEY, ""), Account.class) ;
         identity = sp.getString(Constants.IDENTITY, "");
-
+        initView();
         mRequestQueue = Volley.newRequestQueue(this);
     }
 
