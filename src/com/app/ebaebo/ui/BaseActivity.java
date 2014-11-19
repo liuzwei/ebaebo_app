@@ -57,4 +57,10 @@ public class BaseActivity extends Activity {
     public void alert(int resId){
         ToastUtil.show(getApplicationContext(), resId);
     }
+
+    //存储sharepreference
+    public void save(String key, Object value){
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(key, gson.toJson(value));
+    }
 }

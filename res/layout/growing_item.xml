@@ -33,50 +33,36 @@
                               android:paddingTop="10dp"
                               android:orientation="horizontal">
                     <!-- 头像 -->
-                    <RelativeLayout
+                    <ImageView
+                            android:id="@+id/growing_item_photo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            >
-                        <ImageView
-                                android:id="@+id/growing_item_photo"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:maxWidth="50dp"
-                                android:maxHeight="50dp"
-                                android:src="@drawable/right_arrow"
-                                android:adjustViewBounds="true"
-                                android:scaleType="centerCrop"/>
-                    </RelativeLayout>
-
-                    <LinearLayout android:layout_width="wrap_content"
-                                  android:layout_height="wrap_content"
-                                  android:layout_weight="1"
-                                  android:layout_marginLeft="5dp"
-                                  android:orientation="vertical">
-                        <TextView
-                                android:id="@+id/growing_item_name"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="昵称"
-                                android:textSize="16sp"
-                                android:textColor="#424242"
-                                android:layout_weight="1"
-                                android:singleLine="true"
-                                />
+                            android:maxWidth="50dp"
+                            android:maxHeight="50dp"
+                            android:src="@drawable/txhc"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop"/>
+                    <TextView
+                            android:layout_marginLeft="10dp"
+                            android:id="@+id/growing_item_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="昵称"
+                            android:textSize="20sp"
+                            android:textColor="#424242"
+                            android:singleLine="true"
+                            android:gravity="center_vertical"
+                            />
                         <TextView
                                 android:id="@+id/growing_item_time"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="10dp"
                                 android:text="2014.01.02"
                                 android:textSize="11sp"
+                                android:gravity="center_vertical"
                                 android:textColor="#e5b15e"
                                 />
-                    </LinearLayout>
-                    <ImageView
-                            android:id="@+id/growing_item_share"
-                            android:src="@drawable/share_icon"
-                            android:layout_width="40dp"
-                            android:layout_height="match_parent"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -133,28 +119,20 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:layout_weight="1"
-                    android:background="@drawable/zhuye_item_select"
+                    android:background="@drawable/footbackground"
                     >
                 <ImageView
-                        android:id="@+id/zan_image"
+                        android:id="@+id/red_heart"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="3dp"
+                        android:src="@drawable/favours"
                         />
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="收藏"
-                        android:textSize="13sp"
-                        android:id="@+id/indexzan"
-                        android:textColor="#9b9b9b"
-                        android:layout_marginLeft="5dp"
-                        />
-
             </LinearLayout>
             <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+
                     />
             <LinearLayout
                     android:id="@+id/growing_item_comment"
@@ -162,7 +140,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:layout_weight="1"
-                    android:background="@drawable/zhuye_item_select"
+                    android:background="@drawable/footbackground"
                     >
 
                 <ImageView
@@ -170,24 +148,31 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="3dp"
-
+                        android:src="@drawable/comment"
                         />
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="评论"
-                        android:textSize="13sp"
-                        android:id="@+id/indexpl"
-                        android:textColor="#9b9b9b"
-                        android:layout_marginLeft="5dp"
-                        />
-
             </LinearLayout>
             <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
 
                     />
+            <LinearLayout
+                    android:id="@+id/zxita13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/footbackground"
+                    >
+
+                <ImageView
+                        android:id="@+id/growing_item_share"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/share"
+                        android:layout_marginRight="3dp"
+                        />
+            </LinearLayout>
         </LinearLayout>
 
     </RelativeLayout>

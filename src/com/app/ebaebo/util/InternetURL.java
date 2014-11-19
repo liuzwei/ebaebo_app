@@ -24,4 +24,10 @@ public class InternetURL {
     public static String GET_YZM_ISTURE_URL = "http://yey.xqb668.com/json.php/user.api-verifyCode/";
     //密码找回（修改密码）
     public static String UPDATE_PASSWORD_URL = "http://yey.xqb668.com/json.php/user.api-changePassword/";
+
+    //喜爱或是收藏成长记录
+    public static String FAVOURS_URL = "http://yey.xqb668.com/index/ServiceJson/toFavour";
+
+    //成长记录评论
+    public static String GROWING_COMMENT_URL = "http://yey.xqb668.com/index/ServiceJson/tocomment";
 }

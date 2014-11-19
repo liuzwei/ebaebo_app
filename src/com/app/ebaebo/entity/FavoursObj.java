@@ -1,11 +1,12 @@
 package com.app.ebaebo.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by liuzwei on 2014/11/17.
  */
-public class FavoursObj {
+public class FavoursObj implements Serializable{
     private int count;
     private List<Favours> list;
 
