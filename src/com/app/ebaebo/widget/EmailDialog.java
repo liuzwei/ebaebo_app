@@ -92,6 +92,10 @@ public class EmailDialog extends Dialog implements View.OnClickListener{
                     Toast.makeText(context, "请输入邮箱！", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if(StringUtil.isEmail(mobileNum)){
+                    Toast.makeText(context, "邮箱格式不正确！", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 getYzm(mobileNum);
                 break;
             case R.id.cancle:

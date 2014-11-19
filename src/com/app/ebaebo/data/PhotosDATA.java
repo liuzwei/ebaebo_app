@@ -1,14 +1,14 @@
 package com.app.ebaebo.data;
 
-import com.app.ebaebo.entity.Growing;
+import com.app.ebaebo.entity.Photos;
 import com.app.ebaebo.entity.Yuying;
 
 import java.util.List;
 
-public class YuyingDATA {
+public class PhotosDATA {
     private int code;
     private String msg;
-    private List<Yuying> data;
+    private List<Photos> data;
 
     public int getCode() {
         return code;
@@ -26,11 +26,11 @@ public class YuyingDATA {
         this.msg = msg;
     }
 
-    public List<Yuying> getData() {
+    public List<Photos> getData() {
         return data;
     }
 
-    public void setData(List<Yuying> data) {
+    public void setData(List<Photos> data) {
         this.data = data;
     }
 }

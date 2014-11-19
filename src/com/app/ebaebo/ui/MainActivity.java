@@ -20,6 +20,7 @@ import com.app.ebaebo.data.GrowingDATA;
 import com.app.ebaebo.entity.Account;
 import com.app.ebaebo.entity.Baby;
 import com.app.ebaebo.entity.Growing;
+import com.app.ebaebo.entity.Tongxunlu;
 import com.app.ebaebo.util.InternetURL;
 import com.app.ebaebo.widget.ContentListView;
 import com.google.gson.Gson;
@@ -168,7 +169,8 @@ public class MainActivity extends BaseActivity implements
                 startActivity(schoolbus);
                 break;
             case R.id.leftmenu_address_book://通讯簿
-
+                Intent txl = new Intent(MainActivity.this, TongxunluActivity.class);
+                startActivity(txl);
                 break;
             case R.id.leftmenu_info://育英信息
                 Intent yuying = new Intent(MainActivity.this, YuyingMessageActivity.class);

@@ -1,13 +1,6 @@
 package com.app.ebaebo.ui;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -19,73 +12,64 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.ebaebo.R;
 import com.app.ebaebo.adapter.OnClickContentItemListener;
-import com.app.ebaebo.adapter.PhotoAdapter;
+import com.app.ebaebo.adapter.TongxunluAdapter;
 import com.app.ebaebo.adapter.YuyingAdapter;
-import com.app.ebaebo.data.AccountDATA;
 import com.app.ebaebo.data.ErrorDATA;
-import com.app.ebaebo.data.GrowingDATA;
+import com.app.ebaebo.data.TongxunluDATA;
 import com.app.ebaebo.data.YuyingDATA;
-import com.app.ebaebo.entity.*;
-import com.app.ebaebo.util.HttpUtils;
+import com.app.ebaebo.entity.Tongxunlu;
+import com.app.ebaebo.entity.Yuying;
 import com.app.ebaebo.util.InternetURL;
 import com.app.ebaebo.widget.ContentListView;
 import com.google.gson.Gson;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * author: ${zhanghailong}
- * Date: 2014/11/14
- * Time: 8:13
+ * Date: 2014/11/19
+ * Time: 21:49
  * 类的功能、说明写在此处.
  */
-public class YuyingMessageActivity extends BaseActivity implements OnClickContentItemListener, View.OnClickListener,ContentListView.OnRefreshListener, ContentListView.OnLoadListener {
-    private ImageView yuyingback;//返回按钮
-    private YuyingAdapter adapter;
+public class TongxunluActivity extends BaseActivity implements OnClickContentItemListener, View.OnClickListener,ContentListView.OnRefreshListener, ContentListView.OnLoadListener {
+    private ImageView back;//返回按钮
+    private TongxunluAdapter adapter;
     private ContentListView clv;
     private int pageIndex = 1;
     private static boolean IS_REFRESH = true;
-    private List<Yuying> list = new ArrayList<Yuying>();
+    private List<Tongxunlu> list = new ArrayList<Tongxunlu>();
     private RequestQueue mRequestQueue;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.yuyingmessages);
+        setContentView(R.layout.tongxunlu);
         initView();
         setTheme(R.style.index_theme);
-        adapter = new YuyingAdapter(list, this);
+        adapter = new TongxunluAdapter(list, this);
         mRequestQueue = Volley.newRequestQueue(this);
         clv.setAdapter(adapter);
         getData();
         adapter.setOnClickContentItemListener(this);
     }
 
-    private void initView() {
-        yuyingback = (ImageView) this.findViewById(R.id.yuyingback);
-        yuyingback.setOnClickListener(this);
-        clv = (ContentListView) this.findViewById(R.id.lstv);
-        clv.setOnRefreshListener(this);
-        clv.setOnLoadListener(this);
+    @Override
+    public void onClick(View v) {
+            switch (v.getId())
+            {
+                case R.id.back:
+                    finish();
+                    break;
+            }
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId())
-        {
-            case R.id.yuyingback:
-                finish();
-                break;
-        }
+    public void onClickContentItem(int position, int flag, Object object) {
+
     }
 
     private void getData(){
-        String uri = String.format(InternetURL.GET_YUYING_MESSAGE+"?school_id=%s&pageIndex=%d&pageSize=%d",1, pageIndex, 20 );
+        String uri = String.format(InternetURL.GET_TONGXUNLU_URL+"?school_id=%s&uid=%s&class_id=%s","1", "73", "1" );
         StringRequest request = new StringRequest(Request.Method.GET,
                 uri,
                 new Response.Listener<String>() {
@@ -93,7 +77,7 @@ public class YuyingMessageActivity extends BaseActivity implements OnClickConten
                     public void onResponse(String s) {
                         Gson gson = new Gson();
                         try {
-                            YuyingDATA data = gson.fromJson(s, YuyingDATA.class);
+                            TongxunluDATA data = gson.fromJson(s, TongxunluDATA.class);
                             if (IS_REFRESH){
                                 list.clear();
                             }
@@ -136,18 +120,11 @@ public class YuyingMessageActivity extends BaseActivity implements OnClickConten
         pageIndex++;
         getData();
     }
-    Yuying yy = null;
-    @Override
-    public void onClickContentItem(int position, int flag, Object object) {
-        switch (flag)
-        {
-            case 1:
-                yy = list.get(position);
-                Intent detailYY =  new Intent(this, YuYiingDetailActivity.class);
-                detailYY.putExtra("yy", yy );
-                startActivity(detailYY);
-                break;
-        }
+    private void initView() {
+        back = (ImageView) this.findViewById(R.id.back);
+        back.setOnClickListener(this);
+        clv = (ContentListView) this.findViewById(R.id.lstv);
+        clv.setOnRefreshListener(this);
+        clv.setOnLoadListener(this);
     }
-
 }
