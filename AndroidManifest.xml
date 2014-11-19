@@ -45,5 +45,6 @@
         <activity android:name=".ui.ForgetPassTwoActivity"/>
         <activity android:name=".ui.ForgetPassThreeActivity"/>
         <activity android:name=".ui.ForgetPassFourActivity"/>
+        <activity android:name=".ui.CommentActivity"/>
     </application>
 </manifest>

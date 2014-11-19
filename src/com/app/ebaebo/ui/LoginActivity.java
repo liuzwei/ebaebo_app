@@ -19,8 +19,7 @@ import com.app.ebaebo.R;
 import com.app.ebaebo.data.AccountDATA;
 import com.app.ebaebo.data.ErrorDATA;
 import com.app.ebaebo.entity.Account;
-import com.app.ebaebo.util.InternetURL;
-import com.app.ebaebo.util.StringUtil;
+import com.app.ebaebo.util.*;
 import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -104,11 +103,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                                     saveAccount(name, pass, account);
                                     if ("1".equals(account.getIs_student())){//如果是家长登陆，选择身份
                                         Intent setIdentity = new Intent(LoginActivity.this, SelectIdentityActivity.class);
-                                        setIdentity.putExtra("account", account);
+                                        setIdentity.putExtra(Constants.ACCOUNT_KEY, account);
                                         startActivity(setIdentity);
                                     }else {//老师登陆直接跳转到主页面
                                         Intent main = new Intent(LoginActivity.this, MainActivity.class);
                                         startActivity(main);
+                                        save(Constants.IDENTITY, "2");
                                     }
                                 }catch (Exception e){
                                     ErrorDATA errorDATA = gson.fromJson(s, ErrorDATA.class);
@@ -141,11 +141,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void saveAccount(String username, String password, Account account){
-        SharedPreferences.Editor editor = sp.edit();
-        Gson gson = new Gson();
-        editor.putString("username", username);
-        editor.putString("password", password);
-        editor.putString("account", gson.toJson(account));
-        editor.commit();
+        save(Constants.USERNAME_KEY, username);
+        save(Constants.PASSWORD_KEY, password);
+        save(Constants.ACCOUNT_KEY, account);
     }
 }

@@ -21,5 +21,10 @@ public class Constants {
     public static final int FAIL = 0;
     public static final String SEND_SUCCESS = "send_success";
 
+    public static final String IDENTITY = "identity";
+    public static final String ACCOUNT_KEY = "account";
+    public static final String USERNAME_KEY = "username";
+    public static final String PASSWORD_KEY = "password";
+
 
 }

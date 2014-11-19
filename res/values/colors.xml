@@ -26,4 +26,8 @@
     <color name="bq_bg">#000000</color>
     <color name="color_2">#2a4253</color>
     <color name="font_red">#C71585</color>
+
+    <color name="comment_background">#ffc9dfff</color>
+
+    <color name="transparent_background">#80ffffff</color>
 </resources>

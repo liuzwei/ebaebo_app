@@ -78,6 +78,7 @@ public class MainActivity extends BaseActivity implements
 
         mRequestQueue = Volley.newRequestQueue(this);
         adapter = new GrowingAdapter(growingList, mContext);
+        adapter.setOnClickContentItemListener(this);
         listView.setAdapter(adapter);
         getData(ContentListView.REFRESH);
         getBaby();
@@ -192,7 +193,8 @@ public class MainActivity extends BaseActivity implements
 
                 break;
             case 2://评论
-
+                Intent comment = new Intent(MainActivity.this, CommentActivity.class);
+                startActivity(comment);
                 break;
             case 3://分享
 

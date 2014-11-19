@@ -33,7 +33,7 @@ public class SelectIdentityActivity extends BaseActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select_identity_layout);
         initView();
-        Account account = (Account) getIntent().getSerializableExtra("account");
+        Account account = (Account) getIntent().getSerializableExtra(Constants.ACCOUNT_KEY);
         if (account != null){
             imageLoader.displayImage(account.getF_cover(), fatherPhoto, EbaeboApplication.txOptions, animateFirstListener);
             imageLoader.displayImage(account.getM_cover(), motherPhoto, EbaeboApplication.txOptions, animateFirstListener);
@@ -58,10 +58,13 @@ public class SelectIdentityActivity extends BaseActivity implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.father_linear:
+                save(Constants.IDENTITY, "0");
+                break;
             case R.id.mother_linear:
-                Intent intent = new Intent(SelectIdentityActivity.this, MainActivity.class);
-                startActivity(intent);
+                save(Constants.IDENTITY, "1");
                 break;
         }
+        Intent intent = new Intent(SelectIdentityActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 }
