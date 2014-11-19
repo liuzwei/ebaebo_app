@@ -17,4 +17,11 @@ public class InternetURL {
 
     //获得用户下的baby
     public static String GET_BABY_URL = "http://yey.xqb668.com/json.php/growing.api-childrens/";
+
+    //获得验证码
+    public static String GET_YZM_URL = "http://yey.xqb668.com/json.php/user.api-sendCode/";
+    //密码找回（验证验证码）
+    public static String GET_YZM_ISTURE_URL = "http://yey.xqb668.com/json.php/user.api-verifyCode/";
+    //密码找回（修改密码）
+    public static String UPDATE_PASSWORD_URL = "http://yey.xqb668.com/json.php/user.api-changePassword/";
 }

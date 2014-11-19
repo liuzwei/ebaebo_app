@@ -37,6 +37,13 @@
         <activity android:name=".ui.DianmingActivity"/>
         <activity android:name=".ui.PictureActivity"/>
         <activity android:name=".ui.YuYiingDetailActivity"/>
+        <activity android:name=".ui.SettingAboutActivity"/>
+        <activity android:name=".ui.SettingPassword"/>
+        <activity android:name=".ui.SettingEmailActivity"/>
+        <activity android:name=".ui.SettingMobileActivity"/>
         <activity android:name=".ui.SelectIdentityActivity"/>
+        <activity android:name=".ui.ForgetPassTwoActivity"/>
+        <activity android:name=".ui.ForgetPassThreeActivity"/>
+        <activity android:name=".ui.ForgetPassFourActivity"/>
     </application>
 </manifest>

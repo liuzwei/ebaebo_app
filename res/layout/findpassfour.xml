@@ -26,7 +26,7 @@
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="妈妈设置"
+                android:text="找回密码"
                 android:gravity="center_vertical"
                 android:layout_centerHorizontal="true"
                 android:textColor="#ffffff"
@@ -42,39 +42,14 @@
                   android:orientation="vertical"
                   android:padding="10dp"
                   android:id="@+id/linearname">
-        <RelativeLayout android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:padding="10dp"
-                        android:background="@drawable/zhuye_item_select"
-                >
-            <ImageView android:layout_width="80dp"
-                       android:layout_height="80dp"
-                       android:layout_centerHorizontal="true"
-                       android:src="@drawable/head"
-                       android:adjustViewBounds="true"
-                       android:id="@+id/tx"/>
-        </RelativeLayout>
-        <EditText android:layout_width="match_parent"
-                  android:layout_height="50dp"
-                  android:textColor="#333333"
-                  android:textSize="20sp"
-                  android:text="名字：小刚"
-                  android:id="@+id/name"/>
-        <EditText android:layout_width="match_parent"
-                  android:layout_height="50dp"
-                  android:textColor="#333333"
-                  android:textSize="20sp"
-                  android:text="关系：父子"
-                  android:id="@+id/guanxi"/>
+
         <TextView android:layout_width="wrap_content"
-                  android:text="确  定"
+                  android:text="找回密码成功，点此重新登录！"
                   android:id="@+id/set"
                   android:textSize="20dp"
                   android:textStyle="bold"
                   android:textColor="#FFFFFF"
-                  android:layout_marginTop="10dp"
+                  android:layout_marginTop="50dp"
                   android:layout_marginLeft="10dp"
                   android:layout_marginRight="10dp"
                   android:gravity="center_vertical|center_horizontal"

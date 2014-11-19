@@ -25,7 +25,6 @@
         <EditText android:layout_width="match_parent"
                   android:layout_height="match_parent"
                   android:hint="请输入..."
-                  android:password="true"
                   android:id="@+id/mobile"
                   android:gravity="center_vertical"
                   android:background="@drawable/login_dlog_shape"/>

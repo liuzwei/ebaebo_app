@@ -8,39 +8,42 @@ import android.widget.TextView;
 import com.app.ebaebo.R;
 
 /**
- * Created by liuzwei on 2014/11/14.
+ * author: ${zhanghailong}
+ * Date: 2014/11/18
+ * Time: 15:58
+ * 类的功能、说明写在此处.
  */
-public class MumSettingActivity extends BaseActivity implements View.OnClickListener{
-    private ImageView back;//返回
-    private ImageView tx;//头像
-    private EditText name;
-    private EditText guanxi;
+public class SettingMobileActivity extends BaseActivity implements View.OnClickListener{
+    private ImageView back;
+    private EditText mobile;
+    private String mobilenum;
     private TextView set;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.mum_setting);
+        setContentView(R.layout.setmibole);
         initView();
     }
 
-    private void initView(){
-        back = (ImageView) findViewById(R.id.back);
+    private void initView() {
+        back = (ImageView) this.findViewById(R.id.back);
         back.setOnClickListener(this);
-        name = (EditText) this.findViewById(R.id.name);
-        guanxi = (EditText) this.findViewById(R.id.guanxi);
+        mobile = (EditText) this.findViewById(R.id.email);
         set = (TextView) this.findViewById(R.id.set);
         set.setOnClickListener(this);
+
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId())
+        {
             case R.id.back:
                 finish();
                 break;
             case R.id.set:
-                //设置妈妈
+                //设置手机事件
+                mobilenum = mobile.getText().toString();//邮箱
                 break;
         }
     }

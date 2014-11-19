@@ -51,10 +51,12 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.setting_password://设置密码
-
+                Intent pass = new Intent(this, SettingPassword.class);
+                startActivity(pass);
                 break;
             case R.id.setting_phonenumber://我的手机号
-
+                Intent mobile = new Intent(this, SettingMobileActivity.class);
+                startActivity(mobile);
                 break;
             case R.id.setting_baobao://宝宝设置
                 Intent babySet = new Intent(SettingActivity.this, BabySettingActivity.class);
@@ -65,10 +67,12 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 startActivity(mumSet);
                 break;
             case R.id.setting_bound_email://绑定邮箱
-
+                Intent email = new Intent(this, SettingEmailActivity.class);
+                startActivity(email);
                 break;
             case R.id.setting_about://关于
-
+                Intent about = new Intent(this, SettingAboutActivity.class);
+                startActivity(about);
                 break;
             case R.id.setting_back://返回按钮
                 finish();
