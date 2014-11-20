@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.app.ebaebo.EbaeboApplication;
 import com.app.ebaebo.R;
 import com.app.ebaebo.entity.Child;
+import com.app.ebaebo.util.CommonUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
@@ -60,7 +61,7 @@ public class DianmingAdapter extends BaseAdapter {
         Child child = list.get(position);
         imageLoader.displayImage(child.getCover(), holder.photo, EbaeboApplication.txOptions, animateFirstListener);
         holder.name.setText(child.getName());
-        holder.time.setText(child.getDateline()+"");
+        holder.time.setText(CommonUtil.longToString(child.getDateline()));
         return convertView;
     }
 

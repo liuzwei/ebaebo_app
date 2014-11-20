@@ -44,7 +44,7 @@
                   android:text="爱宝宝班2"
                   android:textColor="#000"
                   android:gravity="center|left"
-                  android:textSize="14pt"
+                  android:textSize="20sp"
               android:layout_height="80dp"/>
     </RelativeLayout>
 
@@ -53,8 +53,6 @@
             android:id="@+id/dianming_lstv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:divider="#00000000"
-            android:dividerHeight="10dp"
             android:scrollingCache="false"
             android:fadingEdge="none"/>
     <!-- 主体结束 -->
