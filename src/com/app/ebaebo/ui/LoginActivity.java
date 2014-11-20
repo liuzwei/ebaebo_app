@@ -64,8 +64,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         loginBtn.setOnClickListener(this);
         forgetPass.setOnClickListener(this);
 
-        username.setText(sp.getString("username", ""));
-        password.setText(sp.getString("password", ""));
+        username.setText(getGson().fromJson(sp.getString("username", ""), String.class));
+        password.setText(getGson().fromJson(sp.getString("password", ""), String.class));
     }
 
     @Override

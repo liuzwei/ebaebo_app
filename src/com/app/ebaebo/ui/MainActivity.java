@@ -247,7 +247,8 @@ public class MainActivity extends BaseActivity implements
 
     private void getBaby(){
         String uid = account.getUid();
-        String uri = String.format(InternetURL.GET_BABY_URL +"?uid=%s", uid);
+//        String uri = String.format(InternetURL.GET_BABY_URL +"?uid=%s", uid);
+        String uri = "http://yey.xqb668.com/json.php/growing.api-childrens/?uid=102";
         StringRequest request = new StringRequest(
                 Request.Method.GET,
                 uri,
@@ -256,8 +257,8 @@ public class MainActivity extends BaseActivity implements
                     public void onResponse(String s) {
                         Gson gson = new Gson();
                         try{
-//                            BabyDATA data = gson.fromJson(s, BabyDATA.class);
-//                            babies.addAll(data.getData());
+                            BabyDATA data = gson.fromJson(s, BabyDATA.class);
+                            babies.addAll(data.getData());
                             List<String> names = new ArrayList<String>();
                             for (int i=0; i<babies.size()+1; i++){
                                 if (i==0){

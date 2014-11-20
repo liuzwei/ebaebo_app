@@ -40,7 +40,7 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
         setContentView(R.layout.comment_layout);
         growing = (Growing) getIntent().getSerializableExtra(Constants.GROWING_KEY);
         account =getGson().fromJson(sp.getString(Constants.ACCOUNT_KEY, ""), Account.class) ;
-        identity = sp.getString(Constants.IDENTITY, "");
+        identity = getGson().fromJson(sp.getString(Constants.IDENTITY, ""), String.class);
         initView();
         mRequestQueue = Volley.newRequestQueue(this);
     }
@@ -66,7 +66,7 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
                     Toast.makeText(mContext, "评论内容不能为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                String uri =String.format(InternetURL.GROWING_COMMENT_URL +"?growing_id=%s&uid=%s&user_type=%scontent=%s",growing.getId(), account.getUid(), identity,commentContent);
+                String uri =String.format(InternetURL.GROWING_COMMENT_URL +"?growing_id=%s&uid=%s&user_type=%s&content=%s",growing.getId(), account.getUid(), identity,commentContent);
                 StringRequest request = new StringRequest(
                         Request.Method.GET,
                         uri,
@@ -89,7 +89,9 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
                             }
                         }
                 );
+                mRequestQueue.add(request);
                 break;
         }
+
     }
 }

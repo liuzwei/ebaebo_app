@@ -61,6 +61,6 @@ public class BaseActivity extends Activity {
     //存储sharepreference
     public void save(String key, Object value){
         SharedPreferences.Editor editor = sp.edit();
-        editor.putString(key, gson.toJson(value));
+        editor.putString(key, gson.toJson(value)).commit();
     }
 }
