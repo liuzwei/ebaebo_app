@@ -18,7 +18,7 @@
     <TextView
             android:id="@+id/dianming_name"
             android:textColor="#000"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="15dp"
             android:gravity="center"
             android:text="李如意"
             android:textSize="18sp"
