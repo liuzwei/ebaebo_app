@@ -24,4 +24,17 @@ public class StringUtil {
 //        String strr = str.replaceAll("\\","/");
 //        return "";
 //    }
+    //去掉字符串中的HTML标签方法
+    public static String StripHtml(String content){
+        //<p>段落替换为换行 　
+        content=content.replaceAll("<p.*?>","rn");
+        //<br><br/>替换为换行 　
+        content=content.replaceAll("<brs*/?>","rn");
+        //去掉其它的<>之间的东西 　
+        content=content.replaceAll("<.*?>","");
+        //还原HTML 　
+        //content=HTMLDecoder.decode(content);
+        return content;
+    }
+
 }

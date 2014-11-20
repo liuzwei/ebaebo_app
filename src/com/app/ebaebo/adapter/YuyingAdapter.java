@@ -1,5 +1,7 @@
 package com.app.ebaebo.adapter;
 import android.content.Context;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,8 @@ import com.app.ebaebo.EbaeboApplication;
 import com.app.ebaebo.R;
 import com.app.ebaebo.entity.Pictures;
 import com.app.ebaebo.entity.Yuying;
+import com.app.ebaebo.util.MxgsaTagHandler;
+import com.app.ebaebo.util.StringUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
@@ -71,15 +75,16 @@ public class YuyingAdapter extends BaseAdapter {
 
         final Yuying cell = list.get(position);
         String title  = cell.getTitle();
-        if(cell.getTitle().length() > 25){
-            title = cell.getTitle().substring(0,25);
+        if(cell.getTitle().length() > 15){
+            title = cell.getTitle().substring(0,15);
         }
         holder.title.setText(title) ;
-        String cont = cell.getContent();
-        if(cell.getContent().length() > 40){
-            cont = cell.getContent().substring(0,40);
-        }
-        holder.content.setText(cont);
+        String cont = cell.getSummary();
+        //去除样式
+        cont = StringUtil.StripHtml(cont).replace("rn","").replace("&nbsp;", "");
+        holder.content.setText(Html.fromHtml(cont, null, new MxgsaTagHandler(context)));
+        holder.content.setClickable(true);
+        holder.content.setMovementMethod(LinkMovementMethod.getInstance());
         holder.time.setText(cell.getDateline());
 
         try {

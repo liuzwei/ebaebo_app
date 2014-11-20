@@ -1,6 +1,8 @@
 package com.app.ebaebo.ui;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -8,12 +10,13 @@ import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import com.app.ebaebo.R;
+import com.app.ebaebo.entity.Account;
+import com.app.ebaebo.util.ShellContext;
 
 /**
  * Created by liuzwei on 2014/11/13.
  */
 public class SettingActivity extends BaseActivity implements View.OnClickListener {
-    TextView account;//账号
     LinearLayout setPassword;//修改密码
     LinearLayout myPhone;//我的手机号
     LinearLayout babySet;//宝宝设置
@@ -21,15 +24,19 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     LinearLayout boundEmail;//绑定邮箱
     LinearLayout about;//
     ImageView back;//返回
+    TextView zhanghao;
+    Account account ;
+    TextView setting_exit;//退出当前账号
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.setting);
         initView();
+        account = getGson().fromJson(sp.getString(Constants.ACCOUNT_KEY, ""), Account.class);
+        zhanghao.setText(account.getUser_name());
     }
 
     private void initView(){
-        account = (TextView) findViewById(R.id.setting_account);
         setPassword = (LinearLayout) findViewById(R.id.setting_password);
         myPhone = (LinearLayout) findViewById(R.id.setting_phonenumber);
         babySet = (LinearLayout) findViewById(R.id.setting_baobao);
@@ -37,7 +44,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         boundEmail = (LinearLayout) findViewById(R.id.setting_bound_email);
         about = (LinearLayout) findViewById(R.id.setting_about);
         back = (ImageView) findViewById(R.id.setting_back);
-
+        zhanghao = (TextView) this.findViewById(R.id.zhanghao);
+        setting_exit = (TextView) this.findViewById(R.id.setting_exit);
+        setting_exit.setOnClickListener(this);
         setPassword.setOnClickListener(this);
         myPhone.setOnClickListener(this);
         babySet.setOnClickListener(this);
@@ -76,6 +85,11 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.setting_back://返回按钮
                 finish();
+                break;
+            case R.id.setting_exit:
+                ShellContext.clear();
+                Intent main = new Intent(SettingActivity.this, LoginActivity.class);
+                startActivity(main);
                 break;
         }
     }

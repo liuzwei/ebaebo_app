@@ -3,7 +3,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              android:background="#ebebeb"
+              android:background="#f7f7f7"
         >
 
     <!-- head开始 -->
@@ -16,7 +16,7 @@
             android:layout_marginBottom="5dp"
             >
         <ImageView
-                android:id="@+id/yydetailback"
+                android:id="@+id/back"
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
                 android:src="@drawable/forgetpassback"
@@ -26,7 +26,7 @@
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="育英详细信息"
+                android:text="绑定邮箱"
                 android:gravity="center_vertical"
                 android:layout_centerHorizontal="true"
                 android:textColor="#ffffff"
@@ -36,20 +36,35 @@
     </RelativeLayout>
     <!-- head结束 -->
     <!-- 主体 -->
-    <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            >
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:padding="10dp"
+                  android:id="@+id/linearname">
+
+        <EditText android:layout_width="match_parent"
+                  android:layout_height="50dp"
+                  android:textColor="#333333"
+                  android:textSize="20sp"
+                  android:hint="验证码"
+                  android:id="@+id/yzm"/>
         <TextView android:layout_width="wrap_content"
-                  android:text="育婴信息"
-                  android:id="@+id/content"
-                  android:textColor="#000000"
+                  android:text="确  定"
+                  android:id="@+id/set"
                   android:textSize="20dp"
+                  android:textStyle="bold"
+                  android:textColor="#FFFFFF"
+                  android:layout_marginTop="10dp"
                   android:layout_marginLeft="10dp"
                   android:layout_marginRight="10dp"
-                  android:layout_height="wrap_content"/>
-    </RelativeLayout>
+                  android:gravity="center_vertical|center_horizontal"
+                  android:background="@drawable/loginbtn_background"
+                  android:layout_height="50dp"/>
+
+    </LinearLayout>
+
+
     <!-- 主体结束 -->
 
 </LinearLayout>

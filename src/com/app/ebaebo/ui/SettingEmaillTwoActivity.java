@@ -24,37 +24,37 @@ import com.google.gson.Gson;
 /**
  * author: ${zhanghailong}
  * Date: 2014/11/18
- * Time: 15:58
+ * Time: 22:53
  * 类的功能、说明写在此处.
  */
-public class SettingEmailActivity extends BaseActivity implements View.OnClickListener{
-    private ImageView back;
-    private EditText email;
-    private String emailText;
-    private TextView set;
-    Account account ;
+public class SettingEmaillTwoActivity extends BaseActivity implements View.OnClickListener {
+    private String number;
+    private ImageView back;//返回
+    private EditText yzm ;//验证码
+    private TextView set;//设置按钮
+    private String yzmnumber;
     private RequestQueue mRequestQueue;
+    String uid;
+    Account account ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.setemail);
+        setContentView(R.layout.settingemailtwo);
+        number = getIntent().getExtras().getString("number");
         initView();
         account = getGson().fromJson(sp.getString(Constants.ACCOUNT_KEY, ""), Account.class);
-        if(account != null){
-            if(account.getEmail()!=null && !"".equals(account.getEmail()) && !" ".equals(account.getEmail()) ){
-                email.setText(account.getEmail());
-            }
+        if(account!=null){
+            uid = account.getUid();
         }
-        mRequestQueue = Volley.newRequestQueue(this);
     }
 
     private void initView() {
         back = (ImageView) this.findViewById(R.id.back);
         back.setOnClickListener(this);
-        email = (EditText) this.findViewById(R.id.email);
-        set = (TextView) this.findViewById(R.id.set);
+        set = (TextView) this.findViewById( R.id.set);
         set.setOnClickListener(this);
-
+        yzm = (EditText) this.findViewById(R.id.yzm);
+        mRequestQueue = Volley.newRequestQueue(this);
     }
 
     @Override
@@ -65,22 +65,27 @@ public class SettingEmailActivity extends BaseActivity implements View.OnClickLi
                 finish();
                 break;
             case R.id.set:
-                //设置邮箱事件
-                emailText = email.getText().toString();//邮箱
-                if(StringUtil.isNullOrEmpty(emailText)){
-                    Toast.makeText(this, "请输入邮箱！", Toast.LENGTH_SHORT).show();
+                if(account == null){
+                    Toast.makeText(this, "请先登录！", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(StringUtil.isEmail(emailText)){
-                    Toast.makeText(this, "邮箱格式不正确！", Toast.LENGTH_SHORT).show();
+                yzmnumber =  yzm.getText().toString();
+                if(StringUtil.isNullOrEmpty(yzmnumber)){
+                    Toast.makeText(this, "请输入验证码！", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                getYzm(emailText);
+                if(yzmnumber.length() != 4){
+                    Toast.makeText(this, "验证码格式不正确！", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                getdata(number ,yzmnumber);
                 break;
+
         }
     }
-    private void getYzm(final String mobileNum) {
-        String uri = String.format(InternetURL.GET_YZM_URL+"?mobile=%s&type=%d",mobileNum, 1);
+
+    private void getdata(final String number, String yzmnumber) {
+        String uri = String.format(InternetURL.BANGDING_EMAIL_URL+"?email=%s&code=%s&uid=%s",number, yzmnumber, uid);
         StringRequest request = new StringRequest(Request.Method.GET,
                 uri,
                 new Response.Listener<String>() {
@@ -91,16 +96,18 @@ public class SettingEmailActivity extends BaseActivity implements View.OnClickLi
                             SuccessDATA data = gson.fromJson(s, SuccessDATA.class);
                             if (data.getCode() == 200){
                                 //成功
-                                Intent success = new Intent(SettingEmailActivity.this, SettingEmaillTwoActivity.class);
-                                success.putExtra("number", emailText);
+                                Toast.makeText(SettingEmaillTwoActivity.this, "绑定邮箱成功！", Toast.LENGTH_SHORT).show();
+                                //更新account
+                                //TODO
+                                Intent success = new Intent(SettingEmaillTwoActivity.this, SettingActivity.class);
                                 startActivity(success);
                             }else{
-                                Toast.makeText(SettingEmailActivity.this, "获取验证码失败！", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SettingEmaillTwoActivity.this, "绑定邮箱失败，请检查验证码是否正确！", Toast.LENGTH_SHORT).show();
                             }
                         }catch (Exception e){
                             ErrorDATA errorDATA = gson.fromJson(s, ErrorDATA.class);
                             if (errorDATA.getMsg().equals("failed")){
-                                Toast.makeText(SettingEmailActivity.this, "网络错误", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SettingEmaillTwoActivity.this, "网络错误", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
@@ -111,5 +118,10 @@ public class SettingEmailActivity extends BaseActivity implements View.OnClickLi
             }
         });
         mRequestQueue.add(request);
+    }
+    private void saveAccount(String username, String password, Account account){
+        save(Constants.USERNAME_KEY, username);
+        save(Constants.PASSWORD_KEY, password);
+        save(Constants.ACCOUNT_KEY, account);
     }
 }
