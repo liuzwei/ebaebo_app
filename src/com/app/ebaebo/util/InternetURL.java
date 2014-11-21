@@ -39,4 +39,7 @@ public class InternetURL {
     public static String DIANMING_URL = "http://yey.xqb668.com/index/ServiceJson/dianmingChilds";
     //绑定邮箱
     public static String BANGDING_EMAIL_URL="http://yey.xqb668.com/json.php/user.api-emailSetting";
+
+    //交互信息首页活动信息列表
+    public static String JIAOHU_MESSAGE_LIST = "http://yey.xqb668.com/index/ServiceJson/MessageList";
 }

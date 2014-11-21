@@ -41,11 +41,10 @@
             android:layout_weight="1"
             >
         <ListView
-                android:id="@+id/lstv"
+                android:id="@+id/jiaohu_lstv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:divider="#00000000"
-                android:dividerHeight="10dp"
+                android:divider="@drawable/line"
                 android:scrollingCache="false"
                 android:fadingEdge="none"/>
 
