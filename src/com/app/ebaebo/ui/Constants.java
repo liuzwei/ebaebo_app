@@ -27,6 +27,8 @@ public class Constants {
     public static final String USERNAME_KEY = "username";
     public static final String PASSWORD_KEY = "password";
 
+    public static final String ACCOUNT_MESSAGE = "account_message";
+
     public static final String API_HEAD = "http://yey.xqb668.com";
 
 }

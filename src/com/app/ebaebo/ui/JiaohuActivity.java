@@ -1,7 +1,9 @@
 package com.app.ebaebo.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -17,6 +19,7 @@ import com.app.ebaebo.entity.AccountMessage;
 import com.app.ebaebo.util.CommonUtil;
 import com.app.ebaebo.util.InternetURL;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +41,14 @@ public class JiaohuActivity extends BaseActivity implements View.OnClickListener
         initView();
         adapter = new JiaohuAdapter(list, mContext);
         listView.setAdapter(adapter);
-
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent chat = new Intent(JiaohuActivity.this, ChatActivity.class);
+                chat.putExtra(Constants.ACCOUNT_MESSAGE, list.get(position));
+                startActivity(chat);
+            }
+        });
         getData();
     }
 

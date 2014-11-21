@@ -48,5 +48,6 @@
         <activity android:name=".ui.TongxunluActivity"/>
         <activity android:name=".ui.CommentActivity"/>
         <activity android:name=".ui.SettingEmaillTwoActivity"/>
+        <activity android:name=".ui.ChatActivity"/>
     </application>
 </manifest>

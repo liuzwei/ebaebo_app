@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import com.app.ebaebo.entity.Message;
+import com.app.ebaebo.entity.NotifMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public class DBManager {
         db = helper.getWritableDatabase();
     }
 
-    public void add(Message message){
+    public void add(NotifMessage message){
         db.beginTransaction();  //开始事务
         try {
             db.execSQL("INSERT INTO lx_message VALUES(null, ?, ?, ?, ?)", new Object[]{message.getTitle(), message.getContent(), message.getCustom(), message.getTime()});
@@ -36,11 +37,11 @@ public class DBManager {
         db.delete("lx_message", "id=?", new String[]{String.valueOf(message.getId())});
     }
 
-    public List<Message> query() {
-        ArrayList<Message> messages = new ArrayList<Message>();
+    public List<NotifMessage> query() {
+        ArrayList<NotifMessage> messages = new ArrayList<NotifMessage>();
         Cursor c = queryTheCursor();
         while (c.moveToNext()) {
-            Message message = new Message();
+            NotifMessage message = new NotifMessage();
             message.setId(c.getInt(c.getColumnIndex("id")));
             message.setTitle(c.getString(c.getColumnIndex("title")));
             message.setContent(c.getString(c.getColumnIndex("content")));

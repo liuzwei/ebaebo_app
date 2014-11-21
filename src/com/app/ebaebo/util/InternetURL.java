@@ -42,4 +42,6 @@ public class InternetURL {
 
     //交互信息首页活动信息列表
     public static String JIAOHU_MESSAGE_LIST = "http://yey.xqb668.com/index/ServiceJson/MessageList";
+
+    public static String MESSAGE_DETAIL_LIST = "http://yey.xqb668.com/index/ServiceJson/MessageDetailList";
 }

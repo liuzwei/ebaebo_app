@@ -12,6 +12,7 @@ import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 import com.app.ebaebo.db.DBManager;
 import com.app.ebaebo.entity.Message;
+import com.app.ebaebo.entity.NotifMessage;
 import com.app.ebaebo.ui.Constants;
 import com.app.ebaebo.ui.NotificationActivity;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -90,7 +91,7 @@ public class EbaeboApplication extends Application {
             public Notification getNotification(Context context, UMessage msg) {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 String time = sdf.format(new Date());
-                Message message = new Message(msg.title, msg.text, msg.custom, time);
+                NotifMessage message = new NotifMessage(msg.title, msg.text, msg.custom, time);
                 switch (msg.builder_id) {
                     case 1:
                         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
@@ -127,7 +128,7 @@ public class EbaeboApplication extends Application {
 
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 String time = sdf.format(new Date());
-                Message message = new Message(msg.title, msg.text, msg.custom, time);
+                NotifMessage message = new NotifMessage(msg.title, msg.text, msg.custom, time);
 
                 Bundle mBundle = new Bundle();
                 mBundle.putSerializable(Constants.UMENG_MESSAGE, message);

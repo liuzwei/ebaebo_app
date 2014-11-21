@@ -6,12 +6,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.app.ebaebo.R;
 import com.app.ebaebo.entity.Message;
+import com.app.ebaebo.entity.NotifMessage;
 
 /**
  * Created by apple on 14-9-15.
  */
 public class NotificationActivity extends BaseActivity implements View.OnClickListener{
-    private Message message;
+    private NotifMessage message;
 
     private ImageView notiyBack;//退出按钮
     private TextView notiyTitle;//标题
@@ -22,7 +23,7 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notification_layout);
-        message = (Message) getIntent().getSerializableExtra(Constants.UMENG_MESSAGE);
+        message = (NotifMessage) getIntent().getSerializableExtra(Constants.UMENG_MESSAGE);
 
         initView();
         initData();

@@ -1,11 +1,13 @@
 package com.app.ebaebo.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by liuzwei on 2014/11/21.
  *
  * 交互信息首页返回的消息对象
  */
-public class AccountMessage {
+public class AccountMessage implements Serializable{
     private String uid;
     private String cover;
     private String name;
