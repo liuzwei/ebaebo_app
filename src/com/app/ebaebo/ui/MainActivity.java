@@ -247,8 +247,8 @@ public class MainActivity extends BaseActivity implements
 
     private void getBaby(){
         String uid = account.getUid();
-//        String uri = String.format(InternetURL.GET_BABY_URL +"?uid=%s", uid);
-        String uri = "http://yey.xqb668.com/json.php/growing.api-childrens/?uid=102";
+        String uri = String.format(InternetURL.GET_BABY_URL +"?uid=%s", uid);
+//        String uri = "http://yey.xqb668.com/json.php/growing.api-childrens/?uid=102";
         StringRequest request = new StringRequest(
                 Request.Method.GET,
                 uri,
@@ -270,9 +270,21 @@ public class MainActivity extends BaseActivity implements
                             spinnerAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, names);
                             spinnerAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
                             growingManager.setAdapter(spinnerAdapter);
-                            growingManager.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            growingManager.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
-                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    if (position == 0) {
+                                        child_id = 0;
+                                    } else{
+                                        Baby baby = babies.get(position-1);
+                                        child_id = Integer.parseInt(baby.getId());
+                                    }
+                                    getData(ContentListView.REFRESH);
+
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> parent) {
 
                                 }
                             });
