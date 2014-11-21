@@ -36,6 +36,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
         <ImageView
+                android:src="@drawable/txhc"
                 android:id="@+id/identity_father"
                 android:layout_width="80dp"
                 android:layout_height="80dp"/>
@@ -57,6 +58,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
         <ImageView
+                android:src="@drawable/txhc"
                 android:id="@+id/identity_mother"
                 android:layout_width="80dp"
                 android:layout_height="80dp"/>

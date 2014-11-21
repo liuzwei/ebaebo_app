@@ -10,6 +10,7 @@ import com.app.ebaebo.EbaeboApplication;
 import com.app.ebaebo.R;
 import com.app.ebaebo.adapter.AnimateFirstDisplayListener;
 import com.app.ebaebo.entity.Account;
+import com.app.ebaebo.util.RoundImagePhoto;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
@@ -25,6 +26,7 @@ public class SelectIdentityActivity extends BaseActivity implements View.OnClick
     private TextView fatherName;
     private TextView motherName;
 
+    private RoundImagePhoto roundImagePhoto;
     ImageLoader imageLoader = ImageLoader.getInstance();//图片加载类
     private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
 
@@ -34,12 +36,17 @@ public class SelectIdentityActivity extends BaseActivity implements View.OnClick
         setContentView(R.layout.select_identity_layout);
         initView();
         Account account = (Account) getIntent().getSerializableExtra(Constants.ACCOUNT_KEY);
+        roundImagePhoto = new RoundImagePhoto(this);
         if (account != null){
-            imageLoader.displayImage(account.getF_cover(), fatherPhoto, EbaeboApplication.txOptions, animateFirstListener);
-            imageLoader.displayImage(account.getM_cover(), motherPhoto, EbaeboApplication.txOptions, animateFirstListener);
+            roundImagePhoto.readBitmapViaVolley(account.getF_cover(), fatherPhoto);
+            roundImagePhoto.readBitmapViaVolley(account.getM_cover(), motherPhoto);
+//            imageLoader.displayImage(account.getF_cover(), fatherPhoto, EbaeboApplication.txOptions, animateFirstListener);
+//            imageLoader.displayImage(account.getM_cover(), motherPhoto, EbaeboApplication.txOptions, animateFirstListener);
             fatherName.setText(account.getF_name());
             motherName.setText(account.getM_name());
         }
+
+
     }
 
     private void initView(){
