@@ -80,7 +80,7 @@ public class JiaohuActivity extends BaseActivity implements View.OnClickListener
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-
+                        Toast.makeText(mContext, "服务器异常，请稍后重试", Toast.LENGTH_SHORT).show();
                     }
                 }
         );
