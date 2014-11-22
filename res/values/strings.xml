@@ -10,4 +10,5 @@
 
     <string name="login_progress_dialog">登录中</string>
     <string name="error1">无数据</string>
+
 </resources>

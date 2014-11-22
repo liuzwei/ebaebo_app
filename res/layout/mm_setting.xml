@@ -31,7 +31,7 @@
                 android:layout_centerHorizontal="true"
                 android:textColor="#ffffff"
                 android:textSize="18sp"
-                android:id="@+id/title"
+                android:id="@+id/mum_setting_title"
                 />
     </RelativeLayout>
     <!-- head结束 -->
@@ -54,30 +54,30 @@
                        android:layout_centerHorizontal="true"
                        android:src="@drawable/head"
                        android:adjustViewBounds="true"
-                       android:id="@+id/tx"/>
+                       android:id="@+id/mum_setting_tx"/>
         </RelativeLayout>
         <EditText android:layout_width="match_parent"
                   android:layout_height="50dp"
                   android:textColor="#333333"
                   android:textSize="20sp"
-                  android:hint="账号"
-                  android:id="@+id/zhanghao"/>
-        <EditText android:layout_width="match_parent"
-                  android:layout_height="50dp"
-                  android:textColor="#333333"
-                  android:textSize="20sp"
-                  android:hint="绑定手机"
-                  android:id="@+id/mobile"/>
-        <EditText android:layout_width="match_parent"
-                  android:layout_height="50dp"
-                  android:textColor="#333333"
-                  android:textSize="20sp"
-                  android:hint="密码"
-                  android:password="true"
-                  android:id="@+id/password"/>
+                  android:hint="姓名"
+                  android:id="@+id/mum_setting_name"/>
+        <!--<EditText android:layout_width="match_parent"-->
+                  <!--android:layout_height="50dp"-->
+                  <!--android:textColor="#333333"-->
+                  <!--android:textSize="20sp"-->
+                  <!--android:hint="绑定手机"-->
+                  <!--android:id="@+id/mobile"/>-->
+        <!--<EditText android:layout_width="match_parent"-->
+                  <!--android:layout_height="50dp"-->
+                  <!--android:textColor="#333333"-->
+                  <!--android:textSize="20sp"-->
+                  <!--android:hint="密码"-->
+                  <!--android:password="true"-->
+                  <!--android:id="@+id/password"/>-->
         <TextView android:layout_width="wrap_content"
                   android:text="确  定"
-                  android:id="@+id/set"
+                  android:id="@+id/mum_setting_sure"
                   android:textSize="20dp"
                   android:textStyle="bold"
                   android:textColor="#FFFFFF"
