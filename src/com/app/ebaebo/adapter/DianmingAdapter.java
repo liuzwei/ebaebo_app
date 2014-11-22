@@ -61,7 +61,7 @@ public class DianmingAdapter extends BaseAdapter {
         Child child = list.get(position);
         imageLoader.displayImage(child.getCover(), holder.photo, EbaeboApplication.txOptions, animateFirstListener);
         holder.name.setText(child.getName());
-        holder.time.setText(CommonUtil.longToString(child.getDateline()));
+        holder.time.setText(child.getDateline());
         return convertView;
     }
 

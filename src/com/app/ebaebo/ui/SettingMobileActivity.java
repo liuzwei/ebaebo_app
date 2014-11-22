@@ -28,7 +28,7 @@ public class SettingMobileActivity extends BaseActivity implements View.OnClickL
     private void initView() {
         back = (ImageView) this.findViewById(R.id.back);
         back.setOnClickListener(this);
-        mobile = (EditText) this.findViewById(R.id.email);
+        mobile = (EditText) this.findViewById(R.id.mobile);
         set = (TextView) this.findViewById(R.id.set);
         set.setOnClickListener(this);
 

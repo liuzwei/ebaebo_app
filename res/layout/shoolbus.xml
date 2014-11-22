@@ -40,34 +40,22 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             >
-        <ListView
-                android:id="@+id/lstv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="#00000000"
-                android:dividerHeight="10dp"
-                android:scrollingCache="false"
-                android:fadingEdge="none"/>
-
-        <LinearLayout
-                android:id="@+id/ll_main_progress"
+        <com.baidu.mapapi.map.MapView
+                android:id="@+id/bmapView"
                 android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:clickable="true" />
+
+
+        <Button
+                android:id="@+id/request"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:visibility="gone"
-                android:layout_alignParentBottom="true"
-                >
-
-            <ProgressBar
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="正在加载....." />
-        </LinearLayout>
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="25dp"
+                android:layout_marginTop="10dip"
+                android:background="@drawable/custom_loc"  />
 
     </RelativeLayout>
     <!-- 主体结束 -->

@@ -9,7 +9,7 @@ public class Child {
     private String name;
     private boolean is_come;
     private String class_name;
-    private int dateline;
+    private String dateline;
 
     public String getChild_id() {
         return child_id;
@@ -51,11 +51,11 @@ public class Child {
         this.class_name = class_name;
     }
 
-    public int getDateline() {
+    public String getDateline() {
         return dateline;
     }
 
-    public void setDateline(int dateline) {
+    public void setDateline(String dateline) {
         this.dateline = dateline;
     }
 }
