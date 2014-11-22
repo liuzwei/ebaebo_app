@@ -44,4 +44,10 @@ public class InternetURL {
     public static String JIAOHU_MESSAGE_LIST = "http://yey.xqb668.com/index/ServiceJson/MessageList";
 
     public static String MESSAGE_DETAIL_LIST = "http://yey.xqb668.com/index/ServiceJson/MessageDetailList";
+
+    //多媒体文件上传接口
+    public static String UPLOAD_FILE = "http://yey.xqb668.com/json.php/user.api-uploadfile/";
+
+    //爸爸妈妈设置
+    public static String FATHER_MOTHER_SETTING = "http://yey.xqb668.com/json.php/user.api-fatherOrMotherSetting";
 }

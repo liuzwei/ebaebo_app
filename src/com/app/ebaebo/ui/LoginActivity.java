@@ -73,7 +73,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         switch (v.getId()){
             case R.id.login_btn://登陆按钮
                 progressDialog = new ProgressDialog(LoginActivity.this);
-                progressDialog.setTitle(R.string.login_progress_dialog);
+                progressDialog.setMessage("登录中...");
                 progressDialog.show();
                 final String name = username.getText().toString();
                 final String pass = password.getText().toString();
@@ -124,7 +124,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
                             }
                 });
-
                 mRequestQueue.add(request);
                 break;
             case R.id.login_forgetpass://忘记密码

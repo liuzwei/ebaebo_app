@@ -27,6 +27,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     TextView zhanghao;
     Account account ;
     TextView setting_exit;//退出当前账号
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
