@@ -60,5 +60,6 @@
                 android:process=":remote" >
         </service>
 
+        <activity android:name=".ui.PublishImageActivity"/>
     </application>
 </manifest>
