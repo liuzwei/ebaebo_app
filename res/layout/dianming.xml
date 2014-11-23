@@ -38,14 +38,14 @@
     <RelativeLayout
             android:background="@drawable/dianming_background"
             android:layout_width="match_parent"
-            android:layout_height="80dp">
+            android:layout_height="50dp">
         <TextView android:layout_width="match_parent"
                   android:id="@+id/dianming_classname"
-                  android:text="爱宝宝班2"
+                  android:text="爱宝宝"
                   android:textColor="#000"
                   android:gravity="center|left"
                   android:textSize="20sp"
-              android:layout_height="80dp"/>
+              android:layout_height="fill_parent"/>
     </RelativeLayout>
 
     <!-- 主体 -->

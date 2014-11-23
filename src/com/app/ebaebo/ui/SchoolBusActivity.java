@@ -64,7 +64,7 @@ public class SchoolBusActivity extends BaseActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBMapManager = new BMapManager(this);
-        mBMapManager.init("87DDC64449E5E1DC2AE735D9A28EA1311C15B2B1", new MKGeneralListenerImpl());
+        mBMapManager.init("RIvp33GcGSGSwwntWPGXMxBs", new MKGeneralListenerImpl());
 //        setContentView(R.layout.map_main);
         setContentView(R.layout.shoolbus);
         initView();
@@ -260,7 +260,6 @@ public class SchoolBusActivity extends BaseActivity implements View.OnClickListe
      */
     public void requestLocation() {
         isRequest = true;
-
         if(mLocClient != null && mLocClient.isStarted()){
             showToast("正在定位......");
             mLocClient.requestLocation();
