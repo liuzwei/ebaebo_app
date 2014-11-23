@@ -16,10 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import com.android.volley.*;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.ebaebo.EbaeboApplication;
@@ -136,7 +133,18 @@ public class MumSettingActivity extends BaseActivity implements View.OnClickList
                             mErrorListener,
                             null);
                 }else {
-                    setting(null);
+                    if (identity.equals("0")){
+                        pics = account.getF_cover();
+                        Log.i("爸爸头像============", account.getF_cover());
+                    }else {
+                        pics = account.getM_cover();
+                        Log.i("妈妈头像=============", account.getM_cover());
+                    }
+                    if (StringUtil.isNullOrEmpty(pics)){
+                        Toast.makeText(mContext, "请设置头像", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    setting(pics);
                 }
                 break;
             case R.id.mum_setting_tx:
@@ -168,23 +176,25 @@ public class MumSettingActivity extends BaseActivity implements View.OnClickList
         }
     };
 
-    private void setting(String cover){
+    private void setting(final String cover){
 
-        String type = getGson().fromJson(sp.getString(Constants.IDENTITY, ""), String.class);
-        String uri = String.format(InternetURL.FATHER_MOTHER_SETTING + "?uid=%s&type=%s&name=%s&cover=%s",account.getUid(), type, nickName, cover);
+        final String type = getGson().fromJson(sp.getString(Constants.IDENTITY, ""), String.class);
+//        String uri = String.format(InternetURL.FATHER_MOTHER_SETTING + "?uid=%s&type=%s&name=%s&cover=%s",account.getUid(), type,  nickName, cover);
         StringRequest request = new StringRequest(
-                Request.Method.GET,
-                uri,
+                Request.Method.POST,
+                InternetURL.FATHER_MOTHER_SETTING,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
+                        System.out.print("++++++++++++++++++++++++++++++++++++++++"+s);
+                        Log.i("++++++++++++", s);
                         if (CommonUtil.isJson(s)) {
                             ErrorDATA errorDATA = getGson().fromJson(s, ErrorDATA.class);
                             if (errorDATA.getCode() == 200){
-                                resetAccount(name.getText().toString(), pics);
+                                resetAccount(name.getText().toString(), cover);
                                 Toast.makeText(mContext, "设置成功", Toast.LENGTH_SHORT).show();
                             }else {
-                                Toast.makeText(mContext, "设置失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mContext, "设置失败，请稍后重试1", Toast.LENGTH_SHORT).show();
                             }
                         }else {
                             Toast.makeText(mContext, "设置失败，请稍后重试", Toast.LENGTH_SHORT).show();
@@ -197,7 +207,24 @@ public class MumSettingActivity extends BaseActivity implements View.OnClickList
                         Toast.makeText(mContext, "设置失败，请稍后重试", Toast.LENGTH_SHORT).show();
                     }
                 }
-        );
+        ){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("uid", account.getUid());
+                params.put("type", type);
+                params.put("name", nickName);
+                params.put("cover",cover);
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("Content-Type","application/x-www-form-urlencoded");
+                return params;
+            }
+        };
         mSingleQueue.add(request);
     }
 

@@ -23,7 +23,6 @@ import com.app.ebaebo.data.GrowingDATA;
 import com.app.ebaebo.entity.Account;
 import com.app.ebaebo.entity.Baby;
 import com.app.ebaebo.entity.Growing;
-import com.app.ebaebo.entity.Tongxunlu;
 import com.app.ebaebo.util.InternetURL;
 import com.app.ebaebo.widget.ContentListView;
 import com.google.gson.Gson;
