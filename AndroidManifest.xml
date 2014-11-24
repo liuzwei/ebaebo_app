@@ -61,5 +61,6 @@
         </service>
 
         <activity android:name=".ui.PublishImageActivity"/>
+        <activity android:name=".ui.PublishPhotoActivity"/>
     </application>
 </manifest>

@@ -210,7 +210,8 @@ public class MainActivity extends BaseActivity implements
                 startActivity(textIntent);
                 break;
             case R.id.foot_photo://拍照
-
+                Intent takePhoto = new Intent(MainActivity.this, PublishPhotoActivity.class);
+                startActivity(takePhoto);
                 break;
             case R.id.foot_video://摄像
 

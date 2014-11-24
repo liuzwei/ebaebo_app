@@ -134,7 +134,7 @@ public class MumSettingActivity extends BaseActivity implements View.OnClickList
                             null);
                 }else {
                     if (identity.equals("0")){
-                        pics = account.getF_cover();
+                        pics = account.getF_cover().replaceAll(Constants.API_HEAD, "");
                         Log.i("爸爸头像============", account.getF_cover());
                     }else {
                         pics = account.getM_cover();
@@ -232,11 +232,11 @@ public class MumSettingActivity extends BaseActivity implements View.OnClickList
         if (!StringUtil.isNullOrEmpty(identity)) {
             switch (Integer.parseInt(identity)) {
                 case 0://爸爸
-                    account.setF_cover(cover);
+                    account.setF_cover(Constants.API_HEAD+cover);
                     account.setF_name(name);
                     break;
                 case 1://妈妈
-                    account.setM_cover(cover);
+                    account.setM_cover(Constants.API_HEAD+cover);
                     account.setM_name(name);
                     break;
             }
