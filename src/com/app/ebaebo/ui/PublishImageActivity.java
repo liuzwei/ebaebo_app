@@ -1,17 +1,21 @@
 package com.app.ebaebo.ui;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.app.ebaebo.R;
 import com.app.ebaebo.data.BabyDATA;
+import com.app.ebaebo.data.ErrorDATA;
 import com.app.ebaebo.entity.Account;
 import com.app.ebaebo.entity.Baby;
 import com.app.ebaebo.util.InternetURL;
+import com.app.ebaebo.util.StringUtil;
 import com.app.ebaebo.widget.ContentListView;
 import com.google.gson.Gson;
 
@@ -31,6 +35,7 @@ public class PublishImageActivity extends BaseActivity implements View.OnClickLi
     private GridView gridView;
     private ArrayAdapter<String> spinnerAdapter;
 
+    private String babyId;//要发布的宝宝ID
     private Account account;
     private int res[] = new int[]{R.drawable.abaose};
     private List<Baby> babies = new ArrayList<Baby>();//下拉列表宝宝
@@ -48,8 +53,8 @@ public class PublishImageActivity extends BaseActivity implements View.OnClickLi
             map.put("imageView",res[i]);
             data.add(map);
         }
-        SimpleAdapter simpleAdapter = new SimpleAdapter(this, data, R.layout.image_cell_layout , new String[]{"imageView"}, new int[]{R.id.imageView1});
-        gridView.setAdapter(simpleAdapter);
+//        SimpleAdapter simpleAdapter = new SimpleAdapter(this, data, R.layout.image_cell_layout , new String[]{"imageView"}, new int[]{R.id.imageView1});
+//        gridView.setAdapter(simpleAdapter);
     }
 
     private void initView(){
@@ -72,13 +77,12 @@ public class PublishImageActivity extends BaseActivity implements View.OnClickLi
                 finish();
                 break;
             case R.id.publish_image_run://发布按钮
-
+                push();
                 break;
         }
     }
 
     private void  getBabyList(){
-
         String uri = String.format(InternetURL.GET_BABY_URL +"?uid=%s", account.getUid());
 //        String uri = "http://yey.xqb668.com/json.php/growing.api-childrens/?uid=102";
         StringRequest request = new StringRequest(
@@ -102,6 +106,7 @@ public class PublishImageActivity extends BaseActivity implements View.OnClickLi
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     Baby baby = babies.get(position);
+                                    babyId = baby.getId();
                                 }
 
                                 @Override
@@ -125,6 +130,60 @@ public class PublishImageActivity extends BaseActivity implements View.OnClickLi
                     }
                 }
         );
+        getRequestQueue().add(request);
+    }
+
+    private void push(){
+        final String pushContent = content.getText().toString();
+        if (StringUtil.isNullOrEmpty(pushContent)){
+            Toast.makeText(mContext, "文字不能为空", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (StringUtil.isNullOrEmpty(babyId)){
+            Toast.makeText(mContext, "请选择宝宝", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        final String identity = getGson().fromJson(sp.getString(Constants.IDENTITY, ""), String.class);
+
+        StringRequest request = new StringRequest(
+                Request.Method.POST,
+                InternetURL.GROWING_PUSH,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        ErrorDATA data = getGson().fromJson(s, ErrorDATA.class);
+                        if (data.getCode() == 200){
+                            Toast.makeText(mContext, "发布成功", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+
+                    }
+                }
+        ){
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("content",pushContent);
+                params.put("uid",account.getUid());
+                params.put("user_type", identity);
+                params.put("type","0");
+                params.put("child_id", babyId);
+
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("Content-Type","application/x-www-form-urlencoded");
+                return params;
+            }
+        };
         getRequestQueue().add(request);
     }
 }

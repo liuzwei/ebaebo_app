@@ -35,6 +35,9 @@ public class InternetURL {
     //成长记录评论
     public static String GROWING_COMMENT_URL = "http://yey.xqb668.com/index/ServiceJson/tocomment";
 
+    //成长记录发布
+    public static String GROWING_PUSH = "http://yey.xqb668.com/index/ServiceJson/growingpush";
+
     //获得点名宝宝列表
     public static String DIANMING_URL = "http://yey.xqb668.com/index/ServiceJson/dianmingChilds";
     //绑定邮箱

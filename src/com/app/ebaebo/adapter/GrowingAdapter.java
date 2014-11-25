@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.app.ebaebo.EbaeboApplication;
 import com.app.ebaebo.R;
 import com.app.ebaebo.entity.Growing;
+import com.app.ebaebo.util.StringUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
@@ -75,7 +76,12 @@ public class GrowingAdapter extends BaseAdapter {
         viewHolder.publisher.setText(growing.getPublisher());
         viewHolder.time.setText(growing.getTime());
         imageLoader.displayImage(growing.getUrl(), viewHolder.photo, EbaeboApplication.txOptions, animateFirstListener);
-        imageLoader.displayImage(growing.getUrl(), viewHolder.picture, EbaeboApplication.txOptions, animateFirstListener);
+        if (!StringUtil.isNullOrEmpty(growing.getUrl())) {
+            viewHolder.picture.setVisibility(View.VISIBLE);
+            imageLoader.displayImage(growing.getUrl(), viewHolder.picture, EbaeboApplication.txOptions, animateFirstListener);
+        }else {
+            viewHolder.picture.setVisibility(View.GONE);
+        }
         //todo   type类型返回的为空
 //        switch (Integer.parseInt(growing.getType()) ){
         switch (0){
