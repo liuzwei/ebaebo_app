@@ -2,22 +2,36 @@ package com.app.ebaebo.ui;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
+import com.android.volley.*;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.app.ebaebo.R;
 import com.app.ebaebo.adapter.GridImageAdapter;
-import com.app.ebaebo.util.CommonDefine;
-import com.app.ebaebo.util.FileUtils;
-import com.app.ebaebo.util.ImageUtils;
+import com.app.ebaebo.data.BabyDATA;
+import com.app.ebaebo.data.ErrorDATA;
+import com.app.ebaebo.data.UploadDATA;
+import com.app.ebaebo.entity.Account;
+import com.app.ebaebo.entity.Baby;
+import com.app.ebaebo.util.*;
+import com.app.ebaebo.util.upload.MultiPartStack;
+import com.app.ebaebo.util.upload.MultiPartStringRequest;
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by liuzwei on 2014/11/26.
@@ -30,17 +44,27 @@ public class PublishPictureActivity extends BaseActivity implements View.OnClick
     private TextView publish;
     private EditText content;
     private GridImageAdapter gridImageAdapter;
+    private Spinner spinner;
+    private ArrayAdapter<String> spinnerAdapter;
+    private static RequestQueue mSingleQueue;
     private ArrayList<String> dataList = new ArrayList<String>();
     private ArrayList<String> tDataList = new ArrayList<String>();
+    private List<String> uploadPaths = new ArrayList<String>();
+    private List<Baby> babies = new ArrayList<Baby>();//下拉列表宝宝
+    private String babyId;
+    private ProgressDialog progressDialog;
 
     private Uri uri;
+    private Account account;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.publish_picture_layout);
-
+        mSingleQueue = Volley.newRequestQueue(this, new MultiPartStack());
+        account = getGson().fromJson(sp.getString(Constants.ACCOUNT_KEY, ""), Account.class);
         initView();
+        getBabyList();
         openPhotoAlbum();
     }
 
@@ -52,9 +76,111 @@ public class PublishPictureActivity extends BaseActivity implements View.OnClick
 
                 break;
             case R.id.publish_picture_run://发布
+                progressDialog = new ProgressDialog(PublishPictureActivity.this);
+                progressDialog.setMessage("正在发布，请稍后");
+                progressDialog.show();
+                for (int i=0; i<dataList.size(); i++){
+                    File file = new File(dataList.get(i));
+
+                    Map<String, File> files = new HashMap<String, File>();
+                    files.put("file", file);
+                    Map<String, String> params = new HashMap<String, String>();
+                    addPutUploadFileRequest(
+                            InternetURL.UPLOAD_FILE,
+                            files,
+                            params,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String s) {
+                                    if (CommonUtil.isJson(s)) {
+                                        UploadDATA data = getGson().fromJson(s, UploadDATA.class);
+                                        if (data.getCode() == 200){
+                                            uploadPaths.add(data.getUrl());
+                                        }
+                                        //说明文件已经上传完毕
+                                        if (uploadPaths.size() == dataList.size()){
+                                            publishAll();
+                                        }
+                                    }
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError volleyError) {
+
+                                }
+                            },
+                            null);
+                }
 
                 break;
         }
+    }
+    //上传完图片后开始发布
+    private void publishAll(){
+        if (StringUtil.isNullOrEmpty(babyId)){
+            Toast.makeText(mContext, "请选择宝宝", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        final String contentStr = content.getText().toString();
+        String uid = account.getUid();
+        final String user_type = getGson().fromJson(sp.getString(Constants.IDENTITY, ""), String.class);
+        final StringBuffer filePath = new StringBuffer();
+        for (int i=0; i<uploadPaths.size(); i++){
+            filePath.append(uploadPaths.get(i));
+            if (i != uploadPaths.size()-1){
+                filePath.append(",");
+            }
+        }
+
+        StringRequest request = new StringRequest(
+                Request.Method.POST,
+                InternetURL.GROWING_PUSH,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        if (CommonUtil.isJson(s)){
+                            ErrorDATA data  = getGson().fromJson(s, ErrorDATA.class);
+                            if (data.getCode() == 200){
+                                if (progressDialog != null){
+                                    progressDialog.dismiss();
+                                }
+                                Toast.makeText(mContext, "发布成功", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        if (progressDialog != null){
+                            progressDialog.dismiss();
+                        }
+                        Toast.makeText(mContext, "发布失败，请稍后重试 ", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ){
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("content",contentStr);
+                params.put("uid",account.getUid());
+                params.put("user_type", user_type);
+                params.put("type","1");
+                params.put("child_id", babyId);
+                params.put("file", filePath.toString());
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("Content-Type","application/x-www-form-urlencoded");
+                return params;
+            }
+        };
+        getRequestQueue().add(request);
     }
 
     private void initView(){
@@ -68,6 +194,8 @@ public class PublishPictureActivity extends BaseActivity implements View.OnClick
         gridView = (GridView) findViewById(R.id.gridview_image);
         gridImageAdapter = new GridImageAdapter(mContext, dataList);
         gridView.setAdapter(gridImageAdapter);
+
+        spinner = (Spinner) findViewById(R.id.publish_picture_spinner);
 
         gridView.setOnItemClickListener(new GridView.OnItemClickListener() {
 
@@ -213,7 +341,9 @@ public class PublishPictureActivity extends BaseActivity implements View.OnClick
                         for (int i = 0; i < dataList.size(); i++) {
                             String path = dataList.get(i);
                             if(path.contains("default")) {
-                                dataList.remove(dataList.size() - 2);
+                                if (i != 8) {
+                                    dataList.remove(dataList.size() - 2);
+                                }
                             }
                         }
                     }
@@ -234,5 +364,85 @@ public class PublishPictureActivity extends BaseActivity implements View.OnClick
             }
         }
         return tDataList;
+    }
+
+    public static void addPutUploadFileRequest(final String url,
+                                               final Map<String, File> files, final Map<String, String> params,
+                                               final Response.Listener<String> responseListener, final Response.ErrorListener errorListener,
+                                               final Object tag) {
+        if (null == url || null == responseListener) {
+            return;
+        }
+
+        MultiPartStringRequest multiPartRequest = new MultiPartStringRequest(
+                Request.Method.POST, url, responseListener, errorListener) {
+
+            @Override
+            public Map<String, File> getFileUploads() {
+                return files;
+            }
+
+            @Override
+            public Map<String, String> getStringUploads() {
+                return params;
+            }
+
+        };
+
+        mSingleQueue.add(multiPartRequest);
+    }
+
+    /**
+     * 获得spinner下的宝宝列表
+     */
+    private void  getBabyList(){
+        String uri = String.format(InternetURL.GET_BABY_URL +"?uid=%s", account.getUid());
+//        String uri = "http://yey.xqb668.com/json.php/growing.api-childrens/?uid=102";
+        StringRequest request = new StringRequest(
+                Request.Method.GET,
+                uri,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        Gson gson = new Gson();
+                        try{
+                            BabyDATA data = gson.fromJson(s, BabyDATA.class);
+                            babies.addAll(data.getData());
+                            List<String> names = new ArrayList<String>();
+                            for (int i=0; i<babies.size(); i++){
+                                names.add(babies.get(i).getName());
+                            }
+                            spinnerAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, names);
+                            spinnerAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
+                            spinner.setAdapter(spinnerAdapter);
+                            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    Baby baby = babies.get(position);
+                                    babyId = baby.getId();
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                }
+                            });
+                        }catch (Exception e){
+//                            ErrorDATA data = gson.fromJson(s, ErrorDATA.class);
+//                            if (data.getCode() == 500){
+//                                Log.i("ErrorData", "获取baby信息数据错误");
+//                            }
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+
+                    }
+                }
+        );
+        getRequestQueue().add(request);
     }
 }

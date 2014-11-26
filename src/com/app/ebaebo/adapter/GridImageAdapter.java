@@ -52,12 +52,10 @@ public class GridImageAdapter extends BaseAdapter {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 		String path = dataList.get(position);
-		if (position == dataList.size()){
-			if (path.contains("camera_default")){
-				viewHolder.imageview.setImageResource(R.drawable.addphoto_button_pressed);
-			}
-		}else {
-			imageLoader.displayImage("file://"+path, viewHolder.imageview, EbaeboApplication.tpOptions);
+        if (path.contains("camera_default")){
+            viewHolder.imageview.setImageResource(R.drawable.addphoto_button_pressed);
+        }else {
+            imageLoader.displayImage("file://"+path, viewHolder.imageview, EbaeboApplication.tpOptions);
 		}
 		return convertView;
 	}
