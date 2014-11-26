@@ -220,7 +220,7 @@ public class MainActivity extends BaseActivity implements
 
                 break;
             case R.id.foot_picture://图库
-
+                startActivity(new Intent(MainActivity.this, PublishPictureActivity.class));
                 break;
         }
     }

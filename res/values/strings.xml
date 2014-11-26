@@ -12,4 +12,6 @@
     <string name="error1">已加载全部</string>
     <!--<string name="error1">无数据</string>-->
 
+    <string name="album_all">All Photos</string>
+
 </resources>

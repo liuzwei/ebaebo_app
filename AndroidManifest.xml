@@ -64,5 +64,11 @@
         <activity android:name=".ui.PublishPhotoActivity"/>
         <activity android:name=".ui.PublishRecordActivity"/>
         <activity android:name=".ui.PublishVideoActivity"/>
+        <activity android:name=".ui.PublishPictureActivity"/>
+
+        <activity android:name=".ui.AlbumActivity"/>
+        <activity android:name=".ui.AlbumChanceActivity"/>
+        <activity android:name=".ui.ImageDelActivity"/>
+
     </application>
 </manifest>
