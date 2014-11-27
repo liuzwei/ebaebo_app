@@ -30,8 +30,8 @@ import java.util.Map;
 public class PublishImageActivity extends BaseActivity implements View.OnClickListener{
     private ImageView back;
     private TextView publish;
-    private Spinner spinner;
     private EditText content;
+    private Spinner spinner;
     private GridView gridView;
     private ArrayAdapter<String> spinnerAdapter;
 

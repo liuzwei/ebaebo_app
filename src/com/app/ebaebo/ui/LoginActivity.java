@@ -72,6 +72,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.login_btn://登陆按钮
+                if (!PhoneEnvUtil.isNetworkConnected(mContext)){
+                    Toast.makeText(mContext, R.string.check_network_isuse, Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 loginBtn.setClickable(false);
                 progressDialog = new ProgressDialog(LoginActivity.this);
                 progressDialog.setMessage("登录中...");

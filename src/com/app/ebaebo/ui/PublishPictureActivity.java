@@ -23,7 +23,6 @@ import com.app.ebaebo.entity.Account;
 import com.app.ebaebo.entity.Baby;
 import com.app.ebaebo.util.*;
 import com.app.ebaebo.util.upload.MultiPartStack;
-import com.app.ebaebo.util.upload.MultiPartStringRequest;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -45,7 +44,7 @@ public class PublishPictureActivity extends BaseActivity implements View.OnClick
     private GridImageAdapter gridImageAdapter;
     private Spinner spinner;
     private ArrayAdapter<String> spinnerAdapter;
-    private static RequestQueue mSingleQueue;
+
     private ArrayList<String> dataList = new ArrayList<String>();
     private ArrayList<String> tDataList = new ArrayList<String>();
     private List<String> uploadPaths = new ArrayList<String>();
@@ -60,14 +59,11 @@ public class PublishPictureActivity extends BaseActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.publish_picture_layout);
-        mSingleQueue = Volley.newRequestQueue(this, new MultiPartStack());
         account = getGson().fromJson(sp.getString(Constants.ACCOUNT_KEY, ""), Account.class);
         initView();
         getBabyList();
         openPhotoAlbum();
     }
-
-
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -122,7 +118,6 @@ public class PublishPictureActivity extends BaseActivity implements View.OnClick
             return;
         }
         final String contentStr = content.getText().toString();
-        String uid = account.getUid();
         final String user_type = getGson().fromJson(sp.getString(Constants.IDENTITY, ""), String.class);
         final StringBuffer filePath = new StringBuffer();
         for (int i=0; i<uploadPaths.size(); i++){
@@ -365,31 +360,7 @@ public class PublishPictureActivity extends BaseActivity implements View.OnClick
         return tDataList;
     }
 
-    public static void addPutUploadFileRequest(final String url,
-                                               final Map<String, File> files, final Map<String, String> params,
-                                               final Response.Listener<String> responseListener, final Response.ErrorListener errorListener,
-                                               final Object tag) {
-        if (null == url || null == responseListener) {
-            return;
-        }
 
-        MultiPartStringRequest multiPartRequest = new MultiPartStringRequest(
-                Request.Method.POST, url, responseListener, errorListener) {
-
-            @Override
-            public Map<String, File> getFileUploads() {
-                return files;
-            }
-
-            @Override
-            public Map<String, String> getStringUploads() {
-                return params;
-            }
-
-        };
-
-        mSingleQueue.add(multiPartRequest);
-    }
 
     /**
      * 获得spinner下的宝宝列表

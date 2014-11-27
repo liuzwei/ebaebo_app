@@ -14,4 +14,6 @@
 
     <string name="album_all">All Photos</string>
 
+    <string name="check_network_isuse">请检查当前网络是否可用</string>
+
 </resources>

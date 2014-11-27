@@ -25,6 +25,7 @@ import com.app.ebaebo.entity.Account;
 import com.app.ebaebo.entity.Baby;
 import com.app.ebaebo.entity.Growing;
 import com.app.ebaebo.util.InternetURL;
+import com.app.ebaebo.util.PhoneEnvUtil;
 import com.app.ebaebo.widget.ContentListView;
 import com.google.gson.Gson;
 
@@ -221,7 +222,8 @@ public class MainActivity extends BaseActivity implements
 
                 break;
             case R.id.foot_record://录音
-
+                Intent record = new Intent(MainActivity.this, PublishRecordActivity.class);
+                startActivity(record);
                 break;
             case R.id.foot_picture://图库
                 startActivity(new Intent(MainActivity.this, PublishPictureActivity.class));
@@ -247,6 +249,10 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void getData(final int tag){
+        if (!PhoneEnvUtil.isNetworkConnected(mContext)){
+            Toast.makeText(mContext, R.string.check_network_isuse, Toast.LENGTH_SHORT).show();
+            return;
+        }
         String uri = String.format(InternetURL.GROWING_MANAGER_API+"?uid=%s&pageIndex=%d&pageSize=%d&child_id=%s",uid, pageIndex, pageSize, child_id);
         StringRequest request = new StringRequest(Request.Method.GET,
                 uri,
@@ -289,7 +295,6 @@ public class MainActivity extends BaseActivity implements
     private void getBaby(){
         String uid = account.getUid();
         String uri = String.format(InternetURL.GET_BABY_URL +"?uid=%s", uid);
-//        String uri = "http://yey.xqb668.com/json.php/growing.api-childrens/?uid=102";
         StringRequest request = new StringRequest(
                 Request.Method.GET,
                 uri,
