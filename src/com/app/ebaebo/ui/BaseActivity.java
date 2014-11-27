@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.app.ebaebo.ActivityTack;
 import com.app.ebaebo.util.ToastUtil;
 import com.google.gson.Gson;
 
@@ -23,6 +24,7 @@ public class BaseActivity extends Activity {
     public LayoutInflater inflater;
     private RequestQueue mRequestQueue;
 
+    private ActivityTack tack= ActivityTack.getInstanse();
     private ExecutorService appThread = Executors.newSingleThreadExecutor();
 
     private Gson gson = new Gson();
@@ -36,8 +38,8 @@ public class BaseActivity extends Activity {
         sp = getSharedPreferences("ebaebo", Context.MODE_PRIVATE);
         inflater = LayoutInflater.from(mContext);
         connectMgr = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-
         mRequestQueue = Volley.newRequestQueue(this);
+        tack.addActivity(this);
     }
 
     /**
@@ -71,5 +73,9 @@ public class BaseActivity extends Activity {
     public void save(String key, Object value){
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(key, gson.toJson(value)).commit();
+    }
+
+    public ActivityTack getTack() {
+        return tack;
     }
 }

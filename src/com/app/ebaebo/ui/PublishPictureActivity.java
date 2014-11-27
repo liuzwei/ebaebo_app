@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import com.android.volley.*;
@@ -73,7 +72,7 @@ public class PublishPictureActivity extends BaseActivity implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.publish_picture_back://返回
-
+                finish();
                 break;
             case R.id.publish_picture_run://发布
                 progressDialog = new ProgressDialog(PublishPictureActivity.this);

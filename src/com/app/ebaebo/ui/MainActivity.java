@@ -14,6 +14,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.app.ebaebo.ActivityTack;
 import com.app.ebaebo.R;
 import com.app.ebaebo.adapter.GrowingAdapter;
 import com.app.ebaebo.adapter.OnClickContentItemListener;
@@ -62,6 +63,9 @@ public class MainActivity extends BaseActivity implements
     private int pageSize;
     private String child_id;
     private Account account;
+
+    private long waitTime = 2000;
+    private long touchTime = 0;
 
     private List<Growing> growingList = new ArrayList<Growing>();
     private List<Baby> babies = new ArrayList<Baby>();//下拉列表宝宝
@@ -358,38 +362,24 @@ public class MainActivity extends BaseActivity implements
         getData(ContentListView.LOAD);
     }
 
+    /**
+     * 再摁退出程序
+     * @param keyCode
+     * @param event
+     * @return
+     */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        // TODO Auto-generated method stub
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-            showTips();
-            return false;
+        if (event.getAction() == KeyEvent.ACTION_DOWN && KeyEvent.KEYCODE_BACK == keyCode){
+            long currentTime = System.currentTimeMillis();
+            if ((currentTime - touchTime) >= waitTime){
+                Toast.makeText(mContext, "再摁退出登录", Toast.LENGTH_SHORT).show();
+                touchTime = currentTime;
+            }else {
+                ActivityTack.getInstanse().exit(mContext);
+            }
+            return true;
         }
-
         return super.onKeyDown(keyCode, event);
-    }
-
-    private void showTips() {
-
-        AlertDialog alertDialog = new AlertDialog.Builder(this).setTitle("提醒")
-                .setMessage("是否退出程序")
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                        intent.addCategory(Intent.CATEGORY_HOME);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                        android.os.Process.killProcess(android.os.Process.myPid());
-                    }
-
-                }).setNegativeButton("取消",
-
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                return;
-                            }
-                        }).create(); // 创建对话框
-        alertDialog.show(); // 显示对话框
     }
 }
