@@ -2,9 +2,6 @@
   <library name="armeabi">
     <CLASSES />
     <JAVADOC />
-    <NATIVE>
-      <root url="file://$PROJECT_DIR$/libs/armeabi" />
-    </NATIVE>
     <SOURCES />
   </library>
 </component>

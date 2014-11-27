@@ -51,13 +51,9 @@ public class PublishRecordActivity extends BaseActivity implements View.OnClickL
     /** log标记 */
     private static final String LOG_TAG = PublishRecordActivity.class.getSimpleName();
     /** 用于语音播放 */
-    private MediaPlayer mPlayer = new MediaPlayer();;
-    /** 用于完成录音 */
-//    private MediaRecorder mRecorder = null;
-    /** 语音文件保存路径 */
-//    private String mFileName = null;
+    private MediaPlayer mPlayer = new MediaPlayer();
     /** 录音存储路径 */
-    private static final String PATH = "/ebaebo/record/Recorder.mp3";
+    private static final String PATH = "/Recorder.mp3";
     private MP3Recorder recorder = new MP3Recorder(Environment.getExternalStorageDirectory()
             + PATH , 8000);
 
