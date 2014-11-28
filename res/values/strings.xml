@@ -12,4 +12,8 @@
     <string name="error1">已加载全部</string>
     <!--<string name="error1">无数据</string>-->
 
+    <string name="album_all">All Photos</string>
+
+    <string name="check_network_isuse">请检查当前网络是否可用</string>
+
 </resources>

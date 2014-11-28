@@ -42,7 +42,25 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"/>
     </RelativeLayout>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                        android:layout_marginLeft="10dp"
+                        android:textSize="18sp"
+                        android:gravity="center"
+                        android:text="选择宝宝: "
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"/>
+                <Spinner
+                        android:id="@+id/publish_photo_spinner"
+                        android:layout_marginLeft="20dp"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content">
 
+                </Spinner>
+        </LinearLayout>
     <EditText
             android:id="@+id/publish_photo_content"
             android:layout_width="match_parent"

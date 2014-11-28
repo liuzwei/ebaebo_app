@@ -72,6 +72,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.login_btn://登陆按钮
+                if (!PhoneEnvUtil.isNetworkConnected(mContext)){
+                    Toast.makeText(mContext, R.string.check_network_isuse, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                loginBtn.setClickable(false);
                 progressDialog = new ProgressDialog(LoginActivity.this);
                 progressDialog.setMessage("登录中...");
                 progressDialog.show();
@@ -81,11 +86,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 if (name.isEmpty()){
                     progressDialog.dismiss();
                     Toast.makeText(this, "用户名不能为空", Toast.LENGTH_SHORT).show();
+                    loginBtn.setClickable(true);
                     return;
                 }
                 if (pass.isEmpty()){
                     progressDialog.dismiss();
                     Toast.makeText(this, "密码不能为空", Toast.LENGTH_SHORT).show();
+                    loginBtn.setClickable(true);
                     return;
                 }
                 //组装请求url
@@ -116,12 +123,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                                         Toast.makeText(mContext, "用户名或密码错误", Toast.LENGTH_SHORT).show();
                                     }
                                 }
+                                loginBtn.setClickable(true);
                                 progressDialog.dismiss();
                             }
                         },new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError volleyError) {
-
+                                loginBtn.setClickable(true);
                             }
                 });
                 mRequestQueue.add(request);
