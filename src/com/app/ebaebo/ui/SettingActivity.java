@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import com.app.ebaebo.ActivityTack;
 import com.app.ebaebo.R;
 import com.app.ebaebo.entity.Account;
 import com.app.ebaebo.util.ShellContext;
@@ -97,9 +98,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 finish();
                 break;
             case R.id.setting_exit:
-                ShellContext.clear();
-                Intent main = new Intent(SettingActivity.this, LoginActivity.class);
-                startActivity(main);
+//                ShellContext.clear();
+                ActivityTack.getInstanse().popUntilActivity(LoginActivity.class);
                 break;
         }
     }

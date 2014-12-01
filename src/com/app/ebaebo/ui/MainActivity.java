@@ -241,9 +241,9 @@ public class MainActivity extends BaseActivity implements
                 final Growing growing = growingList.get(position);
                 String cancel;
                 if ("1".equals(growing.getIs_favoured())){
-                    cancel = "";
-                }else {
                     cancel = "1";
+                }else {
+                    cancel = "";
                 }
                 String uri = String.format(InternetURL.FAVOURS_URL+"?growing_id=%s&uid=%s&user_type=%s&cancel=%s",growing.getId(), account.getUid(), identity ,cancel);
                 StringRequest request = new StringRequest(
@@ -255,7 +255,7 @@ public class MainActivity extends BaseActivity implements
                                 if (CommonUtil.isJson(s)){
                                     ErrorDATA data = getGson().fromJson(s, ErrorDATA.class);
                                     if (data.getCode() == 200){
-                                        if ("0".equals(growing.getIs_favoured())){
+                                        if (!"1".equals(growing.getIs_favoured())){
                                             growingList.get(position).setIs_favoured("1");
                                             Toast.makeText(mContext, "已收藏", Toast.LENGTH_SHORT).show();
                                         }else {
