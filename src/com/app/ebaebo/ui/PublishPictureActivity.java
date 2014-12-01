@@ -93,7 +93,7 @@ public class PublishPictureActivity extends BaseActivity implements View.OnClick
                                             uploadPaths.add(data.getUrl());
                                         }
                                         //说明文件已经上传完毕
-                                        if (uploadPaths.size() == dataList.size()){
+                                        if (uploadPaths.size() == dataList.size()-1){
                                             publishAll();
                                         }
                                     }
