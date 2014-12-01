@@ -73,6 +73,7 @@ public class MumSettingActivity extends BaseActivity implements View.OnClickList
         identity = getGson().fromJson(sp.getString(Constants.IDENTITY, ""), String.class);
         initView();
         initData();
+
     }
 
 

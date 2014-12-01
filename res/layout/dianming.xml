@@ -42,6 +42,7 @@
         <TextView android:layout_width="match_parent"
                   android:id="@+id/dianming_classname"
                   android:text="爱宝宝"
+                  android:paddingLeft="10dp"
                   android:textColor="#000"
                   android:gravity="center|left"
                   android:textSize="20sp"
@@ -53,6 +54,7 @@
             android:id="@+id/dianming_lstv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:divider="@drawable/line"
             android:scrollingCache="false"
             android:fadingEdge="none"/>
     <!-- 主体结束 -->

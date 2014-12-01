@@ -27,7 +27,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     TextView zhanghao;
     Account account ;
     TextView setting_exit;//退出当前账号
-
+    private String identity;
+    private TextView setting_question;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +36,13 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         initView();
         account = getGson().fromJson(sp.getString(Constants.ACCOUNT_KEY, ""), Account.class);
         zhanghao.setText(account.getUser_name());
+        identity = getGson().fromJson(sp.getString(Constants.IDENTITY, ""), String.class);
+        if(identity.equals("0")){
+            setting_question.setText("爸爸设置");
+        }
+        if(identity.equals("1")){
+            setting_question.setText("妈妈设置");
+        }
     }
 
     private void initView(){
@@ -55,6 +63,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         boundEmail.setOnClickListener(this);
         about.setOnClickListener(this);
         back.setOnClickListener(this);
+        setting_question = (TextView) this.findViewById(R.id.setting_question);
     }
 
     @Override
@@ -72,7 +81,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 Intent babySet = new Intent(SettingActivity.this, BabySettingActivity.class);
                 startActivity(babySet);
                 break;
-            case R.id.setting_mama://妈妈设置
+            case R.id.setting_mama://家长设置
                 Intent mumSet = new Intent(SettingActivity.this, MumSettingActivity.class);
                 startActivity(mumSet);
                 break;
