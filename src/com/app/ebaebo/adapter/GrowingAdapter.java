@@ -2,6 +2,7 @@ package com.app.ebaebo.adapter;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,6 +69,7 @@ public class GrowingAdapter extends BaseAdapter {
             viewHolder.comment = (LinearLayout) convertView.findViewById(R.id.growing_item_comment);
             viewHolder.share = (ImageView) convertView.findViewById(R.id.growing_item_share);
             viewHolder.picture = (ImageView) convertView.findViewById(R.id.growing_item_picture);
+            viewHolder.redHeart = (ImageView) convertView.findViewById(R.id.red_heart);
             convertView.setTag(viewHolder);
         }else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -82,6 +84,11 @@ public class GrowingAdapter extends BaseAdapter {
             imageLoader.displayImage(growing.getUrl(), viewHolder.picture, EbaeboApplication.txOptions, animateFirstListener);
         }else {
             viewHolder.picture.setVisibility(View.GONE);
+        }
+        if ("1".equals(growing.getIs_favoured())){
+            viewHolder.redHeart.setImageDrawable(context.getResources().getDrawable(R.drawable.red_favours));
+        }else {
+            viewHolder.redHeart.setImageDrawable(context.getResources().getDrawable(R.drawable.favours));
         }
         //todo   type类型返回的为空
 //        switch (Integer.parseInt(growing.getType()) ){
@@ -128,5 +135,6 @@ public class GrowingAdapter extends BaseAdapter {
         LinearLayout comment;//评论
         ImageView share;//分享
         ImageView picture;
+        ImageView redHeart;
     }
 }

@@ -24,6 +24,7 @@ import com.app.ebaebo.data.GrowingDATA;
 import com.app.ebaebo.entity.Account;
 import com.app.ebaebo.entity.Baby;
 import com.app.ebaebo.entity.Growing;
+import com.app.ebaebo.util.CommonUtil;
 import com.app.ebaebo.util.InternetURL;
 import com.app.ebaebo.util.PhoneEnvUtil;
 import com.app.ebaebo.widget.ContentListView;
@@ -64,6 +65,7 @@ public class MainActivity extends BaseActivity implements
     private int pageSize;
     private String child_id;
     private Account account;
+    private String identity;
 
     private long waitTime = 2000;
     private long touchTime = 0;
@@ -89,6 +91,7 @@ public class MainActivity extends BaseActivity implements
                 Log.i("Account Gson Exception", "Account转换异常");
             }
         }
+        identity = getGson().fromJson(sp.getString(Constants.IDENTITY, ""), String.class);
 
         mRequestQueue = Volley.newRequestQueue(this);
         adapter = new GrowingAdapter(growingList, mContext);
@@ -232,10 +235,48 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
-    public void onClickContentItem(int position, int flag, Object object) {
+    public void onClickContentItem(final int position, int flag, Object object) {
         switch (flag){
             case 1://收藏
+                final Growing growing = growingList.get(position);
+                String cancel;
+                if ("1".equals(growing.getIs_favoured())){
+                    cancel = "";
+                }else {
+                    cancel = "1";
+                }
+                String uri = String.format(InternetURL.FAVOURS_URL+"?growing_id=%s&uid=%s&user_type=%s&cancel=%s",growing.getId(), account.getUid(), identity ,cancel);
+                StringRequest request = new StringRequest(
+                        Request.Method.GET,
+                        uri,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String s) {
+                                if (CommonUtil.isJson(s)){
+                                    ErrorDATA data = getGson().fromJson(s, ErrorDATA.class);
+                                    if (data.getCode() == 200){
+                                        if ("0".equals(growing.getIs_favoured())){
+                                            growingList.get(position).setIs_favoured("1");
+                                            Toast.makeText(mContext, "已收藏", Toast.LENGTH_SHORT).show();
+                                        }else {
+                                            growingList.get(position).setIs_favoured("0");
+                                            Toast.makeText(mContext, "已取消收藏", Toast.LENGTH_SHORT).show();
+                                        }
+                                        adapter.notifyDataSetChanged();
+                                    }else {
+                                        Toast.makeText(mContext, "收藏失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError volleyError) {
 
+                            }
+                        }
+                );
+                getRequestQueue().add(request);
                 break;
             case 2://评论
                 Intent comment = new Intent(MainActivity.this, CommentActivity.class);
