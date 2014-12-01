@@ -86,7 +86,7 @@ public class MobileDialog extends Dialog implements View.OnClickListener{
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Log.d("网络连接不可用", e.getMessage());
+//            Log.d("网络连接不可用", e.getMessage());
         }
         switch (v.getId()){
             case R.id.sure:

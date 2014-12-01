@@ -72,12 +72,12 @@ public class ForgetPassThreeActivity extends BaseActivity implements View.OnClic
                      Toast.makeText(ForgetPassThreeActivity.this, "密码不能为空！", Toast.LENGTH_SHORT).show();
                      return;
                  }
-                 if(passone.length() < 6){
-                     Toast.makeText(ForgetPassThreeActivity.this, "密码不能少于6位！", Toast.LENGTH_SHORT).show();
+                 if(passone.length() < 6 || passone.length() > 18){
+                     Toast.makeText(ForgetPassThreeActivity.this, "请输入正确的密码，6到18位之间", Toast.LENGTH_SHORT).show();
                      return;
                  }
                  if(!passone.equals(passtwo)){
-                     Toast.makeText(ForgetPassThreeActivity.this, "两次输入密码不一致！", Toast.LENGTH_SHORT).show();
+                     Toast.makeText(ForgetPassThreeActivity.this, "两次输入密码不一致", Toast.LENGTH_SHORT).show();
                      return;
                  }
                  updatepass(number ,passone);

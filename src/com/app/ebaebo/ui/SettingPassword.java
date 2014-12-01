@@ -1,11 +1,26 @@
 package com.app.ebaebo.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.app.ebaebo.R;
+import com.app.ebaebo.data.ErrorDATA;
+import com.app.ebaebo.data.SuccessDATA;
+import com.app.ebaebo.entity.Account;
+import com.app.ebaebo.util.InternetURL;
+import com.app.ebaebo.util.ShellContext;
+import com.app.ebaebo.util.StringUtil;
+import com.google.gson.Gson;
 
 /**
  * author: ${zhanghailong}
@@ -23,6 +38,8 @@ public class SettingPassword extends BaseActivity implements View.OnClickListene
     private String pass ;
     private String newpassword;
     private String surepassword;
+    private RequestQueue mRequestQueue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,8 +54,8 @@ public class SettingPassword extends BaseActivity implements View.OnClickListene
         set.setOnClickListener(this);
         password = (EditText) this.findViewById(R.id.password);
         newpass = (EditText) this.findViewById(R.id.newpass);
-        surepass = (EditText) this.findViewById(R.id.sure);
-
+        surepass = (EditText) this.findViewById(R.id.surepass);
+        mRequestQueue = Volley.newRequestQueue(this);
     }
 
     @Override
@@ -50,7 +67,73 @@ public class SettingPassword extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.set:
                 //设置密码
+                pass = password.getText().toString();
+                newpassword = newpass.getText().toString();
+                surepassword = surepass.getText().toString();
+                String str = getGson().fromJson(sp.getString("password", ""), String.class);
+                if(StringUtil.isNullOrEmpty(pass)){
+                    Toast.makeText(mContext, "请输入原始密码", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(!str.equals(pass)){
+                    Toast.makeText(mContext, "原始密码输入错误", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(StringUtil.isNullOrEmpty(newpassword)){
+                    Toast.makeText(mContext, "请输入新密码", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(newpassword.length()<6 || newpassword.length()>18){
+                    Toast.makeText(mContext, "请输入正确的密码，6到18位之间", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(StringUtil.isNullOrEmpty(surepassword)){
+                    Toast.makeText(mContext, "请输入确认密码", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(!newpassword.equals(surepassword)){
+                    Toast.makeText(mContext, "两次输入密码不一致", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                updatepass(getGson().fromJson(sp.getString("username", ""), String.class) ,newpassword);
                 break;
         }
     }
+
+    private void updatepass(String number, String passone) {
+        //更新密码
+        String uri = String.format(InternetURL.UPDATE_PASSWORD_URL+"?mobile=%s&password=%s",number, passone);
+        StringRequest request = new StringRequest(Request.Method.GET,
+                uri,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        Gson gson = new Gson();
+                        try {
+                            SuccessDATA data = gson.fromJson(s, SuccessDATA.class);
+                            if (data.getCode() == 200){
+                                //成功
+                                Toast.makeText(SettingPassword.this, "密码重置成功，请重新登录", Toast.LENGTH_SHORT).show();
+                                ShellContext.clear();
+                                Intent main = new Intent(SettingPassword.this, LoginActivity.class);
+                                startActivity(main);
+                            }else{
+                                Toast.makeText(SettingPassword.this, "修改密码失败！", Toast.LENGTH_SHORT).show();
+                            }
+                        }catch (Exception e){
+                            ErrorDATA errorDATA = gson.fromJson(s, ErrorDATA.class);
+                            if (errorDATA.getMsg().equals("failed")){
+                                Toast.makeText(SettingPassword.this, "网络错误", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                },new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+            }
+        });
+        mRequestQueue.add(request);
+    }
+
 }

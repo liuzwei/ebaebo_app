@@ -114,7 +114,7 @@ public class MainActivity extends BaseActivity implements
 //            }
 //        });
 
-
+        user.setText("        "+account.getF_name());
     }
 
     private void initView() {

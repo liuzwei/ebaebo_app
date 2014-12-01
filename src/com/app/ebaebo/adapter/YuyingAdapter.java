@@ -15,6 +15,7 @@ import com.app.ebaebo.entity.Pictures;
 import com.app.ebaebo.entity.Yuying;
 import com.app.ebaebo.util.MxgsaTagHandler;
 import com.app.ebaebo.util.StringUtil;
+import com.app.ebaebo.util.TimeUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
@@ -85,7 +86,7 @@ public class YuyingAdapter extends BaseAdapter {
         holder.content.setText(Html.fromHtml(cont, null, new MxgsaTagHandler(context)));
         holder.content.setClickable(true);
         holder.content.setMovementMethod(LinkMovementMethod.getInstance());
-        holder.time.setText(cell.getDateline());
+        holder.time.setText(TimeUtils.zhuanhuanTime(Long.parseLong(cell.getDateline())));
 
         try {
             imageLoader.displayImage(cell.getPic(), holder.pic, EbaeboApplication.options, animateFirstListener);

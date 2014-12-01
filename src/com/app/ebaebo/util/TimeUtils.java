@@ -2,6 +2,7 @@ package com.app.ebaebo.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 /**
@@ -19,4 +20,12 @@ public class TimeUtils {
 	public static String getCurrentTime() {
 		return getCurrentTime("yyyy-MM-dd  HH:mm:ss");
 	}
+    public static String zhuanhuanTime(long sd){
+        Date dat=new Date(sd);
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.setTime(dat);
+        java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String sb=format.format(gc.getTime());
+        return sb;
+    }
 }
