@@ -100,6 +100,7 @@
         android:divider="@null"
         android:dividerHeight="5dp"
         android:scrollbarStyle="outsideOverlay"
+        android:transcriptMode="alwaysScroll"
         android:stackFromBottom="true" />
     <!-- 录音显示UI层-->
     <LinearLayout

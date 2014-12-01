@@ -66,7 +66,7 @@ public class ChatAdapter extends BaseAdapter {
         Account account = gson.fromJson(sp.getString(Constants.ACCOUNT_KEY, ""), Account.class);
 
         if (convertView == null){
-            if(message.getTo_uids().equals(account.getUid())){
+            if(message.getTo_uids().contains(account.getUid())){
                 convertView = LayoutInflater.from(context).inflate(R.layout.chatting_item_msg_text_left, null);
                 isMe = true;
             }else {

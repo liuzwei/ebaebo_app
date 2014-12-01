@@ -15,6 +15,14 @@ public class Message implements Serializable{
     private String content;
     private String url;
 
+    public Message(String uid, String to_uids, long dateline, String type, String content) {
+        this.uid = uid;
+        this.to_uids = to_uids;
+        this.dateline = dateline;
+        this.type = type;
+        this.content = content;
+    }
+
     public String getId() {
         return id;
     }

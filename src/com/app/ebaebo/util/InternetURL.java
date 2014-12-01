@@ -48,6 +48,9 @@ public class InternetURL {
 
     public static String MESSAGE_DETAIL_LIST = "http://yey.xqb668.com/index/ServiceJson/MessageDetailList";
 
+    //交互信息发送
+    public static String MESSAGE_SEND_URL = "http://yey.xqb668.com/index/ServiceJson/sendMessage";
+
     //多媒体文件上传接口
     public static String UPLOAD_FILE = "http://yey.xqb668.com/json.php/user.api-uploadfile/";
 
