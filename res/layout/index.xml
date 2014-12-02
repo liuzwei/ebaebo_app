@@ -52,6 +52,9 @@
         <com.app.ebaebo.widget.ContentListView
                 android:id="@+id/index_pull_refresh_lsv"
                 android:layout_width="fill_parent"
+                android:divider="#00000000"
+                android:scrollingCache="false"
+                android:fadingEdge="none"
                 android:layout_height="fill_parent" />
 
         <LinearLayout

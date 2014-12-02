@@ -29,6 +29,9 @@ import com.app.ebaebo.util.InternetURL;
 import com.app.ebaebo.util.PhoneEnvUtil;
 import com.app.ebaebo.widget.ContentListView;
 import com.google.gson.Gson;
+import com.umeng.socialize.controller.UMServiceFactory;
+import com.umeng.socialize.controller.UMSocialService;
+import com.umeng.socialize.media.UMImage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +76,9 @@ public class MainActivity extends BaseActivity implements
     private List<Growing> growingList = new ArrayList<Growing>();
     private List<Baby> babies = new ArrayList<Baby>();//下拉列表宝宝
     private RequestQueue mRequestQueue;
+    // 首先在您的Activity中添加如下成员变量
+    final UMSocialService mController = UMServiceFactory.getUMSocialService("com.umeng.share");
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,6 +124,35 @@ public class MainActivity extends BaseActivity implements
 //        });
 
         user.setText("        "+account.getF_name());
+        //youmeng
+
+        // 设置分享内容
+                mController.setShareContent("友盟社会化组件（SDK）让移动应用快速整合社交分享功能，http://www.umeng.com/social");
+        // 设置分享图片, 参数2为图片的url地址
+                mController.setShareMedia(new UMImage(this,
+                        "http://www.umeng.com/images/pic/banner_module_social.png"));
+        // 设置分享图片，参数2为本地图片的资源引用
+        //mController.setShareMedia(new UMImage(getActivity(), R.drawable.icon));
+        // 设置分享图片，参数2为本地图片的路径(绝对路径)
+        //mController.setShareMedia(new UMImage(getActivity(),
+        //                                BitmapFactory.decodeFile("/mnt/sdcard/icon.png")));
+
+        // 设置分享音乐
+        //UMusic uMusic = new UMusic("http://sns.whalecloud.com/test_music.mp3");
+        //uMusic.setAuthor("GuGu");
+        //uMusic.setTitle("天籁之音");
+        // 设置音乐缩略图
+        //uMusic.setThumb("http://www.umeng.com/images/pic/banner_module_social.png");
+        //mController.setShareMedia(uMusic);
+
+        // 设置分享视频
+        //UMVideo umVideo = new UMVideo(
+        //          "http://v.youku.com/v_show/id_XNTE5ODAwMDM2.html?f=19001023");
+        // 设置视频缩略图
+        //umVideo.setThumb("http://www.umeng.com/images/pic/banner_module_social.png");
+        //umVideo.setTitle("友盟社会化分享!");
+        //mController.setShareMedia(umVideo);
+
     }
 
     private void initView() {
@@ -284,7 +319,7 @@ public class MainActivity extends BaseActivity implements
                 startActivity(comment);
                 break;
             case 3://分享
-
+                mController.openShare(this, false);
                 break;
         }
     }
