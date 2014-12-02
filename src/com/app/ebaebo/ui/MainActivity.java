@@ -264,7 +264,8 @@ public class MainActivity extends BaseActivity implements
                 startActivity(takePhoto);
                 break;
             case R.id.foot_video://摄像
-
+                Intent video = new Intent(MainActivity.this, PublishVideoActivity.class);
+                startActivity(video);
                 break;
             case R.id.foot_record://录音
                 Intent record = new Intent(MainActivity.this, PublishRecordActivity.class);
