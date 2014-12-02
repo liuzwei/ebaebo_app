@@ -32,6 +32,13 @@ import com.google.gson.Gson;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
 import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.sso.QZoneSsoHandler;
+import com.umeng.socialize.sso.SinaSsoHandler;
+import com.umeng.socialize.sso.TencentWBSsoHandler;
+import com.umeng.socialize.sso.UMQQSsoHandler;
+import com.umeng.socialize.weixin.controller.UMWXHandler;
+import com.umeng.socialize.weixin.media.CircleShareContent;
+import com.umeng.socialize.weixin.media.WeiXinShareContent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -319,6 +326,37 @@ public class MainActivity extends BaseActivity implements
                 startActivity(comment);
                 break;
             case 3://分享
+                // wx967daebe835fbeac是你在微信开发平台注册应用的AppID, 这里需要替换成你注册的AppID
+                String appID = "wxd97dd1adcce2b199";
+                String appSecret = "7955104817ad2d367ff337ca56e12756";
+                //1.添加QQ空间分享
+                QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(this, "100582055","f1a53f9becde189f56362e8b98e22f60");
+//                qZoneSsoHandler.setTargetUrl(shareUrl+shareParams);
+                qZoneSsoHandler.addToSocialSDK();
+                //2.添加QQ好友分享
+                UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(this, "100582055","f1a53f9becde189f56362e8b98e22f60");
+//                qqSsoHandler.setTargetUrl(shareUrl+shareParams);
+                qqSsoHandler.addToSocialSDK();
+                // 添加微信平台
+                UMWXHandler wxHandler = new UMWXHandler(this,appID);
+                wxHandler.addToSocialSDK();
+                //支持微信朋友圈
+                UMWXHandler wxCircleHandler = new UMWXHandler(this,appID);
+                wxCircleHandler.setToCircle(true);
+                wxCircleHandler.addToSocialSDK();
+                //单独设置微信分享
+                WeiXinShareContent xinShareContent = new WeiXinShareContent();
+//                xinShareContent.setShareContent(shareCont);
+//                xinShareContent.setTitle(shareTitle);
+//                xinShareContent.setShareImage(new UMImage(this, sharePic));
+//                xinShareContent.setTargetUrl(shareUrl+shareParams);
+                mController.setShareMedia(xinShareContent);
+                CircleShareContent circleMedia = new CircleShareContent();
+//                circleMedia.setShareContent(shareCont);
+//                circleMedia.setTitle(shareTitle+shareCont);
+//                circleMedia.setShareImage(new UMImage(this, sharePic));
+//                circleMedia.setTargetUrl(shareUrl+shareParams);
+                mController.setShareMedia(circleMedia);
                 mController.openShare(this, false);
                 break;
         }
