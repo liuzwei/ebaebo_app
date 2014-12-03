@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.app.ebaebo">
-    <uses-sdk android:minSdkVersion="12"/>
+    <uses-sdk android:minSdkVersion="14"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -25,49 +25,84 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.MainActivity"/>
-        <activity android:name=".ui.ForgetPassOneActivity"/>
-        <activity android:name=".ui.SettingActivity"/>
-        <activity android:name=".ui.NotificationActivity"/>
-        <activity android:name=".ui.PhotosActivity"/>
-        <activity android:name=".ui.BabySettingActivity"/>
-        <activity android:name=".ui.MumSettingActivity"/>
+        <activity android:name=".ui.MainActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.ForgetPassOneActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.SettingActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.NotificationActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.PhotosActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.BabySettingActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.MumSettingActivity"
+                  android:screenOrientation="portrait"/>
 
-        <activity android:name=".ui.YuyingMessageActivity"/>
-        <activity android:name=".ui.SchoolBusActivity"/>
-        <activity android:name=".ui.JiaohuActivity"/>
-        <activity android:name=".ui.DianmingActivity"/>
-        <activity android:name=".ui.PictureActivity"/>
-        <activity android:name=".ui.YuYiingDetailActivity"/>
-        <activity android:name=".ui.SettingAboutActivity"/>
-        <activity android:name=".ui.SettingPassword"/>
-        <activity android:name=".ui.SettingEmailActivity"/>
-        <activity android:name=".ui.SettingMobileActivity"/>
-        <activity android:name=".ui.SelectIdentityActivity"/>
-        <activity android:name=".ui.ForgetPassTwoActivity"/>
-        <activity android:name=".ui.ForgetPassThreeActivity"/>
-        <activity android:name=".ui.ForgetPassFourActivity"/>
-        <activity android:name=".ui.TongxunluActivity"/>
-        <activity android:name=".ui.CommentActivity"/>
-        <activity android:name=".ui.SettingEmaillTwoActivity"/>
-        <activity android:name=".ui.ChatActivity"/>
+        <activity android:name=".ui.YuyingMessageActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.SchoolBusActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.JiaohuActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.DianmingActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.PictureActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.YuYiingDetailActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.SettingAboutActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.SettingPassword"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.SettingEmailActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.SettingMobileActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.SelectIdentityActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.ForgetPassTwoActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.ForgetPassThreeActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.ForgetPassFourActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.TongxunluActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.CommentActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.SettingEmaillTwoActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.ChatActivity"
+                  android:screenOrientation="portrait"/>
         <service android:enabled="true" android:name="com.baidu.location.f" android:process=":remote">
         </service>
 
-        <activity android:name=".ui.PublishImageActivity"/>
-        <activity android:name=".ui.PublishPhotoActivity"/>
-        <activity android:name=".ui.PublishRecordActivity">
+        <activity android:name=".ui.PublishImageActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.PublishPhotoActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.PublishRecordActivity"
+                  android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".ui.PublishVideoActivity"/>
-        <activity android:name=".ui.PublishPictureActivity"/>
+        <activity android:name=".ui.PublishVideoActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.PublishPictureActivity"
+                  android:screenOrientation="portrait"/>
 
-        <activity android:name=".ui.AlbumActivity"/>
-        <activity android:name=".ui.AlbumChanceActivity"/>
-        <activity android:name=".ui.ImageDelActivity"/>
-        <activity android:name="com.qd.recorder.FFmpegRecorderActivity"/>
-        <activity android:name=".ui.SettingMobileActivityTwo"/>
-        <activity android:name="com.qd.recorder.FFmpegPreviewActivity"/>
+        <activity android:name=".ui.AlbumActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.AlbumChanceActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.ImageDelActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name="com.qd.recorder.FFmpegRecorderActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.SettingMobileActivityTwo"
+                  android:screenOrientation="portrait"/>
+        <activity android:name="com.qd.recorder.FFmpegPreviewActivity"
+                  android:screenOrientation="portrait"/>
         <!--友盟测试-->
         <meta-data android:name="UMENG_APPKEY" android:value="547bcffefd98c5b9000008ab"/>
         <meta-data android:name="UMENG_CHANNEL" android:value="e贝e宝"/>
