@@ -27,6 +27,7 @@ public class FFmpegPreviewActivity extends Activity implements TextureView.Surfa
 	private String path;
 	private TextureView surfaceView;
 	private Button cancelBtn;
+	private Button useBtn;
 	private MediaPlayer mediaPlayer;
 	private ImageView imagePlay;
 
@@ -38,7 +39,10 @@ public class FFmpegPreviewActivity extends Activity implements TextureView.Surfa
 
 		cancelBtn = (Button) findViewById(R.id.play_cancel);
 		cancelBtn.setOnClickListener(this);
-		
+
+		useBtn = (Button) findViewById(R.id.play_next);
+		useBtn.setOnClickListener(this);
+
 		DisplayMetrics displaymetrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 		surfaceView = (TextureView) findViewById(R.id.preview_video);
@@ -126,6 +130,11 @@ public class FFmpegPreviewActivity extends Activity implements TextureView.Surfa
 				imagePlay.setVisibility(View.VISIBLE);
 			}
 			break;
+		case R.id.play_next:
+			Intent intent = new Intent();
+			intent.putExtra("isOk", true);
+			finish();
+			break;
 		default:
 			break;
 		}
@@ -133,8 +142,10 @@ public class FFmpegPreviewActivity extends Activity implements TextureView.Surfa
 	
 	private void stop(){
 		mediaPlayer.stop();
-		Intent intent = new Intent(this,FFmpegRecorderActivity.class);
-		startActivity(intent);
+		Intent intent = new Intent();
+
+		intent.putExtra("isOk", false);
+
 		finish();
 	}
 	

@@ -78,10 +78,10 @@ public class GrowingAdapter extends BaseAdapter {
         Growing growing = list.get(position);
         viewHolder.publisher.setText(growing.getPublisher());
         viewHolder.time.setText(growing.getTime());
-        imageLoader.displayImage(growing.getUrl(), viewHolder.photo, EbaeboApplication.txOptions, animateFirstListener);
+        imageLoader.displayImage(growing.getPublisher_cover(), viewHolder.photo, EbaeboApplication.txOptions, animateFirstListener);
         if (!StringUtil.isNullOrEmpty(growing.getUrl())) {
             viewHolder.picture.setVisibility(View.VISIBLE);
-            imageLoader.displayImage(growing.getUrl(), viewHolder.picture, EbaeboApplication.txOptions, animateFirstListener);
+            imageLoader.displayImage(growing.getUrl(), viewHolder.picture, EbaeboApplication.tpOptions, animateFirstListener);
         }else {
             viewHolder.picture.setVisibility(View.GONE);
         }

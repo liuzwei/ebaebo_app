@@ -15,6 +15,7 @@ public class Growing implements Serializable{
     private String type;//0 文字 1 照片 2 视频
     private String child_name;//宝宝名字
     private String publisher;//发布人
+    private String publisher_cover;//发布人的头像
     private String publish_uid;
     private String is_share;
     private String school_id;
@@ -161,5 +162,13 @@ public class Growing implements Serializable{
 
     public void setComments(List<Favours> comments) {
         this.comments = comments;
+    }
+
+    public String getPublisher_cover() {
+        return publisher_cover;
+    }
+
+    public void setPublisher_cover(String publisher_cover) {
+        this.publisher_cover = publisher_cover;
     }
 }

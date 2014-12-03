@@ -67,6 +67,7 @@
         <activity android:name=".ui.ImageDelActivity"/>
         <activity android:name="com.qd.recorder.FFmpegRecorderActivity"/>
         <activity android:name=".ui.SettingMobileActivityTwo"/>
+        <activity android:name="com.qd.recorder.FFmpegPreviewActivity"/>
         <!--友盟测试-->
         <meta-data android:name="UMENG_APPKEY" android:value="547bcffefd98c5b9000008ab"/>
         <meta-data android:name="UMENG_CHANNEL" android:value="e贝e宝"/>
