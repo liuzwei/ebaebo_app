@@ -20,8 +20,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="volley" level="project" />
     <orderEntry type="library" name="android-support-v4" level="project" />
-    <orderEntry type="library" name="SocialSDK_QQZone_1" level="project" />
-    <orderEntry type="library" name="javacpp" level="project" />
   </component>
 </module>
 

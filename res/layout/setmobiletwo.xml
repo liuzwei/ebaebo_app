@@ -42,13 +42,13 @@
                   android:orientation="vertical"
                   android:padding="10dp"
                   android:id="@+id/linearname">
+
         <EditText android:layout_width="match_parent"
                   android:layout_height="50dp"
                   android:textColor="#333333"
                   android:textSize="20sp"
-                  android:hint="15066666666"
-                  android:gravity="center"
-                  android:id="@+id/mobile"/>
+                  android:hint="验证码"
+                  android:id="@+id/yzm"/>
         <TextView android:layout_width="wrap_content"
                   android:text="确  定"
                   android:id="@+id/set"

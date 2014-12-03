@@ -56,4 +56,6 @@ public class InternetURL {
 
     //爸爸妈妈设置
     public static String FATHER_MOTHER_SETTING = "http://yey.xqb668.com/json.php/user.api-fatherOrMotherSetting";
+    //绑定手机号
+    public static String SET_MOBILE_URL = "http://yey.xqb668.com/json.php/user.api-mobileSetting";
 }

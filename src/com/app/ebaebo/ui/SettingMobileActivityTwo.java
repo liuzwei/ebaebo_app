@@ -16,39 +16,37 @@ import com.android.volley.toolbox.Volley;
 import com.app.ebaebo.R;
 import com.app.ebaebo.data.ErrorDATA;
 import com.app.ebaebo.data.SuccessDATA;
-import com.app.ebaebo.entity.Account;
 import com.app.ebaebo.util.InternetURL;
 import com.app.ebaebo.util.StringUtil;
 import com.google.gson.Gson;
 
 /**
  * author: ${zhanghailong}
- * Date: 2014/11/18
- * Time: 15:58
+ * Date: 2014/12/3
+ * Time: 9:10
  * 类的功能、说明写在此处.
  */
-public class SettingMobileActivity extends BaseActivity implements View.OnClickListener{
-    private ImageView back;
-    private EditText mobile;
-    private String mobileNum;
-    Account account ;
-    private TextView set;
+public class SettingMobileActivityTwo extends BaseActivity implements View.OnClickListener {
+    private String number;
+    private ImageView back;//返回
+    private EditText yzm ;//验证码
+    private TextView set;//设置按钮
+    private String yzmnumber;
     private RequestQueue mRequestQueue;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.setmibole);
-        account = getGson().fromJson(sp.getString(Constants.ACCOUNT_KEY, ""), Account.class);
+        setContentView(R.layout.setmobiletwo);
+        number = getIntent().getExtras().getString("number");
         initView();
     }
 
     private void initView() {
         back = (ImageView) this.findViewById(R.id.back);
         back.setOnClickListener(this);
-        mobile = (EditText) this.findViewById(R.id.mobile);
-        mobile.setText(account.getMobile());
-        set = (TextView) this.findViewById(R.id.set);
+        set = (TextView) this.findViewById( R.id.set);
         set.setOnClickListener(this);
+        yzm = (EditText) this.findViewById(R.id.yzm);
         mRequestQueue = Volley.newRequestQueue(this);
     }
 
@@ -60,22 +58,23 @@ public class SettingMobileActivity extends BaseActivity implements View.OnClickL
                 finish();
                 break;
             case R.id.set:
-                //设置手机事件
-                mobileNum = mobile.getText().toString();//邮箱
-                if(StringUtil.isNullOrEmpty(mobileNum)){
-                    Toast.makeText(this, "请输入手机号！", Toast.LENGTH_SHORT).show();
+                yzmnumber =  yzm.getText().toString();
+                if(StringUtil.isNullOrEmpty(yzmnumber)){
+                    Toast.makeText(this, "请输入验证码！", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(mobileNum.length() != 11){
-                    Toast.makeText(this, "手机号格式不正确！", Toast.LENGTH_SHORT).show();
+                if(yzmnumber.length() != 4){
+                    Toast.makeText(this, "验证码格式不正确！", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                getYzm(mobileNum);
+                getdata(number ,yzmnumber);
                 break;
+
         }
     }
-    private void getYzm(final String mobileNum) {
-        String uri = String.format(InternetURL.GET_YZM_URL+"?mobile=%s&type=%d",mobileNum, 0);
+
+    private void getdata(final String number, String yzmnumber) {
+        String uri = String.format(InternetURL.SET_MOBILE_URL+"?mobile=%s&code=%s",number, yzmnumber);
         StringRequest request = new StringRequest(Request.Method.GET,
                 uri,
                 new Response.Listener<String>() {
@@ -86,17 +85,15 @@ public class SettingMobileActivity extends BaseActivity implements View.OnClickL
                             SuccessDATA data = gson.fromJson(s, SuccessDATA.class);
                             if (data.getCode() == 200){
                                 //成功
-                                Intent success = new Intent(SettingMobileActivity.this, SettingMobileActivityTwo.class);
-                                success.putExtra("number", mobileNum);
-                                startActivity(success);
+                                Toast.makeText(SettingMobileActivityTwo.this, "绑定手机号成功！", Toast.LENGTH_SHORT).show();
                                 finish();
                             }else{
-                                Toast.makeText(SettingMobileActivity.this, "获取验证码失败！", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SettingMobileActivityTwo.this, "验证码不正确！", Toast.LENGTH_SHORT).show();
                             }
                         }catch (Exception e){
                             ErrorDATA errorDATA = gson.fromJson(s, ErrorDATA.class);
                             if (errorDATA.getMsg().equals("failed")){
-                                Toast.makeText(SettingMobileActivity.this, "网络错误", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SettingMobileActivityTwo.this, "网络错误", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
@@ -108,6 +105,4 @@ public class SettingMobileActivity extends BaseActivity implements View.OnClickL
         });
         mRequestQueue.add(request);
     }
-
-
 }
