@@ -72,7 +72,7 @@ public class PhotoAdapter extends BaseAdapter {
         try {
             imageLoader.displayImage(cell.getCover() , holder.picture, EbaeboApplication.options, animateFirstListener);
         }catch (Exception e){
-            Log.d("没有网络图片", e.getMessage());
+//            Log.d("没有网络图片", e.getMessage());
         }
         holder.detailphoto.setOnClickListener(new View.OnClickListener(){
             @Override

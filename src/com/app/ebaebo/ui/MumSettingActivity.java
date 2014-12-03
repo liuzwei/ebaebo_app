@@ -179,7 +179,7 @@ public class MumSettingActivity extends BaseActivity implements View.OnClickList
 
     private void setting(final String cover){
 
-        final String type = getGson().fromJson(sp.getString(Constants.IDENTITY, ""), String.class);
+//        final String type = getGson().fromJson(sp.getString(Constants.IDENTITY, ""), String.class);
 //        String uri = String.format(InternetURL.FATHER_MOTHER_SETTING + "?uid=%s&type=%s&name=%s&cover=%s",account.getUid(), type,  nickName, cover);
         StringRequest request = new StringRequest(
                 Request.Method.POST,
@@ -211,8 +211,10 @@ public class MumSettingActivity extends BaseActivity implements View.OnClickList
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<String, String>();
                 params.put("uid", account.getUid());
-                if ("1".equals(type)) {
-                    params.put("type", type);
+                if ("1".equals(identity)) {
+                    params.put("type", "1");
+                }else{
+                    params.put("type", "0");
                 }
                 params.put("name", nickName);
                 params.put("cover",cover);

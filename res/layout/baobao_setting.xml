@@ -60,13 +60,14 @@
                   android:layout_height="50dp"
                   android:textColor="#333333"
                   android:textSize="20sp"
-                  android:text="名字：小刚"
+                  android:hint="名字：小刚"
                   android:id="@+id/name"/>
-        <EditText android:layout_width="match_parent"
+        <TextView android:layout_width="match_parent"
                   android:layout_height="50dp"
                   android:textColor="#333333"
                   android:textSize="20sp"
                   android:text="关系：父子"
+                  android:paddingLeft="13dp"
                   android:id="@+id/guanxi"/>
         <TextView android:layout_width="wrap_content"
                   android:text="确  定"

@@ -4,6 +4,8 @@ package com.app.ebaebo.util;
  * Created by liuzwei on 2014/11/11.
  */
 public class InternetURL {
+    //
+    public static String INTENT="http://yey.xqb668.com";
     //登陆接口  get方式
    public static String LOGIN_API = "http://yey.xqb668.com/json.php/user.api-login/";
 
@@ -58,4 +60,6 @@ public class InternetURL {
     public static String FATHER_MOTHER_SETTING = "http://yey.xqb668.com/json.php/user.api-fatherOrMotherSetting";
     //绑定手机号
     public static String SET_MOBILE_URL = "http://yey.xqb668.com/json.php/user.api-mobileSetting";
+    //查询宝宝信息
+    public static String SELECT_BABY_URL = "http://yey.xqb668.com/index/ServiceJson/childSetting";
 }
