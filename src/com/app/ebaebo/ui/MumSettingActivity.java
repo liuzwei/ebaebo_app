@@ -187,8 +187,6 @@ public class MumSettingActivity extends BaseActivity implements View.OnClickList
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
-                        System.out.print("++++++++++++++++++++++++++++++++++++++++"+s);
-                        Log.i("++++++++++++", s);
                         if (CommonUtil.isJson(s)) {
                             ErrorDATA errorDATA = getGson().fromJson(s, ErrorDATA.class);
                             if (errorDATA.getCode() == 200){
@@ -213,7 +211,9 @@ public class MumSettingActivity extends BaseActivity implements View.OnClickList
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<String, String>();
                 params.put("uid", account.getUid());
-                params.put("type", type);
+                if ("1".equals(type)) {
+                    params.put("type", type);
+                }
                 params.put("name", nickName);
                 params.put("cover",cover);
                 return params;
