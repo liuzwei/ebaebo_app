@@ -43,30 +43,44 @@
                 android:layout_alignParentRight="true"/>
     </RelativeLayout>
 
-    <RelativeLayout
-            android:id="@+id/publish_video_preview_video_parent"
+    <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-        <TextureView
-                android:id="@+id/preview_video"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-        <ImageView
-                android:id="@+id/previre_play"
+        <TextView
+                android:layout_marginLeft="10dp"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:text="选择宝宝: "
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icn_play_big"
-                android:layout_centerInParent="true"
-                android:scaleType="center"/>
-    </RelativeLayout>
-    <Button
-            android:id="@+id/play_cancel"
-            android:layout_width="66dp"
-            android:layout_height="36dp"
-            android:background="@drawable/btn_recorder_cancel"
-            android:text="取消"
-            android:textColor="#bbbbbb"
-            android:textSize="14dp" />
+                android:layout_height="match_parent"/>
+        <Spinner
+                android:id="@+id/publish_video_spinner"
+                android:layout_marginLeft="20dp"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content">
+
+        </Spinner>
+    </LinearLayout>
+    <EditText
+            android:id="@+id/publish_video_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp"
+            android:paddingTop="10dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="10dp"
+            android:background="@drawable/et_bule_bg"
+            android:hint="说点什么吧..." />
+
+    <TextView
+            android:id="@+id/publish_video_filepath"
+            android:textSize="16sp"
+            android:text="附件:"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 </LinearLayout>
