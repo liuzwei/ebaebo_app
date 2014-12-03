@@ -32,6 +32,7 @@ import com.google.gson.Gson;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
 import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMVideo;
 import com.umeng.socialize.sso.QZoneSsoHandler;
 import com.umeng.socialize.sso.SinaSsoHandler;
 import com.umeng.socialize.sso.TencentWBSsoHandler;
@@ -327,7 +328,24 @@ public class MainActivity extends BaseActivity implements
                 startActivity(comment);
                 break;
             case 3://分享
-                // wx967daebe835fbeac是你在微信开发平台注册应用的AppID, 这里需要替换成你注册的AppID
+                final Growing grow = growingList.get(position);
+//                private String dept;//文字描述
+//                private String type;//0 文字 1 照片 2 视频
+                 if(grow.getType().equals("0")){
+                     //文字
+                 }
+                if(grow.getType().equals("1")){
+                    //照片
+                }
+                if(grow.getDept().equals("2")){
+                    //视频
+                    UMVideo umVideo = new UMVideo(grow.getDept());
+//                    umVideo.setMediaUrl(info.getContent());
+//                    umVideo.setThumb(grow.getUrl());
+//                    umVideo.setTitle(shareTitle+info.getJieshao());
+//                    umVideo.setTargetUrl(shareUrl+shareParams);
+                    mController.setShareMedia(umVideo);
+                }
                 String appID = "wxd97dd1adcce2b199";
                 String appSecret = "7955104817ad2d367ff337ca56e12756";
                 //1.添加QQ空间分享
