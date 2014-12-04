@@ -80,7 +80,7 @@ public class SchoolBusActivity extends BaseActivity implements View.OnClickListe
         mMapView = (MapView) findViewById(R.id.bmapView); //获取百度地图控件实例
         mMapController = mMapView.getController(); //获取地图控制器
         mMapController.enableClick(true);   //设置地图是否响应点击事件
-        mMapController.setZoom(20);   //设置地图缩放级别
+        mMapController.setZoom(15);   //设置地图缩放级别
         mMapView.setBuiltInZoomControls(true);   //显示内置缩放控件
 
         viewCache = LayoutInflater.from(this).inflate(R.layout.pop_layout, null);
