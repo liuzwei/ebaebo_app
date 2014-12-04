@@ -179,7 +179,7 @@ public class PublishVideoActivity extends BaseActivity implements View.OnClickLi
                 params.put("user_type", user_type);
                 params.put("type","2");
                 params.put("child_id", babyId);
-                params.put("file", videoPath);
+                params.put("url", videoPath);
                 params.put("content", content.getText().toString());
                 return params;
             }

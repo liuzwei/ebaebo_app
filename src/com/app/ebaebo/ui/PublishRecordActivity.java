@@ -310,9 +310,9 @@ public class PublishRecordActivity extends BaseActivity implements View.OnClickL
                 Map<String,String> params = new HashMap<String, String>();
                 params.put("uid",account.getUid());
                 params.put("user_type", user_type);
-                params.put("type","2");
+                params.put("type","3");
                 params.put("child_id", babyId);
-                params.put("file", recordPath);
+                params.put("url", recordPath);
                 params.put("content", content.getText().toString());
                 return params;
             }

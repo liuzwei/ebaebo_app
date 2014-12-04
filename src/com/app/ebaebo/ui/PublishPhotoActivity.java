@@ -270,7 +270,7 @@ public class PublishPhotoActivity extends BaseActivity implements View.OnClickLi
                 params.put("user_type", user_type);
                 params.put("type","1");
                 params.put("child_id", babyId);
-                params.put("file", picPath);
+                params.put("url", picPath);
                 return params;
             }
 
