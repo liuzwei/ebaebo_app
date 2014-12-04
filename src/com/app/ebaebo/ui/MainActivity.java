@@ -340,10 +340,10 @@ public class MainActivity extends BaseActivity implements
                 if(grow.getDept().equals("2")){
                     //视频
                     UMVideo umVideo = new UMVideo(grow.getDept());
-//                    umVideo.setMediaUrl(info.getContent());
-//                    umVideo.setThumb(grow.getUrl());
+                    umVideo.setMediaUrl(grow.getUrl());
+                    umVideo.setThumb(grow.getUrl());
 //                    umVideo.setTitle(shareTitle+info.getJieshao());
-//                    umVideo.setTargetUrl(shareUrl+shareParams);
+//                    umVideo.setTargetUrl();
                     mController.setShareMedia(umVideo);
                 }
                 String appID = "wxd97dd1adcce2b199";
@@ -365,8 +365,10 @@ public class MainActivity extends BaseActivity implements
                 wxCircleHandler.addToSocialSDK();
                 //单独设置微信分享
                 WeiXinShareContent xinShareContent = new WeiXinShareContent();
-//                xinShareContent.setShareContent(shareCont);
-//                xinShareContent.setTitle(shareTitle);
+//                if(!"".equals(grow.getDept())){
+//                    xinShareContent.setShareContent(grow.getDept());
+//                    xinShareContent.setTitle(grow.getDept());
+//                }
 //                xinShareContent.setShareImage(new UMImage(this, sharePic));
 //                xinShareContent.setTargetUrl(shareUrl+shareParams);
                 mController.setShareMedia(xinShareContent);
