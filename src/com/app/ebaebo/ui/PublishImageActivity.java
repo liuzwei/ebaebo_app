@@ -1,5 +1,6 @@
 package com.app.ebaebo.ui;
 
+import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -39,6 +40,7 @@ public class PublishImageActivity extends BaseActivity implements View.OnClickLi
     private Account account;
     private int res[] = new int[]{R.drawable.abaose};
     private List<Baby> babies = new ArrayList<Baby>();//下拉列表宝宝
+    private ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +79,8 @@ public class PublishImageActivity extends BaseActivity implements View.OnClickLi
                 finish();
                 break;
             case R.id.publish_image_run://发布按钮
+                progressDialog = new ProgressDialog(PublishImageActivity.this);
+                progressDialog.setMessage("正在发布，请稍后...");
                 push();
                 break;
         }
@@ -136,10 +140,16 @@ public class PublishImageActivity extends BaseActivity implements View.OnClickLi
     private void push(){
         final String pushContent = content.getText().toString();
         if (StringUtil.isNullOrEmpty(pushContent)){
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+            }
             Toast.makeText(mContext, "文字不能为空", Toast.LENGTH_SHORT).show();
             return;
         }
         if (StringUtil.isNullOrEmpty(babyId)){
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+            }
             Toast.makeText(mContext, "请选择宝宝", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -153,6 +163,9 @@ public class PublishImageActivity extends BaseActivity implements View.OnClickLi
                     public void onResponse(String s) {
                         ErrorDATA data = getGson().fromJson(s, ErrorDATA.class);
                         if (data.getCode() == 200){
+                            if (progressDialog != null){
+                                progressDialog.dismiss();
+                            }
                             Toast.makeText(mContext, "发布成功", Toast.LENGTH_SHORT).show();
                             finish();
                         }
@@ -161,7 +174,10 @@ public class PublishImageActivity extends BaseActivity implements View.OnClickLi
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-
+                        if (progressDialog != null){
+                            progressDialog.dismiss();
+                        }
+                        Toast.makeText(mContext, "网络错误，请稍后重试", Toast.LENGTH_SHORT).show();
                     }
                 }
         ){

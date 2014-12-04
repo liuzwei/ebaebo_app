@@ -22,6 +22,7 @@ import com.app.ebaebo.entity.Account;
 import com.app.ebaebo.entity.Baby;
 import com.app.ebaebo.util.CommonUtil;
 import com.app.ebaebo.util.InternetURL;
+import com.app.ebaebo.util.StringUtil;
 import com.google.gson.Gson;
 import com.qd.recorder.FFmpegRecorderActivity;
 
@@ -46,6 +47,7 @@ public class PublishVideoActivity extends BaseActivity implements View.OnClickLi
     private ArrayAdapter<String> spinnerAdapter;
     private String babyId;//要发布的宝宝ID
     private ProgressDialog progressDialog;
+    private Button videoRecord;
 
     private String path;
 
@@ -60,6 +62,8 @@ public class PublishVideoActivity extends BaseActivity implements View.OnClickLi
         initView();
         account = getGson().fromJson(sp.getString(Constants.ACCOUNT_KEY, ""), Account.class);
         getBabyList();
+
+        //跳转到录制页面
         openVideo();
 
     }
@@ -70,7 +74,9 @@ public class PublishVideoActivity extends BaseActivity implements View.OnClickLi
         content = (EditText) findViewById(R.id.publish_video_content);
         filePath = (TextView) findViewById(R.id.publish_video_filepath);
         spinner = (Spinner) findViewById(R.id.publish_video_spinner);
+        videoRecord = (Button) findViewById(R.id.publish_video_record);
 
+        videoRecord.setOnClickListener(this);
         back.setOnClickListener(this);
         publish.setOnClickListener(this);
     }
@@ -105,13 +111,37 @@ public class PublishVideoActivity extends BaseActivity implements View.OnClickLi
                 progressDialog.show();
                 uploadFile();
                 break;
+            case R.id.publish_video_record:
+                openVideo();
+                break;
         }
     }
 
     private void uploadFile(){
         Map<String, File> files = new HashMap<String, File>();
-        File file = new File(path);
-        files.put("file", file);
+        if (!StringUtil.isNullOrEmpty(path)) {
+            File file = new File(path);
+            if (file.isDirectory() || file == null) {
+                if (progressDialog != null){
+                    progressDialog.dismiss();
+                }
+                Toast.makeText(mContext, "请先录制视频", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            files.put("file", file);
+        }else {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+            }
+            Toast.makeText(mContext, "请先录制视频", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (StringUtil.isNullOrEmpty(babyId)){
+            progressDialog.dismiss();
+            Toast.makeText(mContext, "请选择宝宝", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Map<String, String> params = new HashMap<String, String>();
         addPutUploadFileRequest(
                 InternetURL.UPLOAD_FILE,

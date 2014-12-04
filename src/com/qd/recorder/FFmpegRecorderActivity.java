@@ -60,16 +60,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.ebaebo.R;
+import com.app.ebaebo.ui.BaseActivity;
 import com.googlecode.javacv.FrameRecorder;
 import com.googlecode.javacv.cpp.opencv_core.IplImage;
 import com.qd.recorder.ProgressView.State;
 
-
-
-
-
-
-public class FFmpegRecorderActivity extends Activity implements OnClickListener, OnTouchListener {
+public class FFmpegRecorderActivity extends BaseActivity implements OnClickListener, OnTouchListener {
 
     private final static String CLASS_LABEL = "RecordActivity";
     private final static String LOG_TAG = CLASS_LABEL;
@@ -154,7 +150,7 @@ public class FFmpegRecorderActivity extends Activity implements OnClickListener,
     //视频帧率
     private int frameRate = 30;
     //录制的最长时间
-    private int recordingTime = 8000;
+    private int recordingTime = 80000;
     //录制的最短时间
     private int recordingMinimumTime = 6000;
     //提示换个场景
