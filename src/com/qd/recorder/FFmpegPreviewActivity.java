@@ -16,10 +16,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
+import com.app.ebaebo.ActivityTack;
 import com.app.ebaebo.R;
+import com.app.ebaebo.ui.BaseActivity;
+import com.app.ebaebo.ui.MainActivity;
 
 
-public class FFmpegPreviewActivity extends Activity implements TextureView.SurfaceTextureListener
+public class FFmpegPreviewActivity extends BaseActivity implements TextureView.SurfaceTextureListener
         ,OnClickListener,OnCompletionListener{
 
     private String path;
@@ -139,11 +142,10 @@ public class FFmpegPreviewActivity extends Activity implements TextureView.Surfa
     }
 
     private void stop(){
-        mediaPlayer.stop();
-        Intent intent = new Intent();
-        intent.putExtra("isOk", false);
-        setResult(Activity.RESULT_OK, intent);
-        finish();
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+            mediaPlayer.stop();
+        }
+        ActivityTack.getInstanse().popUntilActivity(MainActivity.class);
     }
 
     @Override
