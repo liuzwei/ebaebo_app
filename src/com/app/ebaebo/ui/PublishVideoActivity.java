@@ -122,10 +122,11 @@ public class PublishVideoActivity extends BaseActivity implements View.OnClickLi
                     public void onResponse(String s) {
                         if (CommonUtil.isJson(s)) {
                             UploadDATA data = getGson().fromJson(s, UploadDATA.class);
-                            if (data.getCode() == 200){
+                            if (data.getCode() == 200) {
                                 publishRun(data.getUrl());
                             }
-                        }else {
+                        } else {
+                            progressDialog.dismiss();
                             Toast.makeText(mContext, "数据有误 ", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -133,7 +134,8 @@ public class PublishVideoActivity extends BaseActivity implements View.OnClickLi
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-
+                        progressDialog.dismiss();
+                        Toast.makeText(mContext, "请求错误 ", Toast.LENGTH_SHORT).show();
                     }
                 },
                 null);

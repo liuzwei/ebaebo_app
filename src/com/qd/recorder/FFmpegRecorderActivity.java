@@ -1201,7 +1201,7 @@ public class FFmpegRecorderActivity extends Activity implements OnClickListener,
         {
         }finally{
             if (!valid) {
-//                finish();
+                finish();
             }
         }
     }
@@ -1220,7 +1220,7 @@ public class FFmpegRecorderActivity extends Activity implements OnClickListener,
             }
             setResult(RESULT_OK, intent);
             finish();
-            videoTheEnd(false);
+//            videoTheEnd(false);
         }
     }
 
