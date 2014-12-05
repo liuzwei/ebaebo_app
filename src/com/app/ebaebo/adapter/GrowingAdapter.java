@@ -111,7 +111,11 @@ public class GrowingAdapter extends BaseAdapter {
                 break;
             case 3://录音
                 viewHolder.playRecord.setVisibility(View.VISIBLE);
-                viewHolder.playRecord.setImageDrawable(context.getResources().getDrawable(R.drawable.play_record));
+                if (growing.isPlay()) {
+                    viewHolder.playRecord.setImageDrawable(context.getResources().getDrawable(R.drawable.pause_record));
+                }else {
+                    viewHolder.playRecord.setImageDrawable(context.getResources().getDrawable(R.drawable.play_record));
+                }
                 viewHolder.playRecord.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
