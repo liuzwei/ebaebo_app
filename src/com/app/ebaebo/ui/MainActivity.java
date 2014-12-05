@@ -27,6 +27,7 @@ import com.app.ebaebo.entity.Growing;
 import com.app.ebaebo.util.CommonUtil;
 import com.app.ebaebo.util.InternetURL;
 import com.app.ebaebo.util.PhoneEnvUtil;
+import com.app.ebaebo.util.Player;
 import com.app.ebaebo.widget.ContentListView;
 import com.google.gson.Gson;
 import com.umeng.socialize.controller.UMServiceFactory;
@@ -42,6 +43,7 @@ import com.umeng.socialize.weixin.media.CircleShareContent;
 import com.umeng.socialize.weixin.media.WeiXinShareContent;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class MainActivity extends BaseActivity implements
@@ -77,7 +79,9 @@ public class MainActivity extends BaseActivity implements
     private String child_id;
     private Account account;
     private String identity;
+    private Growing qGrowing;
 
+    private List<Player> players = new LinkedList<Player>();
     private long waitTime = 2000;
     private long touchTime = 0;
 
@@ -279,7 +283,9 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
-    public void onClickContentItem(final int position, int flag, Object object) {
+    public void onClickContentItem(final int position, int flag, final Object object) {
+        qGrowing = growingList.get(position);
+
         switch (flag){
             case 1://收藏
                 final Growing growing = growingList.get(position);
@@ -379,6 +385,35 @@ public class MainActivity extends BaseActivity implements
 //                circleMedia.setTargetUrl(shareUrl+shareParams);
                 mController.setShareMedia(circleMedia);
                 mController.openShare(this, false);
+                break;
+            case 4://播放音乐
+                final Player player = new Player();
+                qGrowing.setPlay(qGrowing.isPlay() ? false : true);
+                for (Growing mGrowing : growingList){
+                    if (mGrowing.isPlay() && !mGrowing.getId().equals(qGrowing.getId())){
+                        if (players.size() > 0){
+                            players.remove(0).stop();
+                        }
+                    }
+                    if (!mGrowing.getId().equals(qGrowing.getId())){
+                        mGrowing.setPlay(false);
+                    }
+                }
+                if (players.size() > 0){
+                    players.remove(0).stop();
+                    adapter.notifyDataSetChanged();
+                    return;
+                }
+
+                adapter.notifyDataSetChanged();
+                players.add(player);
+                getAppThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        player.playUrl((String) object);
+                    }
+                });
+
                 break;
         }
     }

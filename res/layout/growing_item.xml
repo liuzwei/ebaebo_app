@@ -70,28 +70,37 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:background="#e7e7e7"
                         android:padding="5dp"
                         >
                     <!-- 内容 -->
                     <TextView
+                            android:layout_marginLeft="10dp"
                             android:id="@+id/growing_item_content"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="16sp"
+                            android:textSize="18sp"
                             android:autoLink="web"
                             android:lineSpacingExtra="5dp"
                             android:text="内容"
                             android:textColor="#333333" />
 
                     <!-- 内部图片 -->
-                        <ImageView
-                                android:id="@+id/growing_item_picture"
-                                android:layout_width="match_parent"
-                                android:layout_height="200dp"
-                                android:scaleType="centerCrop"
-                                android:layout_centerHorizontal="true"
-                                />
+                    <GridView
+                            android:layout_gravity="center"
+                            android:id="@+id/growing_item_gridview"
+                            android:gravity="center"
+                            android:numColumns="1"
+                            android:verticalSpacing="5dp"
+                            android:horizontalSpacing="5dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                    </GridView>
+                    <ImageView
+                            android:id="@+id/growing_item_play_record"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

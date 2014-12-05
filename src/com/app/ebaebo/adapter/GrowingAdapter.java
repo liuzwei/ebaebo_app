@@ -6,10 +6,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.*;
 import com.app.ebaebo.EbaeboApplication;
 import com.app.ebaebo.R;
 import com.app.ebaebo.entity.Growing;
@@ -68,39 +65,59 @@ public class GrowingAdapter extends BaseAdapter {
             viewHolder.favours = (LinearLayout) convertView.findViewById(R.id.growing_item_favours);
             viewHolder.comment = (LinearLayout) convertView.findViewById(R.id.growing_item_comment);
             viewHolder.share = (ImageView) convertView.findViewById(R.id.growing_item_share);
-            viewHolder.picture = (ImageView) convertView.findViewById(R.id.growing_item_picture);
+//            viewHolder.picture = (ImageView) convertView.findViewById(R.id.growing_item_picture);
             viewHolder.redHeart = (ImageView) convertView.findViewById(R.id.red_heart);
+            viewHolder.gridView = (GridView) convertView.findViewById(R.id.growing_item_gridview);
+            viewHolder.playRecord = (ImageView) convertView.findViewById(R.id.growing_item_play_record);
             convertView.setTag(viewHolder);
         }else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        Growing growing = list.get(position);
+        final Growing growing = list.get(position);
         viewHolder.publisher.setText(growing.getPublisher());
         viewHolder.time.setText(growing.getTime());
         imageLoader.displayImage(growing.getPublisher_cover(), viewHolder.photo, EbaeboApplication.txOptions, animateFirstListener);
-        if (!StringUtil.isNullOrEmpty(growing.getUrl())) {
-            viewHolder.picture.setVisibility(View.VISIBLE);
-            imageLoader.displayImage(growing.getUrl(), viewHolder.picture, EbaeboApplication.tpOptions, animateFirstListener);
-        }else {
-            viewHolder.picture.setVisibility(View.GONE);
-        }
+//        if (!StringUtil.isNullOrEmpty(growing.getUrl())) {
+//            viewHolder.picture.setVisibility(View.VISIBLE);
+//            imageLoader.displayImage(growing.getUrl(), viewHolder.picture, EbaeboApplication.tpOptions, animateFirstListener);
+//        }else {
+//            viewHolder.picture.setVisibility(View.GONE);
+//        }
         if ("1".equals(growing.getIs_favoured())){
             viewHolder.redHeart.setImageDrawable(context.getResources().getDrawable(R.drawable.red_favours));
         }else {
             viewHolder.redHeart.setImageDrawable(context.getResources().getDrawable(R.drawable.favours));
         }
+        viewHolder.content.setText(growing.getDept());
+        viewHolder.gridView.setVisibility(View.GONE);
+        viewHolder.playRecord.setVisibility(View.GONE);
+
         //todo   type类型返回的为空
-//        switch (Integer.parseInt(growing.getType()) ){
-        switch (0){
+        switch (Integer.parseInt(growing.getType()) ){
+//        switch (0){
             case 0://文字
                 viewHolder.content.setText(growing.getDept());
                 break;
             case 1://照片
-
+                if (!StringUtil.isNullOrEmpty(growing.getUrl())) {
+                    String[] picUrls = growing.getUrl().split(",");
+                    viewHolder.gridView.setAdapter(new ImageAdapter(picUrls, context));
+                    viewHolder.gridView.setVisibility(View.VISIBLE);
+                }
                 break;
             case 2://视频
 
+                break;
+            case 3://录音
+                viewHolder.playRecord.setVisibility(View.VISIBLE);
+                viewHolder.playRecord.setImageDrawable(context.getResources().getDrawable(R.drawable.play_record));
+                viewHolder.playRecord.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onClickContentItemListener.onClickContentItem(position, 4, growing.getUrl());
+                    }
+                });
                 break;
         }
 
@@ -134,7 +151,10 @@ public class GrowingAdapter extends BaseAdapter {
         LinearLayout favours;//收藏
         LinearLayout comment;//评论
         ImageView share;//分享
-        ImageView picture;
+//        ImageView picture;
         ImageView redHeart;
+
+        ImageView playRecord;
+        GridView gridView;
     }
 }
