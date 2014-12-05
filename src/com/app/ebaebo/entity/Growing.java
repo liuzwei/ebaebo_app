@@ -27,6 +27,15 @@ public class Growing implements Serializable{
     private String is_favoured;//是否收藏过，0没有  1收藏
     private FavoursObj favours;//收藏列表
     private List<Favours> comments;//喜爱列表
+    private boolean play;
+
+    public boolean isPlay() {
+        return play;
+    }
+
+    public void setPlay(boolean play) {
+        this.play = play;
+    }
 
     public String getId() {
         return id;
