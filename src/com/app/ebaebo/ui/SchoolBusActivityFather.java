@@ -5,6 +5,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.location.Location;
+import android.location.LocationListener;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,12 +40,16 @@ import com.app.ebaebo.entity.Account;
 import com.app.ebaebo.entity.Trace;
 import com.app.ebaebo.util.CommonUtil;
 import com.app.ebaebo.util.InternetURL;
+import com.baidu.lbsapi.BMapManager;
+import com.baidu.lbsapi.MKGeneralListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.*;
 import com.baidu.mapapi.map.BaiduMap.OnMapDrawFrameCallback;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.nplatform.comapi.map.MapController;
+import com.baidu.pplatform.comapi.basestruct.GeoPoint;
 
 /**
  * author: ${zhanghailong}
@@ -52,23 +58,16 @@ import com.baidu.mapapi.model.LatLng;
  * 类的功能、说明写在此处.
  */
 public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawFrameCallback, View.OnClickListener{
-
     private ImageView schoolbusback;
     private TextView shoolbusinstance;//车辆距离
-
     private static final String LTAG = SchoolBusActivityFather.class.getSimpleName();
-
     // 地图相关
     MapView mMapView;
     BaiduMap mBaiduMap;
-
     private List<LatLng> latLngPolygon  = new ArrayList<LatLng>();
     private List<Trace> listDw  = new ArrayList<Trace>();
-
-
     private float[] vertexs;
     private FloatBuffer vertexBuffer;
-
     /**
      * 构造广播监听类，监听 SDK key 验证以及网络异常广播
      */
@@ -91,7 +90,8 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
     private LocationClient mLocationClient;
     private LocationClientOption.LocationMode tempMode = LocationClientOption.LocationMode.Hight_Accuracy;
     private String tempcoor="gcj02";
-
+    private BMapManager mBMapManager;
+    private MapController mMapController = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,17 +104,12 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
         setContentView(R.layout.shoolbusfather);
         initView();
         getData();
-        mBaiduMap.setOnMapDrawFrameCallback(this);
-        if(latLngPolygon!=null &&latLngPolygon.size()>0){
-            //绘制起点
-            MydrawPointStart(latLngPolygon.get(0).latitude, latLngPolygon.get(0).longitude);
-            //绘制终点
-            MydrawPointStart(latLngPolygon.get(latLngPolygon.size() - 1).latitude, latLngPolygon.get(latLngPolygon.size() - 1).longitude);
-        }
-        //定位
-        mLocationClient = ((EbaeboApplication)getApplication()).mLocationClient;
-        mLocationClient.start();
+
+
+
+
     }
+
     public void MydrawPointStart(Double lat, Double lng){
         //定义Maker坐标点
         LatLng point = new LatLng(lat,lng);
@@ -149,6 +144,7 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
         // 初始化地图
         mMapView = (MapView) findViewById(R.id.bmapView);
         mBaiduMap = mMapView.getMap();
+        mBaiduMap.setOnMapDrawFrameCallback(this);
     }
     @Override
     public void onClick(View v) {
@@ -179,6 +175,20 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
                                         latLngPolygon.add(latlng);
                                     }
                                 }
+                                //开始处理数据
+                                if(latLngPolygon!=null &&latLngPolygon.size()>0){
+                                    //绘制起点
+                                    MydrawPointStart(latLngPolygon.get(0).latitude, latLngPolygon.get(0).longitude);
+                                    //绘制终点
+                                    MydrawPointStart(latLngPolygon.get(latLngPolygon.size() - 1).latitude, latLngPolygon.get(latLngPolygon.size() - 1).longitude);
+                                }
+
+                                //定位到当期位置
+                                LatLng ll = new LatLng(24.956247,
+                                        121.514817);
+                                MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
+                                mBaiduMap.setMapStatus( u );
+
                             }else {
                                 Toast.makeText(mContext, "数据错误，请稍后重试", Toast.LENGTH_SHORT).show();
                             }
@@ -224,12 +234,7 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
                     drawingMapStatus);
         }
     }
-    @Override
-    protected void onStop() {
-        // TODO Auto-generated method stub
-        mLocationClient.stop();
-        super.onStop();
-    }
+
     public void calPolylinePoint(MapStatus mspStatus) {
         PointF[] polyPoints = new PointF[latLngPolygon.size()];
         vertexs = new float[3 * latLngPolygon.size()];
@@ -279,18 +284,10 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
         gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
     }
     int textureId = -1;
-    private void InitLocation(){
-        LocationClientOption option = new LocationClientOption();
-        option.setLocationMode(tempMode);//设置定位模式
-        option.setCoorType(tempcoor);//返回的定位结果是百度经纬度，默认值gcj02
-        int span=1000;
-        try {
-//            span = Integer.valueOf(frequence.getText().toString());
-        } catch (Exception e) {
-            // TODO: handle exception
+
+    //获得距离
+    public void getInstant(List<LatLng> lists){
+        if(lists!=null && lists.size()>0){
         }
-        option.setScanSpan(span);//设置发起定位请求的间隔时间为5000ms
-//        option.setIsNeedAddress(checkGeoLocation.isChecked());
-        mLocationClient.setLocOption(option);
     }
 }

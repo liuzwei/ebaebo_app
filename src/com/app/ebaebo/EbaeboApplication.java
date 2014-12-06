@@ -3,14 +3,17 @@ package com.app.ebaebo;
 
 import android.app.Application;
 import android.app.Notification;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.app.ebaebo.db.DBManager;
 import com.app.ebaebo.entity.Message;
@@ -55,6 +58,10 @@ public class EbaeboApplication extends Application {
     public LocationClient mLocationClient;
     public GeofenceClient mGeofenceClient;
     public MyLocationListener mMyLocationListener;
+    public TextView mLocationResult,logMsg;
+    public TextView trigger,exit;
+    public Vibrator mVibrator;
+    public static String dwlocation;
     //-----------------------------------
     public static DisplayImageOptions options;
     public static DisplayImageOptions txOptions;//头像图片
@@ -87,7 +94,7 @@ public class EbaeboApplication extends Application {
         mMyLocationListener = new MyLocationListener();
         mLocationClient.registerLocationListener(mMyLocationListener);
         mGeofenceClient = new GeofenceClient(getApplicationContext());
-
+        mVibrator =(Vibrator)getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);
         //------
         /**
          * 该Handler是在IntentService中被调用，故
@@ -226,35 +233,53 @@ public class EbaeboApplication extends Application {
         public void onReceiveLocation(BDLocation location) {
             //Receive Location
             StringBuffer sb = new StringBuffer(256);
-            sb.append("time : ");
-            sb.append(location.getTime());
-            sb.append("\nerror code : ");
-            sb.append(location.getLocType());
-            sb.append("\nlatitude : ");
+//            sb.append("time : ");
+//            sb.append(location.getTime());
+//            sb.append("\nerror code : ");
+//            sb.append(location.getLocType());
+            sb.append("latitude : ");
             sb.append(location.getLatitude());
             sb.append("\nlontitude : ");
             sb.append(location.getLongitude());
-            sb.append("\nradius : ");
-            sb.append(location.getRadius());
-            if (location.getLocType() == BDLocation.TypeGpsLocation){
-                sb.append("\nspeed : ");
-                sb.append(location.getSpeed());
-                sb.append("\nsatellite : ");
-                sb.append(location.getSatelliteNumber());
-                sb.append("\ndirection : ");
-                sb.append("\naddr : ");
-                sb.append(location.getAddrStr());
-                sb.append(location.getDirection());
-            } else if (location.getLocType() == BDLocation.TypeNetWorkLocation){
-                sb.append("\naddr : ");
-                sb.append(location.getAddrStr());
-                sb.append("\noperationers : ");
-                sb.append(location.getOperators());
-            }
+//            sb.append("\nradius : ");
+//            sb.append(location.getRadius());
+//            if (location.getLocType() == BDLocation.TypeGpsLocation){
+//                sb.append("\nspeed : ");
+//                sb.append(location.getSpeed());
+//                sb.append("\nsatellite : ");
+//                sb.append(location.getSatelliteNumber());
+//                sb.append("\ndirection : ");
+//                sb.append("\naddr : ");
+//                sb.append(location.getAddrStr());
+//                sb.append(location.getDirection());
+//            } else if (location.getLocType() == BDLocation.TypeNetWorkLocation){
+//                sb.append("\naddr : ");
+//                sb.append(location.getAddrStr());
+//                sb.append("\noperationers : ");
+//                sb.append(location.getOperators());
+//            }
             Log.i("BaiduLocationApiDem", sb.toString());
         }
-
-
     }
+
+    /**
+     * 显示请求字符串
+     * @param str
+     */
+    public void logMsg(String str) {
+        dwlocation = str;
+        try {
+            if (mLocationResult != null)
+                mLocationResult.setText(str);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 高精度地理围栏回调
+     * @author jpren
+     *
+     */
 
 }
