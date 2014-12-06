@@ -62,4 +62,6 @@ public class InternetURL {
     public static String SET_MOBILE_URL = "http://yey.xqb668.com/json.php/user.api-mobileSetting";
     //查询宝宝信息
     public static String SELECT_BABY_URL = "http://yey.xqb668.com/index/ServiceJson/childSetting";
+    //34.	获取最近路线的详细坐标信息
+    public static String GET_LOCATION_URL  = "http://yey.xqb668.com/index/ServiceJson/schoolBusLngLat";
 }

@@ -240,8 +240,14 @@ public class MainActivity extends BaseActivity implements
                 startActivity(photo);
                 break;
             case R.id.leftmenu_school_car://校车通知
-                Intent schoolbus = new Intent(MainActivity.this, SchoolBusActivity.class);
-                startActivity(schoolbus);
+                if(account.getIs_teacher().equals("1")){//是教师登陆的话
+                    Intent schoolbus = new Intent(MainActivity.this, OpenglDemo.class);
+                    startActivity(schoolbus);
+                }else{
+                    //家长登陆的话
+                    Intent schoolbus = new Intent(MainActivity.this, SchoolBusActivityFather.class);
+                    startActivity(schoolbus);
+                }
                 break;
             case R.id.leftmenu_address_book://通讯簿
                 Intent txl = new Intent(MainActivity.this, TongxunluActivity.class);

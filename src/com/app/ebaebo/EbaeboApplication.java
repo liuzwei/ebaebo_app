@@ -10,11 +10,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 import com.app.ebaebo.db.DBManager;
 import com.app.ebaebo.entity.Message;
 import com.app.ebaebo.entity.NotifMessage;
 import com.app.ebaebo.ui.Constants;
 import com.app.ebaebo.ui.NotificationActivity;
+//import com.baidu.mapapi.BMapManager;
+//import com.baidu.mapapi.MKGeneralListener;
+//import com.baidu.mapapi.map.MKEvent;
+import com.baidu.mapapi.SDKInitializer;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -50,6 +55,7 @@ public class EbaeboApplication extends Application {
     private DBManager dbManager;
     public static JSONArray jsonArray;//好友列表
     public static JSONArray recent_chatters;//最近联系人
+//    public static BMapManager mBMapMan;
 
 
 
@@ -59,9 +65,10 @@ public class EbaeboApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        // 在使用 SDK 各组间之前初始化 context 信息，传入 ApplicationContext
+        SDKInitializer.initialize(this);
         initImageLoader(getApplicationContext());
         MobclickAgent.updateOnlineConfig(getApplicationContext());
-
         mPushAgent = PushAgent.getInstance(this);
         mPushAgent.setDebugMode(true);
         dbManager = new DBManager(getApplicationContext());
@@ -197,4 +204,5 @@ public class EbaeboApplication extends Application {
                 .build();
         ImageLoader.getInstance().init(config);
     }
+
 }
