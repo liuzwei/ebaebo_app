@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.nio.ByteBuffer;
@@ -25,12 +26,23 @@ import android.os.Bundle;
 import android.util.Log;
 
 import android.widget.Toast;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.app.ebaebo.EbaeboApplication;
 import com.app.ebaebo.R;
+import com.app.ebaebo.data.DianmingDATA;
+import com.app.ebaebo.data.TraceDATA;
+import com.app.ebaebo.entity.Account;
+import com.app.ebaebo.entity.Trace;
+import com.app.ebaebo.util.CommonUtil;
+import com.app.ebaebo.util.InternetURL;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.SDKInitializer;
-import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.*;
 import com.baidu.mapapi.map.BaiduMap.OnMapDrawFrameCallback;
-import com.baidu.mapapi.map.MapStatus;
-import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.model.LatLng;
 
 /**
@@ -39,7 +51,7 @@ import com.baidu.mapapi.model.LatLng;
  * Time: 8:33
  * 类的功能、说明写在此处.
  */
-public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawFrameCallback{
+public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawFrameCallback, View.OnClickListener{
 
     private ImageView schoolbusback;
     private TextView shoolbusinstance;//车辆距离
@@ -49,17 +61,10 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
     // 地图相关
     MapView mMapView;
     BaiduMap mBaiduMap;
-    Bitmap bitmap;
-    private LatLng latlng1 = new LatLng(39.97923, 116.357428);
-    LatLng latlng2 = new LatLng(39.94923, 116.397428);
-    LatLng latlng3 = new LatLng(39.96923, 116.437428);
-    private List<LatLng> latLngPolygon;
-    {
-        latLngPolygon = new ArrayList<LatLng>();
-        latLngPolygon.add(latlng1);
-        latLngPolygon.add(latlng2);
-        latLngPolygon.add(latlng3);
-    }
+
+    private List<LatLng> latLngPolygon  = new ArrayList<LatLng>();
+    private List<Trace> listDw  = new ArrayList<Trace>();
+
 
     private float[] vertexs;
     private FloatBuffer vertexBuffer;
@@ -82,26 +87,112 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
     }
 
     private SDKReceiver mReceiver;
+    //定位
+    private LocationClient mLocationClient;
+    private LocationClientOption.LocationMode tempMode = LocationClientOption.LocationMode.Hight_Accuracy;
+    private String tempcoor="gcj02";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-// 注册 SDK 广播监听者
+        // 注册 SDK 广播监听者
         IntentFilter iFilter = new IntentFilter();
         iFilter.addAction(SDKInitializer.SDK_BROADTCAST_ACTION_STRING_PERMISSION_CHECK_ERROR);
         iFilter.addAction(SDKInitializer.SDK_BROADCAST_ACTION_STRING_NETWORK_ERROR);
         mReceiver = new SDKReceiver();
         registerReceiver(mReceiver, iFilter);
-
         setContentView(R.layout.shoolbusfather);
+        initView();
+        getData();
+        mBaiduMap.setOnMapDrawFrameCallback(this);
+        if(latLngPolygon!=null &&latLngPolygon.size()>0){
+            //绘制起点
+            MydrawPointStart(latLngPolygon.get(0).latitude, latLngPolygon.get(0).longitude);
+            //绘制终点
+            MydrawPointStart(latLngPolygon.get(latLngPolygon.size() - 1).latitude, latLngPolygon.get(latLngPolygon.size() - 1).longitude);
+        }
+        //定位
+        mLocationClient = ((EbaeboApplication)getApplication()).mLocationClient;
+        mLocationClient.start();
+    }
+    public void MydrawPointStart(Double lat, Double lng){
+        //定义Maker坐标点
+        LatLng point = new LatLng(lat,lng);
+        //构建Marker图标
+        BitmapDescriptor bitmap = BitmapDescriptorFactory
+                .fromResource(R.drawable.startbutton);
+        //构建MarkerOption，用于在地图上添加Marker
+        OverlayOptions option = new MarkerOptions()
+                .position(point)
+                .icon(bitmap);
+        //在地图上添加Marker，并显示
+        mBaiduMap.addOverlay(option);
+    }
+    public void MydrawPointEnd(Double lat, Double lng){
+        //定义Maker坐标点
+        LatLng point = new LatLng(lat,lng);
+        //构建Marker图标
+        BitmapDescriptor bitmap = BitmapDescriptorFactory
+                .fromResource(R.drawable.stopbutton);
+        //构建MarkerOption，用于在地图上添加Marker
+        OverlayOptions option = new MarkerOptions()
+                .position(point)
+                .icon(bitmap);
+        //在地图上添加Marker，并显示
+        mBaiduMap.addOverlay(option);
+
+    }
+    private void initView() {
+        schoolbusback = (ImageView) findViewById(R.id.schoolbusbackfather);
+        schoolbusback.setOnClickListener(this);
+        shoolbusinstance = (TextView) findViewById(R.id.shoolbusinstance);
         // 初始化地图
         mMapView = (MapView) findViewById(R.id.bmapView);
         mBaiduMap = mMapView.getMap();
+    }
+    @Override
+    public void onClick(View v) {
+        switch (v.getId())
+        {
+            case R.id.schoolbusbackfather:
+                finish();
+                break;
+        }
+    }
+    private void getData(){
+        Account account = getGson().fromJson(sp.getString(Constants.ACCOUNT_KEY, ""), Account.class);
+        if (account != null) {
+            String uri = String.format(InternetURL.GET_LOCATION_URL + "?uid=%s&class_id=%s", account.getUid(), account.getClass_id());
+            StringRequest request = new StringRequest(
+                    Request.Method.GET,
+                    uri,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String s) {
+                            if (CommonUtil.isJson(s)){
+                                TraceDATA data = getGson().fromJson(s, TraceDATA.class);
+                                listDw = data.getData();
+                                if(listDw!=null){
+                                    for(int i =0;i<listDw.size();i++){
+                                        Trace trace=listDw.get(i);
+                                        LatLng latlng = new LatLng(Double.parseDouble(trace.getLat()) , Double.parseDouble(trace.getLng()));
+                                        latLngPolygon.add(latlng);
+                                    }
+                                }
+                            }else {
+                                Toast.makeText(mContext, "数据错误，请稍后重试", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
 
-        mBaiduMap.setOnMapDrawFrameCallback(this);
-        bitmap = BitmapFactory.decodeResource(this.getResources(),
-                R.drawable.ground_overlay);
-
+                        }
+                    }
+            );
+            getRequestQueue().add(request);
+        }
     }
 
     @Override
@@ -131,10 +222,14 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
             calPolylinePoint(drawingMapStatus);
             drawPolyline(gl, Color.argb(255, 255, 0, 0), vertexBuffer, 10, 3,
                     drawingMapStatus);
-            drawTexture(gl, bitmap, drawingMapStatus);
         }
     }
-
+    @Override
+    protected void onStop() {
+        // TODO Auto-generated method stub
+        mLocationClient.stop();
+        super.onStop();
+    }
     public void calPolylinePoint(MapStatus mspStatus) {
         PointF[] polyPoints = new PointF[latLngPolygon.size()];
         vertexs = new float[3 * latLngPolygon.size()];
@@ -184,71 +279,18 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
         gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
     }
     int textureId = -1;
-    /**
-     * 使用opengl坐标绘制
-     *
-     * @param gl
-     * @param bitmap
-     * @param drawingMapStatus
-     */
-    public void drawTexture(GL10 gl, Bitmap bitmap, MapStatus drawingMapStatus) {
-        PointF p1 = mBaiduMap.getProjection().toOpenGLLocation(latlng2,
-                drawingMapStatus);
-        PointF p2 = mBaiduMap.getProjection().toOpenGLLocation(latlng3,
-                drawingMapStatus);
-        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(4 * 3 * 4);
-        byteBuffer.order(ByteOrder.nativeOrder());
-        FloatBuffer vertices = byteBuffer.asFloatBuffer();
-        vertices.put(new float[] { p1.x, p1.y, 0.0f, p2.x, p1.y, 0.0f, p1.x,
-                p2.y, 0.0f, p2.x, p2.y, 0.0f });
-
-        ByteBuffer indicesBuffer = ByteBuffer.allocateDirect(6 * 2);
-        indicesBuffer.order(ByteOrder.nativeOrder());
-        ShortBuffer indices = indicesBuffer.asShortBuffer();
-        indices.put(new short[] { 0, 1, 2, 1, 2, 3 });
-
-        ByteBuffer textureBuffer = ByteBuffer.allocateDirect(4 * 2 * 4);
-        textureBuffer.order(ByteOrder.nativeOrder());
-        FloatBuffer texture = textureBuffer.asFloatBuffer();
-        texture.put(new float[] { 0, 1f, 1f, 1f, 0f, 0f, 1f, 0f });
-
-        indices.position(0);
-        vertices.position(0);
-        texture.position(0);
-
-        // 生成纹理
-        if (textureId == -1) {
-            int textureIds[] = new int[1];
-            gl.glGenTextures(1, textureIds, 0);
-            textureId = textureIds[0];
-            Log.d(LTAG, "textureId: " + textureId);
-            gl.glBindTexture(GL10.GL_TEXTURE_2D, textureId);
-            GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
-            gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER,
-                    GL10.GL_NEAREST);
-            gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER,
-                    GL10.GL_NEAREST);
-            gl.glBindTexture(GL10.GL_TEXTURE_2D, 0);
+    private void InitLocation(){
+        LocationClientOption option = new LocationClientOption();
+        option.setLocationMode(tempMode);//设置定位模式
+        option.setCoorType(tempcoor);//返回的定位结果是百度经纬度，默认值gcj02
+        int span=1000;
+        try {
+//            span = Integer.valueOf(frequence.getText().toString());
+        } catch (Exception e) {
+            // TODO: handle exception
         }
-
-        gl.glEnable(GL10.GL_TEXTURE_2D);
-        gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
-        gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-        gl.glEnable(GL10.GL_BLEND);
-        gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-        gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-
-        // 绑定纹理ID
-        gl.glBindTexture(GL10.GL_TEXTURE_2D, textureId);
-        gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertices);
-        gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, texture);
-
-        gl.glDrawElements(GL10.GL_TRIANGLE_STRIP, 6, GL10.GL_UNSIGNED_SHORT,
-                indices);
-
-        gl.glDisable(GL10.GL_TEXTURE_2D);
-        gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
-        gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-        gl.glDisable(GL10.GL_BLEND);
+        option.setScanSpan(span);//设置发起定位请求的间隔时间为5000ms
+//        option.setIsNeedAddress(checkGeoLocation.isChecked());
+        mLocationClient.setLocOption(option);
     }
 }

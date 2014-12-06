@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 import com.app.ebaebo.db.DBManager;
@@ -19,6 +20,10 @@ import com.app.ebaebo.ui.NotificationActivity;
 //import com.baidu.mapapi.BMapManager;
 //import com.baidu.mapapi.MKGeneralListener;
 //import com.baidu.mapapi.map.MKEvent;
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.GeofenceClient;
+import com.baidu.location.LocationClient;
 import com.baidu.mapapi.SDKInitializer;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -46,6 +51,11 @@ import java.util.concurrent.Executors;
  * 类的功能、说明写在此处.
  */
 public class EbaeboApplication extends Application {
+    //----------------百度地图------------------
+    public LocationClient mLocationClient;
+    public GeofenceClient mGeofenceClient;
+    public MyLocationListener mMyLocationListener;
+    //-----------------------------------
     public static DisplayImageOptions options;
     public static DisplayImageOptions txOptions;//头像图片
     public static DisplayImageOptions tpOptions;//详情页图片
@@ -55,13 +65,12 @@ public class EbaeboApplication extends Application {
     private DBManager dbManager;
     public static JSONArray jsonArray;//好友列表
     public static JSONArray recent_chatters;//最近联系人
-//    public static BMapManager mBMapMan;
-
 
 
     private static final String TAG = EbaeboApplication.class.getName();
 
     private PushAgent mPushAgent;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -73,7 +82,13 @@ public class EbaeboApplication extends Application {
         mPushAgent.setDebugMode(true);
         dbManager = new DBManager(getApplicationContext());
 
+        //------百度地图---
+        mLocationClient = new LocationClient(this.getApplicationContext());
+        mMyLocationListener = new MyLocationListener();
+        mLocationClient.registerLocationListener(mMyLocationListener);
+        mGeofenceClient = new GeofenceClient(getApplicationContext());
 
+        //------
         /**
          * 该Handler是在IntentService中被调用，故
          * 1. 如果需启动Activity，需添加Intent.FLAG_ACTIVITY_NEW_TASK
@@ -203,6 +218,43 @@ public class EbaeboApplication extends Application {
                 .tasksProcessingOrder(QueueProcessingType.LIFO)
                 .build();
         ImageLoader.getInstance().init(config);
+    }
+
+    public class MyLocationListener implements BDLocationListener {
+
+        @Override
+        public void onReceiveLocation(BDLocation location) {
+            //Receive Location
+            StringBuffer sb = new StringBuffer(256);
+            sb.append("time : ");
+            sb.append(location.getTime());
+            sb.append("\nerror code : ");
+            sb.append(location.getLocType());
+            sb.append("\nlatitude : ");
+            sb.append(location.getLatitude());
+            sb.append("\nlontitude : ");
+            sb.append(location.getLongitude());
+            sb.append("\nradius : ");
+            sb.append(location.getRadius());
+            if (location.getLocType() == BDLocation.TypeGpsLocation){
+                sb.append("\nspeed : ");
+                sb.append(location.getSpeed());
+                sb.append("\nsatellite : ");
+                sb.append(location.getSatelliteNumber());
+                sb.append("\ndirection : ");
+                sb.append("\naddr : ");
+                sb.append(location.getAddrStr());
+                sb.append(location.getDirection());
+            } else if (location.getLocType() == BDLocation.TypeNetWorkLocation){
+                sb.append("\naddr : ");
+                sb.append(location.getAddrStr());
+                sb.append("\noperationers : ");
+                sb.append(location.getOperators());
+            }
+            Log.i("BaiduLocationApiDem", sb.toString());
+        }
+
+
     }
 
 }

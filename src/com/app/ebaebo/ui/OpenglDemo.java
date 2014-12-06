@@ -8,6 +8,9 @@ import android.graphics.PointF;
 import android.opengl.GLUtils;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import com.app.ebaebo.R;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BaiduMap.OnMapDrawFrameCallback;
@@ -26,8 +29,10 @@ import java.util.List;
 /**
  * 此demo用来展示如何在地图绘制的每帧中再额外绘制一些用户自己的内容
  */
-public class OpenglDemo extends Activity implements OnMapDrawFrameCallback {
-
+public class OpenglDemo extends Activity implements OnMapDrawFrameCallback, View.OnClickListener {
+    private ImageView schoolbusback;
+    private TextView carstart;
+    private TextView carstop;
 	private static final String LTAG = OpenglDemo.class.getSimpleName();
 
 	// 地图相关
@@ -51,7 +56,9 @@ public class OpenglDemo extends Activity implements OnMapDrawFrameCallback {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_opengl);
+
+		setContentView(R.layout.shoolbus);
+        initView();
 		// 初始化地图
 		mMapView = (MapView) findViewById(R.id.bmapView);
 		mBaiduMap = mMapView.getMap();
@@ -60,7 +67,16 @@ public class OpenglDemo extends Activity implements OnMapDrawFrameCallback {
 				R.drawable.ground_overlay);
 	}
 
-	@Override
+    private void initView() {
+        schoolbusback = (ImageView) this.findViewById(R.id.schoolbusback);
+        schoolbusback.setOnClickListener(this);
+        carstart = (TextView) this.findViewById(R.id.carstart);
+        carstart.setOnClickListener(this);
+        carstop = (TextView) this.findViewById(R.id.carstop);
+        carstop.setOnClickListener(this);
+    }
+
+    @Override
 	protected void onPause() {
 		mMapView.onPause();
 		super.onPause();
@@ -205,4 +221,20 @@ public class OpenglDemo extends Activity implements OnMapDrawFrameCallback {
 		gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 		gl.glDisable(GL10.GL_BLEND);
 	}
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId())
+        {
+            case R.id.schoolbusback:
+                finish();
+                break;
+            case R.id.carstart:
+                //车辆出发
+                break;
+            case R.id.carstop:
+                //车辆停止
+                break;
+        }
+    }
 }

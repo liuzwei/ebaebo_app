@@ -27,6 +27,7 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.map.MapView;
 //import com.baidu.mapapi.BMapManager;
 //import com.baidu.mapapi.MKGeneralListener;
 //import com.baidu.mapapi.map.LocationData;
@@ -44,7 +45,7 @@ import com.baidu.location.LocationClientOption;
  * 类的功能、说明写在此处.
  */
 public class SchoolBusActivity extends BaseActivity implements View.OnClickListener {
-//    private Toast mToast;
+    private Toast mToast;
 //    private BMapManager mBMapManager;
 //    private MapView mMapView = null;
 //    private MapController mMapController = null;
@@ -57,10 +58,10 @@ public class SchoolBusActivity extends BaseActivity implements View.OnClickListe
 //    private PopupOverlay mPopupOverlay  = null;//弹出泡泡图层，浏览节点时使用
 //    private View viewCache;
 //    private BDLocation location;
-//
-//    private ImageView schoolbusback;
-//    private TextView carstart;
-//    private TextView carstop;
+
+    private ImageView schoolbusback;
+    private TextView carstart;
+    private TextView carstop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

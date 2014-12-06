@@ -30,6 +30,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     TextView setting_exit;//退出当前账号
     private String identity;
     private TextView setting_question;
+    private LinearLayout setting_baobao;
+    private LinearLayout setting_mama;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +45,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         }
         if(identity.equals("1")){
             setting_question.setText("妈妈设置");
+        }
+        if(account.getIs_teacher().equals("1")){
+            setting_baobao.setVisibility(View.GONE);
+            setting_mama.setVisibility(View.GONE);
         }
     }
 
@@ -65,6 +71,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         about.setOnClickListener(this);
         back.setOnClickListener(this);
         setting_question = (TextView) this.findViewById(R.id.setting_question);
+        setting_baobao = (LinearLayout) this.findViewById(R.id.setting_baobao);
+        setting_mama = (LinearLayout) this.findViewById(R.id.setting_mama);
+
     }
 
     @Override

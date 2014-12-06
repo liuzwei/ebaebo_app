@@ -134,8 +134,16 @@ public class MainActivity extends BaseActivity implements
 //
 //            }
 //        });
+        if(identity.equals("0")){
+            user.setText("        "+account.getF_name());
+        }
+        if(identity.equals("1")){
+            user.setText("        "+account.getM_name());
+        }
+        if(account.getIs_teacher().equals("1")){
+            user.setText("        "+account.getNick_name());
+        }
 
-        user.setText("        "+account.getF_name());
         //youmeng
 
         // 设置分享内容

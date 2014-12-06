@@ -3,13 +3,15 @@ package com.app.ebaebo.data;
 import com.app.ebaebo.entity.Account;
 import com.app.ebaebo.entity.Trace;
 
+import java.util.List;
+
 /**
  * Created by liuzwei on 2014/11/17.
  */
 public class TraceDATA {
     private int code;
     private String msg;
-    private Trace data;
+    private List<Trace> data;
 
     public int getCode() {
         return code;
@@ -27,11 +29,11 @@ public class TraceDATA {
         this.msg = msg;
     }
 
-    public Trace getData() {
+    public List<Trace> getData() {
         return data;
     }
 
-    public void setData(Trace data) {
+    public void setData(List<Trace> data) {
         this.data = data;
     }
 }
