@@ -427,7 +427,6 @@ public class MainActivity extends BaseActivity implements
                         player.playUrl((String) object);
                     }
                 });
-
                 break;
         }
     }
