@@ -1,11 +1,9 @@
 package com.app.ebaebo.ui;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PointF;
-import android.opengl.GLUtils;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -38,13 +36,9 @@ import javax.microedition.khronos.opengles.GL10;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import java.nio.ShortBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 此demo用来展示如何在地图绘制的每帧中再额外绘制一些用户自己的内容
- */
 public class OpenglDemo extends BaseActivity implements OnMapDrawFrameCallback, View.OnClickListener {
     private ImageView schoolbusback;
     private TextView carstart;

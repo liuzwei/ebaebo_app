@@ -5,25 +5,19 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.location.Location;
-import android.location.LocationListener;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import java.nio.ShortBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PointF;
-import android.opengl.GLUtils;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -32,17 +26,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.app.ebaebo.EbaeboApplication;
 import com.app.ebaebo.R;
-import com.app.ebaebo.data.DianmingDATA;
 import com.app.ebaebo.data.TraceDATA;
 import com.app.ebaebo.entity.Account;
 import com.app.ebaebo.entity.Trace;
 import com.app.ebaebo.util.CommonUtil;
 import com.app.ebaebo.util.InternetURL;
 import com.app.ebaebo.util.StringUtil;
-import com.baidu.lbsapi.BMapManager;
-import com.baidu.lbsapi.MKGeneralListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -51,8 +41,6 @@ import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.*;
 import com.baidu.mapapi.map.BaiduMap.OnMapDrawFrameCallback;
 import com.baidu.mapapi.model.LatLng;
-import com.baidu.nplatform.comapi.map.MapController;
-import com.baidu.pplatform.comapi.basestruct.GeoPoint;
 
 /**
  * author: ${zhanghailong}
