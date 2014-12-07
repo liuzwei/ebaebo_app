@@ -113,7 +113,7 @@ public class MainActivity extends BaseActivity implements
         identity = getGson().fromJson(sp.getString(Constants.IDENTITY, ""), String.class);
 
         mRequestQueue = Volley.newRequestQueue(this);
-        adapter = new GrowingAdapter(growingList, mContext);
+        adapter = new GrowingAdapter(growingList, this);
         adapter.setOnClickContentItemListener(this);
         listView.setAdapter(adapter);
         getData(ContentListView.REFRESH);

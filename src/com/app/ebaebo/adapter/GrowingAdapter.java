@@ -2,6 +2,7 @@ package com.app.ebaebo.adapter;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.*;
 import com.app.ebaebo.EbaeboApplication;
 import com.app.ebaebo.R;
 import com.app.ebaebo.entity.Growing;
+import com.app.ebaebo.ui.Constants;
+import com.app.ebaebo.ui.VideoViewActivity;
 import com.app.ebaebo.util.StringUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
@@ -69,6 +72,7 @@ public class GrowingAdapter extends BaseAdapter {
             viewHolder.redHeart = (ImageView) convertView.findViewById(R.id.red_heart);
             viewHolder.gridView = (GridView) convertView.findViewById(R.id.growing_item_gridview);
             viewHolder.playRecord = (ImageView) convertView.findViewById(R.id.growing_item_play_record);
+            viewHolder.playVideo = (Button) convertView.findViewById(R.id.growing_item_play_video);
             convertView.setTag(viewHolder);
         }else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -92,6 +96,7 @@ public class GrowingAdapter extends BaseAdapter {
         viewHolder.content.setText(growing.getDept());
         viewHolder.gridView.setVisibility(View.GONE);
         viewHolder.playRecord.setVisibility(View.GONE);
+        viewHolder.playVideo.setVisibility(View.GONE);
 
         //todo   type类型返回的为空
         switch (Integer.parseInt(growing.getType()) ){
@@ -107,7 +112,17 @@ public class GrowingAdapter extends BaseAdapter {
                 }
                 break;
             case 2://视频
-
+                viewHolder.playVideo.setVisibility(View.VISIBLE);
+                viewHolder.playVideo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!StringUtil.isNullOrEmpty(growing.getUrl())) {
+                            Intent flvIntent = new Intent(context, VideoViewActivity.class);
+                            flvIntent.putExtra(Constants.VIDEO_URL, growing.getUrl());
+                            context.startActivity(flvIntent);
+                        }
+                    }
+                });
                 break;
             case 3://录音
                 viewHolder.playRecord.setVisibility(View.VISIBLE);
@@ -160,5 +175,6 @@ public class GrowingAdapter extends BaseAdapter {
 
         ImageView playRecord;
         GridView gridView;
+        Button playVideo;//播放视频按钮
     }
 }

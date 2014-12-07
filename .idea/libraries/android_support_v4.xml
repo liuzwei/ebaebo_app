@@ -26,8 +26,11 @@
       <root url="jar://$PROJECT_DIR$/libs/umeng-update-v2.4.2.jar!/" />
       <root url="jar://$PROJECT_DIR$/libs/umeng_social_sdk.jar!/" />
       <root url="jar://$PROJECT_DIR$/libs/universal-image-loader-1.9.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/volley.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/libs/volley.jar!/tests/src" />
+    </SOURCES>
   </library>
 </component>

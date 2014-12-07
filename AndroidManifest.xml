@@ -114,7 +114,15 @@
                 android:screenOrientation="portrait"
                 >
         </activity>
+        <activity android:name=".ui.VideoViewActivity"/>
         <activity android:name=".ui.OpenglDemo"/>
+
+        <activity
+                android:name="io.vov.vitamio.activity.InitActivity"
+                android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
+                android:launchMode="singleTop"
+                android:theme="@android:style/Theme.NoTitleBar"
+                android:windowSoftInputMode="stateAlwaysHidden" />
 
         <!--友盟测试-->
         <meta-data android:name="UMENG_APPKEY" android:value="547bcffefd98c5b9000008ab"/>
