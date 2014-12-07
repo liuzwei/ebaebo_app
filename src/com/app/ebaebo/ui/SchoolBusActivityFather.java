@@ -40,6 +40,7 @@ import com.app.ebaebo.entity.Account;
 import com.app.ebaebo.entity.Trace;
 import com.app.ebaebo.util.CommonUtil;
 import com.app.ebaebo.util.InternetURL;
+import com.app.ebaebo.util.StringUtil;
 import com.baidu.lbsapi.BMapManager;
 import com.baidu.lbsapi.MKGeneralListener;
 import com.baidu.location.LocationClient;
@@ -104,10 +105,6 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
         setContentView(R.layout.shoolbusfather);
         initView();
         getData();
-
-
-
-
     }
 
     public void MydrawPointStart(Double lat, Double lng){
@@ -171,7 +168,8 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
                                 if(listDw!=null){
                                     for(int i =0;i<listDw.size();i++){
                                         Trace trace=listDw.get(i);
-                                        LatLng latlng = new LatLng(Double.parseDouble(trace.getLat()) , Double.parseDouble(trace.getLng()));
+//                                        LatLng latlng = new LatLng(Double.parseDouble(trace.getLat()) , Double.parseDouble(trace.getLng()));
+                                        LatLng latlng = new LatLng( 24.956247+i,121.514817+i);
                                         latLngPolygon.add(latlng);
                                     }
                                 }
@@ -180,12 +178,17 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
                                     //绘制起点
                                     MydrawPointStart(latLngPolygon.get(0).latitude, latLngPolygon.get(0).longitude);
                                     //绘制终点
-                                    MydrawPointStart(latLngPolygon.get(latLngPolygon.size() - 1).latitude, latLngPolygon.get(latLngPolygon.size() - 1).longitude);
+                                    MydrawPointEnd(latLngPolygon.get(latLngPolygon.size() - 1).latitude, latLngPolygon.get(latLngPolygon.size() - 1).longitude);
+                                    //获得距离
+                                    Double instant = getInstant(latLngPolygon);
+                                    String strLong = String.valueOf(instant/1000);
+                                    if(strLong.length()>6){
+                                        strLong = strLong.substring(0,6);
+                                    }
+                                    shoolbusinstance.setText("距离  "+ strLong +"公里");
                                 }
-
                                 //定位到当期位置
-                                LatLng ll = new LatLng(24.956247,
-                                        121.514817);
+                                LatLng ll = new LatLng(latLngPolygon.get(0).latitude, latLngPolygon.get(0).longitude);
                                 MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
                                 mBaiduMap.setMapStatus( u );
 
@@ -284,10 +287,23 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
         gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
     }
     int textureId = -1;
-
+//    double mLat1 = 39.90923; // point1纬度
+//    double mLon1 = 116.357428; // point1经度
+//    double mLat2 = 39.90923;// point2纬度
+//    double mLon2 = 116.397428;// point2经度
+//    double distance = GetShortDistance(mLon1, mLat1, mLon2, mLat2);
     //获得距离
-    public void getInstant(List<LatLng> lists){
+    public Double getInstant(List<LatLng> lists){
+        Double countDistant=0.0;
         if(lists!=null && lists.size()>0){
+            for(int i=0;i<lists.size();i++){
+                if(i!=0){//只要不是第一个
+                    LatLng latLng1 =  lists.get(i - 1);//前一个
+                    LatLng latLng2 =  lists.get(i);//后一个
+                    countDistant = countDistant + StringUtil.GetShortDistance(latLng2.longitude, latLng2.latitude, latLng1.longitude, latLng1.latitude);
+                }
+            }
         }
+        return countDistant;
     }
 }
