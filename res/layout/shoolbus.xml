@@ -47,15 +47,15 @@
                 android:clickable="true" />
 
 
-        <!--<Button-->
-                <!--android:id="@+id/request"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentRight="true"-->
-                <!--android:layout_alignParentTop="true"-->
-                <!--android:layout_marginRight="25dp"-->
-                <!--android:layout_marginTop="10dip"-->
-                <!--android:background="@drawable/custom_loc"  />-->
+        <Button
+                android:id="@+id/request"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="25dp"
+                android:layout_marginTop="10dip"
+                android:background="@drawable/custom_loc"  />
         <TextView android:layout_width="wrap_content"
                   android:id="@+id/tv_loc_info"
                   android:layout_height="wrap_content"/>
