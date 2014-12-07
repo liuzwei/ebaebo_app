@@ -23,11 +23,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.lbsapi.BMapManager;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.nplatform.comapi.map.MapController;
 //import com.baidu.mapapi.BMapManager;
 //import com.baidu.mapapi.MKGeneralListener;
 //import com.baidu.mapapi.map.LocationData;
@@ -45,290 +47,126 @@ import com.baidu.mapapi.map.MapView;
  * 类的功能、说明写在此处.
  */
 public class SchoolBusActivity extends BaseActivity implements View.OnClickListener {
-    private Toast mToast;
-//    private BMapManager mBMapManager;
-//    private MapView mMapView = null;
-//    private MapController mMapController = null;
-//    private LocationClient mLocClient;
-//    private LocationData mLocData;
-//    //定位图层
-//    private	LocationOverlay myLocationOverlay = null;
-//    private boolean isRequest = false;//是否手动触发请求定位
-//    private boolean isFirstLoc = true;//是否首次定位
-//    private PopupOverlay mPopupOverlay  = null;//弹出泡泡图层，浏览节点时使用
-//    private View viewCache;
-//    private BDLocation location;
 
     private ImageView schoolbusback;
     private TextView carstart;
     private TextView carstop;
 
+    private LocationClient locationClient = null;
+    private static final int UPDATE_TIME = 5000;
+    private static int LOCATION_COUTNS = 0;
+    private TextView locationInfoTextView = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        mBMapManager = new BMapManager(this);
-//        mBMapManager.init("RIvp33GcGSGSwwntWPGXMxBs", new MKGeneralListenerImpl());
-//        RIvp33GcGSGSwwntWPGXMxBs
-        setContentView(R.layout.shoolbus);
-//        initView();
 
-        //点击按钮手动请求定位
-//        ((Button) findViewById(R.id.request)).setOnClickListener(new View.OnClickListener() {
+        setContentView(R.layout.shoolbus);
+        initView();
+
+        locationClient = new LocationClient(this);
+        //设置定位条件
+        LocationClientOption option = new LocationClientOption();
+        option.setOpenGps(true);        //是否打开GPS
+        option.setCoorType("bd09ll");       //设置返回值的坐标类型。
+//        option.setPriority(LocationClientOption.NetWorkFirst);  //设置定位优先级
+        option.setProdName("RIvp33GcGSGSwwntWPGXMxBs"); //设置产品线名称。强烈建议您使用自定义的产品线名称，方便我们以后为您提供更高效准确的定位服务。
+        option.setScanSpan(UPDATE_TIME);    //设置定时定位的时间间隔。单位毫秒
+        locationClient.setLocOption(option);
+
+        //注册位置监听器
+        locationClient.registerLocationListener(new BDLocationListener() {
+
+            @Override
+            public void onReceiveLocation(BDLocation location) {
+                // TODO Auto-generated method stub
+                if (location == null) {
+                    return;
+                }
+                StringBuffer sb = new StringBuffer(256);
+                sb.append("Time : ");
+                sb.append(location.getTime());
+                sb.append("\nError code : ");
+                sb.append(location.getLocType());
+                sb.append("\nLatitude : ");
+                sb.append(location.getLatitude());
+                sb.append("\nLontitude : ");
+                sb.append(location.getLongitude());
+                sb.append("\nRadius : ");
+                sb.append(location.getRadius());
+                if (location.getLocType() == BDLocation.TypeGpsLocation){
+                    sb.append("\nSpeed : ");
+                    sb.append(location.getSpeed());
+                    sb.append("\nSatellite : ");
+                    sb.append(location.getSatelliteNumber());
+                } else if (location.getLocType() == BDLocation.TypeNetWorkLocation){
+                    sb.append("\nAddress : ");
+                    sb.append(location.getAddrStr());
+                }
+                LOCATION_COUTNS ++;
+                sb.append("\n检查位置更新次数：");
+                sb.append(String.valueOf(LOCATION_COUTNS));
+
+            }
+        });
+
+//        startButton.setOnClickListener(new OnClickListener() {
+//
 //            @Override
 //            public void onClick(View v) {
-//                requestLocation();
+//
 //            }
 //        });
+//
+//        if (locationClient == null) {
+//            return;
+//        }
+//        if (locationClient.isStarted()) {
+//            locationClient.stop();
+//        }else {
+            locationClient.start();
+                    /*
+                     *当所设的整数值大于等于1000（ms）时，定位SDK内部使用定时定位模式。
+                     *调用requestLocation( )后，每隔设定的时间，定位SDK就会进行一次定位。
+                     *如果定位SDK根据定位依据发现位置没有发生变化，就不会发起网络请求，
+                     *返回上一次定位的结果；如果发现位置改变，就进行网络请求进行定位，得到新的定位结果。
+                     *定时定位时，调用一次requestLocation，会定时监听到定位结果。
+                     */
+            locationClient.requestLocation();
+//        }
 
-//        mMapView = (MapView) findViewById(R.id.bmapView); //获取百度地图控件实例
-//        mMapController = mMapView.getController(); //获取地图控制器
-//        mMapController.enableClick(true);   //设置地图是否响应点击事件
-//        mMapController.setZoom(15);   //设置地图缩放级别
-//        mMapView.setBuiltInZoomControls(true);   //显示内置缩放控件
-//
-//        viewCache = LayoutInflater.from(this).inflate(R.layout.pop_layout, null);
-//        mPopupOverlay = new PopupOverlay(mMapView ,new PopupClickListener() {
-//
-//            @Override
-//            public void onClickedPopup(int arg0) {
-//                mPopupOverlay.hidePop();
-//            }
-//        });
-//
-//        mLocData = new LocationData();
-//
-//        //实例化定位服务，LocationClient类必须在主线程中声明
-//        mLocClient = new LocationClient(getApplicationContext());
-//        mLocClient.registerLocationListener(new BDLocationListenerImpl());//注册定位监听接口
-//
-//        /**
-//         * 设置定位参数
-//         */
-//        LocationClientOption option = new LocationClientOption();
-//        option.setOpenGps(true); //打开GPRS
-//        option.setAddrType("all");//返回的定位结果包含地址信息
-//        option.setCoorType("bd09ll");//返回的定位结果是百度经纬度,默认值gcj02
-//        option.setScanSpan(5000); //设置发起定位请求的间隔时间为5000ms
-//        option.disableCache(false);//禁止启用缓存定位
-////		option.setPoiNumber(5);    //最多返回POI个数
-////		option.setPoiDistance(1000); //poi查询距离
-////		option.setPoiExtraInfo(true);  //是否需要POI的电话和地址等详细信息
-//
-//        mLocClient.setLocOption(option);
-//        mLocClient.start();  //	调用此方法开始定位
-//
-//        //定位图层初始化
-//        myLocationOverlay = new LocationOverlay(mMapView);
-//        //设置定位数据
-//        myLocationOverlay.setData(mLocData);
-//
-//        myLocationOverlay.setMarker(getResources().getDrawable(R.drawable.location_arrows));
-//
-//        //添加定位图层
-//        mMapView.getOverlays().add(myLocationOverlay);
-//        myLocationOverlay.enableCompass();
-//
-//        //修改定位数据后刷新图层生效
-//        mMapView.refresh();
-//
-//
-//    }
-//
-//    private void initView() {
-//        schoolbusback = (ImageView) this.findViewById(R.id.schoolbusback);
-//        schoolbusback.setOnClickListener(this);
-//        carstart = (TextView) this.findViewById(R.id.carstart);
-//        carstart.setOnClickListener(this);
-//        carstop = (TextView) this.findViewById(R.id.carstop);
-//        carstop.setOnClickListener(this);
-//    }
-//
-//    @Override
-//    public void onClick(View v) {
-//        switch (v.getId())
-//        {
-//            case R.id.schoolbusback:
-//                finish();
-//                break;
-//            case R.id.carstart:
-//                //车辆出发
-//                break;
-//            case R.id.carstop:
-//                //车辆停止
-//                break;
-//        }
-//    }
-//    /**
-//     * 定位接口，需要实现两个方法
-//     * @author xiaanming
-//     *
-//     */
-//    public class BDLocationListenerImpl implements BDLocationListener {
-//        /**
-//         * 接收异步返回的定位结果，参数是BDLocation类型参数
-//         */
-//        @Override
-//        public void onReceiveLocation(BDLocation location) {
-//            if (location == null) {
-//                return;
-//            }
-//
-//            SchoolBusActivity.this.location = location;
-//
-//            mLocData.latitude = location.getLatitude();
-//            mLocData.longitude = location.getLongitude();
-//            //如果不显示定位精度圈，将accuracy赋值为0即可
-//            mLocData.accuracy = location.getRadius();
-//            mLocData.direction = location.getDerect();
-//
-//            //将定位数据设置到定位图层里
-//            myLocationOverlay.setData(mLocData);
-//            //更新图层数据执行刷新后生效
-//            mMapView.refresh();
-//
-//
-//
-//            if(isFirstLoc || isRequest){
-//                mMapController.animateTo(new GeoPoint(
-//                        (int) (location.getLatitude() * 1e6), (int) (location
-//                        .getLongitude() * 1e6)));
-//
-//                showPopupOverlay(location);
-//
-//                isRequest = false;
-//            }
-//
-//            isFirstLoc = false;
-//        }
-//
-//        /**
-//         * 接收异步返回的POI查询结果，参数是BDLocation类型参数
-//         */
-//        @Override
-//        public void onReceivePoi(BDLocation poiLocation) {
-//
-//        }
-//    }
-//
-//    /**
-//     * 常用事件监听，用来处理通常的网络错误，授权验证错误等
-//     * @author xiaanming
-//     *
-//     */
-//    public class MKGeneralListenerImpl implements MKGeneralListener{
-//
-//        /**
-//         * 一些网络状态的错误处理回调函数
-//         */
-//        @Override
-//        public void onGetNetworkState(int iError) {
-//            if (iError == MKEvent.ERROR_NETWORK_CONNECT) {
-//                showToast("您的网络出错啦！");
-//            }
-//        }
-//
-//        /**
-//         * 授权错误的时候调用的回调函数
-//         */
-//        @Override
-//        public void onGetPermissionState(int iError) {
-//            if (iError ==  MKEvent.ERROR_PERMISSION_DENIED) {
-//                showToast("API KEY错误, 请检查！");
-//            }
-//        }
-//
-//    }
-//
-//    //
-//    private class LocationOverlay extends MyLocationOverlay{
-//
-//        public LocationOverlay(MapView arg0) {
-//            super(arg0);
-//        }
-//
-//        @Override
-//        protected boolean dispatchTap() {
-//            showPopupOverlay(location);
-//            return super.dispatchTap();
-//        }
-//
-//        @Override
-//        public void setMarker(Drawable arg0) {
-//            super.setMarker(arg0);
-//        }
-//
-//    }
-//
-//
-//    private void showPopupOverlay(BDLocation location){
-//        TextView popText = ((TextView)viewCache.findViewById(R.id.location_tips));
-//        popText.setText("[我的位置]\n" + location.getAddrStr());
-//        mPopupOverlay.showPopup(getBitmapFromView(popText),
-//                new GeoPoint((int)(location.getLatitude()*1e6), (int)(location.getLongitude()*1e6)),
-//                10);
-//    }
-//
-//    /**
-//     * 手动请求定位的方法
-//     */
-////    public void requestLocation() {
-////        isRequest = true;
-////        if(mLocClient != null && mLocClient.isStarted()){
-////            showToast("正在定位......");
-////            mLocClient.requestLocation();
-////        }else{
-////            Log.d("LocSDK3", "locClient is null or not started");
-////        }
-////    }
-//
-//    @Override
-//    protected void onResume() {
-//        mMapView.onResume();
-//        super.onResume();
-//    }
-//
-//    @Override
-//    protected void onPause() {
-//        mMapView.onPause();
-//        super.onPause();
-//    }
-//
-//    @Override
-//    protected void onDestroy() {
-//        mMapView.destroy();
-//        if(mBMapManager != null){
-//            mBMapManager.destroy();
-//            mBMapManager = null;
-//        }
-//        //退出时销毁定位
-//        if (mLocClient != null){
-//            mLocClient.stop();
-//        }
-//
-//        super.onDestroy();
-//    }
-//
-//    private void showToast(String msg){
-//        if(mToast == null){
-//            mToast = Toast.makeText(this, msg, Toast.LENGTH_SHORT);
-//        }else{
-//            mToast.setText(msg);
-//            mToast.setDuration(Toast.LENGTH_SHORT);
-//        }
-//        mToast.show();
-//    }
-//
-//    public static Bitmap getBitmapFromView(View view) {
-//        view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-//        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
-//        view.buildDrawingCache();
-//        Bitmap bitmap = view.getDrawingCache();
-//        return bitmap;
-//    }
-}
+    }
+
+    private void initView() {
+        schoolbusback = (ImageView) this.findViewById(R.id.schoolbusback);
+        schoolbusback.setOnClickListener(this);
+        carstart = (TextView) this.findViewById(R.id.carstart);
+        carstart.setOnClickListener(this);
+        carstop = (TextView) this.findViewById(R.id.carstop);
+        carstop.setOnClickListener(this);
+        locationInfoTextView = (TextView) this.findViewById(R.id.tv_loc_info);
+    }
 
     @Override
     public void onClick(View v) {
-
+        switch (v.getId())
+        {
+            case R.id.schoolbusback:
+                finish();
+                break;
+            case R.id.carstart:
+                //车辆出发
+                break;
+            case R.id.carstop:
+                //车辆停止
+                break;
+        }
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (locationClient != null && locationClient.isStarted()) {
+            locationClient.stop();
+            locationClient = null;
+        }
     }
 }

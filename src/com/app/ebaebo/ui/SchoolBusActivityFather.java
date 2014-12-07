@@ -43,6 +43,8 @@ import com.app.ebaebo.util.InternetURL;
 import com.app.ebaebo.util.StringUtil;
 import com.baidu.lbsapi.BMapManager;
 import com.baidu.lbsapi.MKGeneralListener;
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.SDKInitializer;
@@ -87,12 +89,14 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
     }
 
     private SDKReceiver mReceiver;
+
     //定位
-    private LocationClient mLocationClient;
-    private LocationClientOption.LocationMode tempMode = LocationClientOption.LocationMode.Hight_Accuracy;
-    private String tempcoor="gcj02";
-    private BMapManager mBMapManager;
-    private MapController mMapController = null;
+    private LocationClient locationClient = null;
+    private static final int UPDATE_TIME = 5000;
+    private static int LOCATION_COUTNS = 0;
+    private Double lat;
+    private Double lon;
+    //----
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +108,59 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
         registerReceiver(mReceiver, iFilter);
         setContentView(R.layout.shoolbusfather);
         initView();
+        locationClient = new LocationClient(this);
+        //设置定位条件
+        LocationClientOption option = new LocationClientOption();
+        option.setOpenGps(true);        //是否打开GPS
+        option.setCoorType("bd09ll");       //设置返回值的坐标类型。
+//        option.setPriority(LocationClientOption.NetWorkFirst);  //设置定位优先级
+        option.setProdName("RIvp33GcGSGSwwntWPGXMxBs"); //设置产品线名称。强烈建议您使用自定义的产品线名称，方便我们以后为您提供更高效准确的定位服务。
+        option.setScanSpan(UPDATE_TIME);    //设置定时定位的时间间隔。单位毫秒
+        locationClient.setLocOption(option);
+
+        //注册位置监听器
+        locationClient.registerLocationListener(new BDLocationListener() {
+
+            @Override
+            public void onReceiveLocation(BDLocation location) {
+                // TODO Auto-generated method stub
+                if (location == null) {
+                    return;
+                }
+                StringBuffer sb = new StringBuffer(256);
+                sb.append("Time : ");
+                sb.append(location.getTime());
+                sb.append("\nError code : ");
+                sb.append(location.getLocType());
+                sb.append("\nLatitude : ");
+                sb.append(location.getLatitude());
+                sb.append("\nLontitude : ");
+                sb.append(location.getLongitude());
+                sb.append("\nRadius : ");
+                sb.append(location.getRadius());
+                if (location.getLocType() == BDLocation.TypeGpsLocation){
+                    sb.append("\nSpeed : ");
+                    sb.append(location.getSpeed());
+                    sb.append("\nSatellite : ");
+                    sb.append(location.getSatelliteNumber());
+                } else if (location.getLocType() == BDLocation.TypeNetWorkLocation){
+                    sb.append("\nAddress : ");
+                    sb.append(location.getAddrStr());
+                }
+                LOCATION_COUTNS ++;
+                sb.append("\n检查位置更新次数：");
+                sb.append(String.valueOf(LOCATION_COUTNS));
+                lat = location.getLatitude();
+                lon = location.getLongitude();
+                //定位到当期位置
+                LatLng ll = new LatLng(lat, lon);
+                MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
+                mBaiduMap.setMapStatus( u );
+                MydrawPointCurrentLocation(lat, lon);
+            }
+        });
+        locationClient.start();
+        locationClient.requestLocation();
         getData();
     }
 
@@ -126,6 +183,20 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
         //构建Marker图标
         BitmapDescriptor bitmap = BitmapDescriptorFactory
                 .fromResource(R.drawable.stopbutton);
+        //构建MarkerOption，用于在地图上添加Marker
+        OverlayOptions option = new MarkerOptions()
+                .position(point)
+                .icon(bitmap);
+        //在地图上添加Marker，并显示
+        mBaiduMap.addOverlay(option);
+
+    }
+    public void MydrawPointCurrentLocation(Double lat, Double lng){
+        //定义Maker坐标点
+        LatLng point = new LatLng(lat,lng);
+        //构建Marker图标
+        BitmapDescriptor bitmap = BitmapDescriptorFactory
+                .fromResource(R.drawable.currentlocation);
         //构建MarkerOption，用于在地图上添加Marker
         OverlayOptions option = new MarkerOptions()
                 .position(point)
@@ -168,8 +239,8 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
                                 if(listDw!=null){
                                     for(int i =0;i<listDw.size();i++){
                                         Trace trace=listDw.get(i);
-//                                        LatLng latlng = new LatLng(Double.parseDouble(trace.getLat()) , Double.parseDouble(trace.getLng()));
-                                        LatLng latlng = new LatLng( 24.956247+i,121.514817+i);
+                                        LatLng latlng = new LatLng(Double.parseDouble(trace.getLat()) , Double.parseDouble(trace.getLng()));
+//                                        LatLng latlng = new LatLng( 24.956247+i,121.514817+i);
                                         latLngPolygon.add(latlng);
                                     }
                                 }
@@ -186,12 +257,13 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
                                         strLong = strLong.substring(0,6);
                                     }
                                     shoolbusinstance.setText("距离  "+ strLong +"公里");
+//                                    //定位到当期位置
+//                                    LatLng ll = new LatLng(latLngPolygon.get(0).latitude, latLngPolygon.get(0).longitude);
+//                                    MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
+//                                    mBaiduMap.setMapStatus( u );
+                                }else{
+                                    shoolbusinstance.setText("距离0.0公里");
                                 }
-                                //定位到当期位置
-                                LatLng ll = new LatLng(latLngPolygon.get(0).latitude, latLngPolygon.get(0).longitude);
-                                MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
-                                mBaiduMap.setMapStatus( u );
-
                             }else {
                                 Toast.makeText(mContext, "数据错误，请稍后重试", Toast.LENGTH_SHORT).show();
                             }
@@ -228,10 +300,14 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
         // 取消监听 SDK 广播
         unregisterReceiver(mReceiver);
         super.onDestroy();
+        if (locationClient != null && locationClient.isStarted()) {
+            locationClient.stop();
+            locationClient = null;
+        }
     }
 
     public void onMapDrawFrame(GL10 gl, MapStatus drawingMapStatus) {
-        if (mBaiduMap.getProjection() != null) {
+        if (mBaiduMap.getProjection() != null && vertexBuffer!=null) {
             calPolylinePoint(drawingMapStatus);
             drawPolyline(gl, Color.argb(255, 255, 0, 0), vertexBuffer, 10, 3,
                     drawingMapStatus);
@@ -239,21 +315,24 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
     }
 
     public void calPolylinePoint(MapStatus mspStatus) {
-        PointF[] polyPoints = new PointF[latLngPolygon.size()];
-        vertexs = new float[3 * latLngPolygon.size()];
-        int i = 0;
-        for (LatLng xy : latLngPolygon) {
-            polyPoints[i] = mBaiduMap.getProjection().toOpenGLLocation(xy,
-                    mspStatus);
-            vertexs[i * 3] = polyPoints[i].x;
-            vertexs[i * 3 + 1] = polyPoints[i].y;
-            vertexs[i * 3 + 2] = 0.0f;
-            i++;
+        if(latLngPolygon!=null && latLngPolygon.size()>0){
+            PointF[] polyPoints = new PointF[latLngPolygon.size()];
+            vertexs = new float[3 * latLngPolygon.size()];
+            int i = 0;
+            for (LatLng xy : latLngPolygon) {
+                polyPoints[i] = mBaiduMap.getProjection().toOpenGLLocation(xy,
+                        mspStatus);
+                vertexs[i * 3] = polyPoints[i].x;
+                vertexs[i * 3 + 1] = polyPoints[i].y;
+                vertexs[i * 3 + 2] = 0.0f;
+                i++;
+            }
+            for (int j = 0; j < vertexs.length; j++) {
+                Log.d(LTAG, "vertexs[" + j + "]: " + vertexs[j]);
+            }
+            vertexBuffer = makeFloatBuffer(vertexs);
         }
-        for (int j = 0; j < vertexs.length; j++) {
-            Log.d(LTAG, "vertexs[" + j + "]: " + vertexs[j]);
-        }
-        vertexBuffer = makeFloatBuffer(vertexs);
+
     }
 
     private FloatBuffer makeFloatBuffer(float[] fs) {

@@ -64,4 +64,8 @@ public class InternetURL {
     public static String SELECT_BABY_URL = "http://yey.xqb668.com/index/ServiceJson/childSetting";
     //34.	获取最近路线的详细坐标信息
     public static String GET_LOCATION_URL  = "http://yey.xqb668.com/index/ServiceJson/schoolBusLngLat";
+    //32.	校车通知 开启关闭
+    public static String CAR_OPEN_URL = "http://yey.xqb668.com/index/ServiceJson/schoolbusopen";
+    //33.	校车经纬度更新
+    public static String UPDATE_CAR_URL = "http://yey.xqb668.com/index/ServiceJson/updateSchoolBusLatLng";
 }
