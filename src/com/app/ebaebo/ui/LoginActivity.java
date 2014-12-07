@@ -2,17 +2,14 @@ package com.app.ebaebo.ui;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.*;
-import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.ebaebo.R;
@@ -21,10 +18,6 @@ import com.app.ebaebo.data.ErrorDATA;
 import com.app.ebaebo.entity.Account;
 import com.app.ebaebo.util.*;
 import com.google.gson.Gson;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.lang.reflect.Method;
 
 /**
  * Created by liuzwei on 2014/11/11.

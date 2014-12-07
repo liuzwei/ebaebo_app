@@ -18,8 +18,6 @@ import com.app.ebaebo.entity.Account;
 import com.app.ebaebo.entity.AccountMessage;
 import com.app.ebaebo.util.CommonUtil;
 import com.app.ebaebo.util.InternetURL;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -16,7 +16,6 @@ import com.android.volley.toolbox.Volley;
 import com.app.ebaebo.R;
 import com.app.ebaebo.data.ErrorDATA;
 import com.app.ebaebo.data.SuccessDATA;
-import com.app.ebaebo.entity.Account;
 import com.app.ebaebo.util.InternetURL;
 import com.app.ebaebo.util.ShellContext;
 import com.app.ebaebo.util.StringUtil;

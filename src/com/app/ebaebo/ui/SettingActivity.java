@@ -1,18 +1,14 @@
 package com.app.ebaebo.ui;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 import com.app.ebaebo.ActivityTack;
 import com.app.ebaebo.R;
 import com.app.ebaebo.entity.Account;
-import com.app.ebaebo.util.ShellContext;
 
 /**
  * Created by liuzwei on 2014/11/13.

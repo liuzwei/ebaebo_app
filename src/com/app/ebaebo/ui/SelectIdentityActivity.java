@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.app.ebaebo.EbaeboApplication;
 import com.app.ebaebo.R;
 import com.app.ebaebo.adapter.AnimateFirstDisplayListener;
 import com.app.ebaebo.entity.Account;

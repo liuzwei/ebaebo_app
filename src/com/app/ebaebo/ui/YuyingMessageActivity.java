@@ -1,13 +1,7 @@
 package com.app.ebaebo.ui;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -19,25 +13,15 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.ebaebo.R;
 import com.app.ebaebo.adapter.OnClickContentItemListener;
-import com.app.ebaebo.adapter.PhotoAdapter;
 import com.app.ebaebo.adapter.YuyingAdapter;
-import com.app.ebaebo.data.AccountDATA;
 import com.app.ebaebo.data.ErrorDATA;
-import com.app.ebaebo.data.GrowingDATA;
 import com.app.ebaebo.data.YuyingDATA;
 import com.app.ebaebo.entity.*;
-import com.app.ebaebo.util.HttpUtils;
 import com.app.ebaebo.util.InternetURL;
 import com.app.ebaebo.widget.ContentListView;
 import com.google.gson.Gson;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * author: ${zhanghailong}

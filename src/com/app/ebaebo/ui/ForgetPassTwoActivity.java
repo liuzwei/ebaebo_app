@@ -1,7 +1,6 @@
 package com.app.ebaebo.ui;
 
 import android.content.Intent;
-import android.nfc.tech.TagTechnology;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
