@@ -34,7 +34,7 @@ import com.app.ebaebo.entity.Trace;
 import com.app.ebaebo.util.CommonUtil;
 import com.app.ebaebo.util.InternetURL;
 import com.app.ebaebo.util.StringUtil;
-import com.baidu.lbsapi.BMapManager;
+//import com.baidu.lbsapi.BMapManager;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -43,7 +43,7 @@ import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.*;
 import com.baidu.mapapi.map.BaiduMap.OnMapDrawFrameCallback;
 import com.baidu.mapapi.model.LatLng;
-import com.baidu.nplatform.comapi.map.MapController;
+//import com.baidu.nplatform.comapi.map.MapController;
 
 /**
  * author: ${zhanghailong}
@@ -85,8 +85,6 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
     private LocationClient mLocationClient;
     private LocationClientOption.LocationMode tempMode = LocationClientOption.LocationMode.Hight_Accuracy;
     private String tempcoor="gcj02";
-    private BMapManager mBMapManager;
-    private MapController mMapController = null;
     private static final int UPDATE_TIME = 5000;
     private Double lat;
     private Double lon;

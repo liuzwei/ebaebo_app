@@ -114,7 +114,7 @@ public class OpenglDemo extends BaseActivity implements OnMapDrawFrameCallback, 
         ((Button) findViewById(R.id.request)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                requestLocation();
+                requestLocation();
             }
         });
 
@@ -122,15 +122,15 @@ public class OpenglDemo extends BaseActivity implements OnMapDrawFrameCallback, 
     /**
      * 手动请求定位的方法
      */
-//    public void requestLocation() {
-//        isRequest = true;
-//        if(mLocClient != null && mLocClient.isStarted()){
-//            showToast("正在更新校车位置......");
-//            mLocClient.requestLocation();
-//        }else{
-//            Log.d("LocSDK3", "locClient is null or not started");
-//        }
-//    }
+    public void requestLocation() {
+        isRequest = true;
+        if(locationClient != null && locationClient.isStarted()){
+            showToast("正在更新校车位置......");
+            locationClient.requestLocation();
+        }else{
+            Log.d("LocSDK3", "locClient is null or not started");
+        }
+    }
     /**
      * 定位接口，需要实现两个方法
      * @author xiaanming
