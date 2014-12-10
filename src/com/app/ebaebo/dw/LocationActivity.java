@@ -30,12 +30,12 @@ public class LocationActivity extends Activity{
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.location);
-		mLocationClient = ((EbaeboApplication)getApplication()).mLocationClient;
+//		mLocationClient = ((EbaeboApplication)getApplication()).mLocationClient;
 		
 		LocationResult = (TextView)findViewById(R.id.textView1);
 		ModeInfor= (TextView)findViewById(R.id.modeinfor);
 		ModeInfor.setText(getString(R.string.hight_accuracy_desc));
-		 ((EbaeboApplication)getApplication()).mLocationResult = LocationResult;
+//		 ((EbaeboApplication)getApplication()).mLocationResult = LocationResult;
 		 frequence = (EditText)findViewById(R.id.frequence);
 		 checkGeoLocation = (CheckBox)findViewById(R.id.geolocation);
 		startLocation = (Button)findViewById(R.id.addfence);

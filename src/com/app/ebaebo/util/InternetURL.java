@@ -16,7 +16,7 @@ public class InternetURL {
     public static String GROWING_MANAGER_API = "http://yey.xqb668.com/index/ServiceJson/growinglist";
 
     public static String GET_YUYING_MESSAGE = "http://yey.xqb668.com/index/ServiceJson/news";
-
+    public static String GET_YUYING_DETAIL = "http://yey.xqb668.com/index/ServiceJson/newsDetail";
     //获得用户下的baby
     public static String GET_BABY_URL = "http://yey.xqb668.com/json.php/growing.api-childrens/";
 

@@ -25,10 +25,7 @@ import com.app.ebaebo.dw.LocationActivity;
 import com.app.ebaebo.entity.Account;
 import com.app.ebaebo.entity.Baby;
 import com.app.ebaebo.entity.Growing;
-import com.app.ebaebo.util.CommonUtil;
-import com.app.ebaebo.util.InternetURL;
-import com.app.ebaebo.util.PhoneEnvUtil;
-import com.app.ebaebo.util.Player;
+import com.app.ebaebo.util.*;
 import com.app.ebaebo.widget.ContentListView;
 import com.google.gson.Gson;
 import com.umeng.socialize.controller.UMServiceFactory;
@@ -98,7 +95,7 @@ public class MainActivity extends BaseActivity implements
         setContentView(R.layout.activity_main);
         initView();
         String accountStr = sp.getString("account", "");
-        if (!accountStr.isEmpty()){
+        if (!StringUtil.isNullOrEmpty(accountStr)){
             try{
                 account =getGson().fromJson(accountStr, Account.class);
                 if (account != null){

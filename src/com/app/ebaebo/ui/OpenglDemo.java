@@ -49,16 +49,16 @@ public class OpenglDemo extends BaseActivity implements OnMapDrawFrameCallback, 
 	MapView mMapView;
 	BaiduMap mBaiduMap;
 	Bitmap bitmap;
-	private LatLng latlng1 = new LatLng(39.97923, 116.357428);
-	LatLng latlng2 = new LatLng(39.94923, 116.397428);
-	LatLng latlng3 = new LatLng(39.96923, 116.437428);
+//	private LatLng latlng1 = new LatLng(39.97923, 116.357428);
+//	LatLng latlng2 = new LatLng(39.94923, 116.397428);
+//	LatLng latlng3 = new LatLng(39.96923, 116.437428);
 	private List<LatLng> latLngPolygon = new ArrayList<LatLng>();
 
 	private float[] vertexs;
 	private FloatBuffer vertexBuffer;
 
     private LocationClient locationClient = null;
-    private static final int UPDATE_TIME = 5000000;
+    private static final int UPDATE_TIME = 5000;
     private static int LOCATION_COUTNS = 0;
 
     private Double lat;
@@ -67,7 +67,7 @@ public class OpenglDemo extends BaseActivity implements OnMapDrawFrameCallback, 
 
     private List<Trace> listDw  = new ArrayList<Trace>();
     private boolean isRequest = false;//是否手动触发请求定位
-    private LocationClient mLocClient;
+//    private LocationClient mLocClient;
     private Toast mToast;
 
 	@Override
@@ -83,40 +83,16 @@ public class OpenglDemo extends BaseActivity implements OnMapDrawFrameCallback, 
 //        option.setPriority(LocationClientOption.NetWorkFirst);  //设置定位优先级
         option.setProdName("RIvp33GcGSGSwwntWPGXMxBs"); //设置产品线名称。强烈建议您使用自定义的产品线名称，方便我们以后为您提供更高效准确的定位服务。
         option.setScanSpan(UPDATE_TIME);    //设置定时定位的时间间隔。单位毫秒
+        locationClient = new LocationClient(getApplicationContext());
         locationClient.setLocOption(option);
-
         //注册位置监听器
         locationClient.registerLocationListener(new BDLocationListener() {
-
             @Override
             public void onReceiveLocation(BDLocation location) {
                 // TODO Auto-generated method stub
                 if (location == null) {
                     return;
                 }
-                StringBuffer sb = new StringBuffer(256);
-                sb.append("Time : ");
-                sb.append(location.getTime());
-                sb.append("\nError code : ");
-                sb.append(location.getLocType());
-                sb.append("\nLatitude : ");
-                sb.append(location.getLatitude());
-                sb.append("\nLontitude : ");
-                sb.append(location.getLongitude());
-                sb.append("\nRadius : ");
-                sb.append(location.getRadius());
-                if (location.getLocType() == BDLocation.TypeGpsLocation){
-                    sb.append("\nSpeed : ");
-                    sb.append(location.getSpeed());
-                    sb.append("\nSatellite : ");
-                    sb.append(location.getSatelliteNumber());
-                } else if (location.getLocType() == BDLocation.TypeNetWorkLocation){
-                    sb.append("\nAddress : ");
-                    sb.append(location.getAddrStr());
-                }
-                LOCATION_COUTNS ++;
-                sb.append("\n检查位置更新次数：");
-                sb.append(String.valueOf(LOCATION_COUTNS));
                 lat = location.getLatitude();
                 lon = location.getLongitude();
                 //定位到当期位置
@@ -129,16 +105,16 @@ public class OpenglDemo extends BaseActivity implements OnMapDrawFrameCallback, 
         locationClient.start();
         locationClient.requestLocation();
         //实例化定位服务，LocationClient类必须在主线程中声明
-        mLocClient = new LocationClient(getApplicationContext());
-        mLocClient.registerLocationListener(new BDLocationListenerImpl());//注册定位监听接口
-        mLocClient.setLocOption(option);
-        mLocClient.start();  //	调用此方法开始定位
+//        mLocClient = new LocationClient(getApplicationContext());
+//        mLocClient.registerLocationListener(new BDLocationListenerImpl());//注册定位监听接口
+//        mLocClient.setLocOption(option);
+//        mLocClient.start();  //	调用此方法开始定位
         
         //点击按钮手动请求定位
         ((Button) findViewById(R.id.request)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestLocation();
+//                requestLocation();
             }
         });
 
@@ -146,15 +122,15 @@ public class OpenglDemo extends BaseActivity implements OnMapDrawFrameCallback, 
     /**
      * 手动请求定位的方法
      */
-    public void requestLocation() {
-        isRequest = true;
-        if(mLocClient != null && mLocClient.isStarted()){
-            showToast("正在更新校车位置......");
-            mLocClient.requestLocation();
-        }else{
-            Log.d("LocSDK3", "locClient is null or not started");
-        }
-    }
+//    public void requestLocation() {
+//        isRequest = true;
+//        if(mLocClient != null && mLocClient.isStarted()){
+//            showToast("正在更新校车位置......");
+//            mLocClient.requestLocation();
+//        }else{
+//            Log.d("LocSDK3", "locClient is null or not started");
+//        }
+//    }
     /**
      * 定位接口，需要实现两个方法
      * @author xiaanming

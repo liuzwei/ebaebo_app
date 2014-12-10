@@ -128,7 +128,7 @@ public class YuyingMessageActivity extends BaseActivity implements OnClickConten
             case 1:
                 yy = list.get(position);
                 Intent detailYY =  new Intent(this, YuYiingDetailActivity.class);
-                detailYY.putExtra("yy", yy );
+                detailYY.putExtra("yy", yy.getId());
                 startActivity(detailYY);
                 break;
         }

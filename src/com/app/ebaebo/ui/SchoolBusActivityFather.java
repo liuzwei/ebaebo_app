@@ -26,6 +26,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.app.ebaebo.EbaeboApplication;
 import com.app.ebaebo.R;
 import com.app.ebaebo.data.TraceDATA;
 import com.app.ebaebo.entity.Account;
@@ -33,6 +34,7 @@ import com.app.ebaebo.entity.Trace;
 import com.app.ebaebo.util.CommonUtil;
 import com.app.ebaebo.util.InternetURL;
 import com.app.ebaebo.util.StringUtil;
+import com.baidu.lbsapi.BMapManager;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -41,6 +43,7 @@ import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.*;
 import com.baidu.mapapi.map.BaiduMap.OnMapDrawFrameCallback;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.nplatform.comapi.map.MapController;
 
 /**
  * author: ${zhanghailong}
@@ -79,12 +82,14 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
     private SDKReceiver mReceiver;
 
     //定位
-    private LocationClient locationClient = null;
+    private LocationClient mLocationClient;
+    private LocationClientOption.LocationMode tempMode = LocationClientOption.LocationMode.Hight_Accuracy;
+    private String tempcoor="gcj02";
+    private BMapManager mBMapManager;
+    private MapController mMapController = null;
     private static final int UPDATE_TIME = 5000;
-    private static int LOCATION_COUTNS = 0;
     private Double lat;
     private Double lon;
-    //----
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,7 +101,7 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
         registerReceiver(mReceiver, iFilter);
         setContentView(R.layout.shoolbusfather);
         initView();
-        locationClient = new LocationClient(this);
+
         //设置定位条件
         LocationClientOption option = new LocationClientOption();
         option.setOpenGps(true);        //是否打开GPS
@@ -104,40 +109,15 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
 //        option.setPriority(LocationClientOption.NetWorkFirst);  //设置定位优先级
         option.setProdName("RIvp33GcGSGSwwntWPGXMxBs"); //设置产品线名称。强烈建议您使用自定义的产品线名称，方便我们以后为您提供更高效准确的定位服务。
         option.setScanSpan(UPDATE_TIME);    //设置定时定位的时间间隔。单位毫秒
-        locationClient.setLocOption(option);
-
+        mLocationClient = new LocationClient(getApplicationContext());
+        mLocationClient.setLocOption(option);
         //注册位置监听器
-        locationClient.registerLocationListener(new BDLocationListener() {
-
+        mLocationClient.registerLocationListener(new BDLocationListener() {
             @Override
             public void onReceiveLocation(BDLocation location) {
-                // TODO Auto-generated method stub
                 if (location == null) {
                     return;
                 }
-                StringBuffer sb = new StringBuffer(256);
-                sb.append("Time : ");
-                sb.append(location.getTime());
-                sb.append("\nError code : ");
-                sb.append(location.getLocType());
-                sb.append("\nLatitude : ");
-                sb.append(location.getLatitude());
-                sb.append("\nLontitude : ");
-                sb.append(location.getLongitude());
-                sb.append("\nRadius : ");
-                sb.append(location.getRadius());
-                if (location.getLocType() == BDLocation.TypeGpsLocation){
-                    sb.append("\nSpeed : ");
-                    sb.append(location.getSpeed());
-                    sb.append("\nSatellite : ");
-                    sb.append(location.getSatelliteNumber());
-                } else if (location.getLocType() == BDLocation.TypeNetWorkLocation){
-                    sb.append("\nAddress : ");
-                    sb.append(location.getAddrStr());
-                }
-                LOCATION_COUTNS ++;
-                sb.append("\n检查位置更新次数：");
-                sb.append(String.valueOf(LOCATION_COUTNS));
                 lat = location.getLatitude();
                 lon = location.getLongitude();
                 //定位到当期位置
@@ -147,8 +127,14 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
                 MydrawPointCurrentLocation(lat, lon);
             }
         });
-        locationClient.start();
-        locationClient.requestLocation();
+        mLocationClient.start();
+        mLocationClient.requestLocation();
+//        //定位到当期位置
+//        LatLng ll = new LatLng(32.00, 120.00);
+//        MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
+//        mBaiduMap.setMapStatus( u );
+//        MydrawPointCurrentLocation(32.00, 120.00);
+
         getData();
     }
 
@@ -288,9 +274,9 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
         // 取消监听 SDK 广播
         unregisterReceiver(mReceiver);
         super.onDestroy();
-        if (locationClient != null && locationClient.isStarted()) {
-            locationClient.stop();
-            locationClient = null;
+        if (mLocationClient != null && mLocationClient.isStarted()) {
+            mLocationClient.stop();
+            mLocationClient = null;
         }
     }
 

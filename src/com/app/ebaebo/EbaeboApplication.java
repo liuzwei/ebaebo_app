@@ -55,23 +55,19 @@ import java.util.concurrent.Executors;
  */
 public class EbaeboApplication extends Application {
     //----------------百度地图------------------
-    public LocationClient mLocationClient;
-    public GeofenceClient mGeofenceClient;
-    public MyLocationListener mMyLocationListener;
-    public TextView mLocationResult,logMsg;
-    public TextView trigger,exit;
-    public Vibrator mVibrator;
-    public static String dwlocation;
+//    public LocationClient mLocationClient;
+//    public GeofenceClient mGeofenceClient;
+//    public MyLocationListener mMyLocationListener;
+//    public TextView mLocationResult,logMsg;
+//    public TextView trigger,exit;
+//    public Vibrator mVibrator;
+//    public static String dwlocation;
     //-----------------------------------
     public static DisplayImageOptions options;
     public static DisplayImageOptions txOptions;//头像图片
     public static DisplayImageOptions tpOptions;//详情页图片
     public static DisplayImageOptions adOptions;
-    public static DisplayImageOptions txDetailOptions;//详情页头像图片
-    public static ExecutorService lxThread = Executors.newFixedThreadPool(20);
     private DBManager dbManager;
-    public static JSONArray jsonArray;//好友列表
-    public static JSONArray recent_chatters;//最近联系人
 
 
     private static final String TAG = EbaeboApplication.class.getName();
@@ -82,7 +78,7 @@ public class EbaeboApplication extends Application {
     public void onCreate() {
         super.onCreate();
         // 在使用 SDK 各组间之前初始化 context 信息，传入 ApplicationContext
-        SDKInitializer.initialize(this);
+        SDKInitializer.initialize(getApplicationContext());
         initImageLoader(getApplicationContext());
         MobclickAgent.updateOnlineConfig(getApplicationContext());
         mPushAgent = PushAgent.getInstance(this);
@@ -90,11 +86,11 @@ public class EbaeboApplication extends Application {
         dbManager = new DBManager(getApplicationContext());
 
         //------百度地图---
-        mLocationClient = new LocationClient(this.getApplicationContext());
-        mMyLocationListener = new MyLocationListener();
-        mLocationClient.registerLocationListener(mMyLocationListener);
-        mGeofenceClient = new GeofenceClient(getApplicationContext());
-        mVibrator =(Vibrator)getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);
+//        mLocationClient = new LocationClient(this.getApplicationContext());
+//        mMyLocationListener = new MyLocationListener();
+//        mLocationClient.registerLocationListener(mMyLocationListener);
+//        mGeofenceClient = new GeofenceClient(getApplicationContext());
+//        mVibrator =(Vibrator)getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);
         //------
         /**
          * 该Handler是在IntentService中被调用，故
@@ -267,13 +263,13 @@ public class EbaeboApplication extends Application {
      * @param str
      */
     public void logMsg(String str) {
-        dwlocation = str;
-        try {
-            if (mLocationResult != null)
-                mLocationResult.setText(str);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        dwlocation = str;
+//        try {
+//            if (mLocationResult != null)
+//                mLocationResult.setText(str);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     /**
