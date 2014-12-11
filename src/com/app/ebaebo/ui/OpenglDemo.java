@@ -58,7 +58,7 @@ public class OpenglDemo extends BaseActivity implements OnMapDrawFrameCallback, 
 	private FloatBuffer vertexBuffer;
 
     private LocationClient locationClient = null;
-    private static final int UPDATE_TIME = 5000;
+    private static final int UPDATE_TIME = 300000;
     private static int LOCATION_COUTNS = 0;
 
     private Double lat;
@@ -99,7 +99,7 @@ public class OpenglDemo extends BaseActivity implements OnMapDrawFrameCallback, 
                 LatLng ll = new LatLng(lat, lon);
                 MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
                 mBaiduMap.setMapStatus( u );
-                MydrawPointCurrentLocation(lat, lon);
+//                MydrawPointCurrentLocation(lat, lon);
             }
         });
         locationClient.start();
@@ -294,7 +294,7 @@ public class OpenglDemo extends BaseActivity implements OnMapDrawFrameCallback, 
                                 OpenCarDATA data = getGson().fromJson(s, OpenCarDATA.class);
                                 OpenCar openCar = data.getData();
                                 line_id = openCar.getLine_id()==null?"":openCar.getLine_id();//获得路线的ID
-                                Toast.makeText(mContext, "校车位置更新成功", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(mContext, "校车位置更新成功", Toast.LENGTH_SHORT).show();
                                 //更新车辆位置数据
                                 updateCar(line_id);
                             }else {
@@ -368,11 +368,13 @@ public class OpenglDemo extends BaseActivity implements OnMapDrawFrameCallback, 
                                     }
                                 }
                                 //开始处理数据
-                                if(latLngPolygon!=null &&latLngPolygon.size()>0){
+                                if(latLngPolygon!=null && latLngPolygon.size()>0){
                                     //绘制起点
                                     MydrawPointStart(latLngPolygon.get(0).latitude, latLngPolygon.get(0).longitude);
-                                    //绘制终点
-                                    MydrawPointEnd(latLngPolygon.get(latLngPolygon.size() - 1).latitude, latLngPolygon.get(latLngPolygon.size() - 1).longitude);
+                                    if(latLngPolygon.size() > 1){
+                                        //绘制终点
+                                        MydrawPointEnd(latLngPolygon.get(latLngPolygon.size() - 1).latitude, latLngPolygon.get(latLngPolygon.size() - 1).longitude);
+                                    }
                                 }
                             }else {
                                 Toast.makeText(mContext, "数据错误，请稍后重试", Toast.LENGTH_SHORT).show();

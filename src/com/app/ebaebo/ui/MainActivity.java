@@ -17,6 +17,7 @@ import com.android.volley.toolbox.Volley;
 import com.app.ebaebo.ActivityTack;
 import com.app.ebaebo.R;
 import com.app.ebaebo.adapter.GrowingAdapter;
+import com.app.ebaebo.adapter.ImageAdapter;
 import com.app.ebaebo.adapter.OnClickContentItemListener;
 import com.app.ebaebo.data.BabyDATA;
 import com.app.ebaebo.data.ErrorDATA;
@@ -32,6 +33,7 @@ import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMVideo;
+import com.umeng.socialize.media.UMusic;
 import com.umeng.socialize.sso.QZoneSsoHandler;
 import com.umeng.socialize.sso.SinaSsoHandler;
 import com.umeng.socialize.sso.TencentWBSsoHandler;
@@ -88,7 +90,8 @@ public class MainActivity extends BaseActivity implements
     private RequestQueue mRequestQueue;
     // 首先在您的Activity中添加如下成员变量
     final UMSocialService mController = UMServiceFactory.getUMSocialService("com.umeng.share");
-
+    String shareUrl = "http://yey.xqb668.com";
+    String sharePic="http://yey.xqb668.com/Public/index/image/p_logo.png";//分享图片
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,10 +148,9 @@ public class MainActivity extends BaseActivity implements
         //youmeng
 
         // 设置分享内容
-                mController.setShareContent("友盟社会化组件（SDK）让移动应用快速整合社交分享功能，http://www.umeng.com/social");
+        mController.setShareContent("");
         // 设置分享图片, 参数2为图片的url地址
-                mController.setShareMedia(new UMImage(this,
-                        "http://www.umeng.com/images/pic/banner_module_social.png"));
+        mController.setShareMedia(new UMImage(this, ""));
         // 设置分享图片，参数2为本地图片的资源引用
         //mController.setShareMedia(new UMImage(getActivity(), R.drawable.icon));
         // 设置分享图片，参数2为本地图片的路径(绝对路径)
@@ -349,30 +351,49 @@ public class MainActivity extends BaseActivity implements
                 final Growing grow = growingList.get(position);
 //                private String dept;//文字描述
 //                private String type;//0 文字 1 照片 2 视频
+                String appID = "wxd97dd1adcce2b199";
+                String appSecret = "7955104817ad2d367ff337ca56e12756";
+
+                // 设置分享内容
+                mController.setShareContent(grow.getDept());
+                // 设置分享图片, 参数2为图片的url地址
+                mController.setShareMedia(new UMImage(MainActivity.this, R.drawable.ic_launcher));
+//                mController.setShareMedia(new UMImage(this, ""));
                  if(grow.getType().equals("0")){
                      //文字
                  }
                 if(grow.getType().equals("1")){
                     //照片
+                    if (!StringUtil.isNullOrEmpty(grow.getUrl())) {
+                        String[] picUrls = grow.getUrl().split(",");
+                        mController.setShareMedia(new UMImage(this, picUrls[0]));
+                    }
                 }
                 if(grow.getDept().equals("2")){
                     //视频
                     UMVideo umVideo = new UMVideo(grow.getDept());
                     umVideo.setMediaUrl(grow.getUrl());
-                    umVideo.setThumb(grow.getUrl());
-//                    umVideo.setTitle(shareTitle+info.getJieshao());
-//                    umVideo.setTargetUrl();
+                    umVideo.setThumb(sharePic);
+                    umVideo.setTitle(grow.getDept());
+                    umVideo.setTargetUrl(shareUrl);
                     mController.setShareMedia(umVideo);
                 }
-                String appID = "wxd97dd1adcce2b199";
-                String appSecret = "7955104817ad2d367ff337ca56e12756";
+                if(grow.getDept().equals("3")){
+                    // 设置分享音乐
+                    UMusic uMusic = new UMusic(grow.getUrl());
+                    uMusic.setAuthor(grow.getDept());
+                    uMusic.setTitle(grow.getDept());
+                    //设置音乐缩略图
+                    uMusic.setThumb(sharePic);
+                    mController.setShareMedia(uMusic);
+                }
                 //1.添加QQ空间分享
                 QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(this, "100582055","f1a53f9becde189f56362e8b98e22f60");
-//                qZoneSsoHandler.setTargetUrl(shareUrl+shareParams);
+                qZoneSsoHandler.setTargetUrl(shareUrl);
                 qZoneSsoHandler.addToSocialSDK();
                 //2.添加QQ好友分享
                 UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(this, "100582055","f1a53f9becde189f56362e8b98e22f60");
-//                qqSsoHandler.setTargetUrl(shareUrl+shareParams);
+                qqSsoHandler.setTargetUrl(shareUrl);
                 qqSsoHandler.addToSocialSDK();
                 // 添加微信平台
                 UMWXHandler wxHandler = new UMWXHandler(this,appID);
@@ -383,18 +404,35 @@ public class MainActivity extends BaseActivity implements
                 wxCircleHandler.addToSocialSDK();
                 //单独设置微信分享
                 WeiXinShareContent xinShareContent = new WeiXinShareContent();
-//                if(!"".equals(grow.getDept())){
-//                    xinShareContent.setShareContent(grow.getDept());
-//                    xinShareContent.setTitle(grow.getDept());
-//                }
-//                xinShareContent.setShareImage(new UMImage(this, sharePic));
-//                xinShareContent.setTargetUrl(shareUrl+shareParams);
+                if(!"".equals(grow.getDept())){
+                    xinShareContent.setShareContent(grow.getDept());
+                    xinShareContent.setTitle(grow.getDept());
+                }
+                if(grow.getType().equals("1")){
+                    //照片
+                    if (!StringUtil.isNullOrEmpty(grow.getUrl())) {
+                        String[] picUrls = grow.getUrl().split(",");
+                        xinShareContent.setShareImage(new UMImage(this, picUrls[0]));
+                    }
+                }else{
+                    xinShareContent.setShareImage(new UMImage(this, R.drawable.ic_launcher));
+                }
+                xinShareContent.setTargetUrl(shareUrl);
                 mController.setShareMedia(xinShareContent);
                 CircleShareContent circleMedia = new CircleShareContent();
-//                circleMedia.setShareContent(shareCont);
-//                circleMedia.setTitle(shareTitle+shareCont);
-//                circleMedia.setShareImage(new UMImage(this, sharePic));
-//                circleMedia.setTargetUrl(shareUrl+shareParams);
+                circleMedia.setShareContent(grow.getDept());
+                circleMedia.setTitle(grow.getDept());
+                    if(grow.getType().equals("1")){
+                        //照片
+                        if (!StringUtil.isNullOrEmpty(grow.getUrl())) {
+                            String[] picUrls = grow.getUrl().split(",");
+                            circleMedia.setShareImage(new UMImage(this, picUrls[0]));
+                        }
+                    }else{
+                        circleMedia.setShareImage(new UMImage(this, R.drawable.ic_launcher));
+                    }
+
+                circleMedia.setTargetUrl(shareUrl);
                 mController.setShareMedia(circleMedia);
                 mController.openShare(this, false);
                 break;

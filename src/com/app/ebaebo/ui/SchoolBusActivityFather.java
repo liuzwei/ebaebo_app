@@ -85,7 +85,7 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
     private LocationClient mLocationClient;
     private LocationClientOption.LocationMode tempMode = LocationClientOption.LocationMode.Hight_Accuracy;
     private String tempcoor="gcj02";
-    private static final int UPDATE_TIME = 5000;
+    private static final int UPDATE_TIME = 300000;
     private Double lat;
     private Double lon;
     @Override
