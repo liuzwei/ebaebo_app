@@ -15,12 +15,24 @@ public class Message implements Serializable{
     private String content;
     private String url;
 
-    public Message(String uid, String to_uids, long dateline, String type, String content) {
+    private int time;
+    private boolean isComMsg;
+
+    public Message(String uid, String to_uids, long dateline, String type, String content){
         this.uid = uid;
         this.to_uids = to_uids;
         this.dateline = dateline;
         this.type = type;
         this.content = content;
+    }
+    public Message(String uid, String to_uids, long dateline, String type, String content, int time, boolean isComMsg) {
+        this.uid = uid;
+        this.to_uids = to_uids;
+        this.dateline = dateline;
+        this.type = type;
+        this.content = content;
+        this.time = time;
+        this.isComMsg = isComMsg;
     }
 
     public String getId() {
@@ -85,5 +97,21 @@ public class Message implements Serializable{
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
+    }
+
+    public boolean isComMsg() {
+        return isComMsg;
+    }
+
+    public void setComMsg(boolean isComMsg) {
+        this.isComMsg = isComMsg;
     }
 }

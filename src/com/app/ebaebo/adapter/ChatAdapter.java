@@ -2,6 +2,7 @@ package com.app.ebaebo.adapter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,21 @@ import java.util.List;
  * Created by liuzwei on 2014/11/21.
  */
 public class ChatAdapter extends BaseAdapter {
+    public static interface IMsgViewType {
+        int IMVT_COM_MSG = 0;
+        int IMVT_TO_MSG = 1;
+    }
+    public int getItemViewType(int position) {
+        // TODO Auto-generated method stub
+        Message message = list.get(position);
+        Account account = gson.fromJson(sp.getString(Constants.ACCOUNT_KEY, ""), Account.class);
+        if (message.getTo_uids().contains(account.getUid())) {
+            return IMsgViewType.IMVT_COM_MSG;
+        } else {
+            return IMsgViewType.IMVT_TO_MSG;
+        }
+
+    }
     private List<Message> list;
     private Context context;
     private ViewHolder viewHolder;
@@ -34,6 +50,7 @@ public class ChatAdapter extends BaseAdapter {
     private static Gson gson = new Gson();
     private UserData userData;
     private static boolean isMe = true;
+    private MediaPlayer mMediaPlayer = new MediaPlayer();
 
     ImageLoader imageLoader = ImageLoader.getInstance();//图片加载类
     private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
@@ -62,7 +79,7 @@ public class ChatAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Message message = list.get(position);
+        final Message message = list.get(position);
         Account account = gson.fromJson(sp.getString(Constants.ACCOUNT_KEY, ""), Account.class);
 
         if (convertView == null){
@@ -91,8 +108,48 @@ public class ChatAdapter extends BaseAdapter {
             imageLoader.displayImage(String.format("%s%s", Constants.API_HEAD, userData.getFrom().getCover()), viewHolder.photo, EbaeboApplication.txOptions, animateFirstListener);
         }
         viewHolder.sendTime.setText(CommonUtil.longToString(message.getDateline()));
-        viewHolder.content.setText(message.getContent());
+        if (message.getContent().contains(".amr")) {
+            viewHolder.content.setText("");
+            viewHolder.content.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.chatto_voice_playing, 0);
+        } else {
+            viewHolder.content.setText(message.getContent());
+            viewHolder.content.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        }
+        viewHolder.content.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                if (message.getContent().contains(".amr")) {
+                    playMusic(android.os.Environment.getExternalStorageDirectory() + "/" + message.getContent()) ;
+                }
+            }
+        });
+//        viewHolder.content.setText(message.getContent());
         return convertView;
+    }
+
+    /**
+     * @Description
+     * @param name
+     */
+    private void playMusic(String name) {
+        try {
+            if (mMediaPlayer.isPlaying()) {
+                mMediaPlayer.stop();
+            }
+            mMediaPlayer.reset();
+            mMediaPlayer.setDataSource(name);
+            mMediaPlayer.prepare();
+            mMediaPlayer.start();
+            mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                public void onCompletion(MediaPlayer mp) {
+
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     class ViewHolder{
