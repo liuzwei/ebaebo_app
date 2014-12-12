@@ -1,7 +1,10 @@
 package com.app.ebaebo.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.android.volley.Request;
@@ -15,6 +18,7 @@ import com.app.ebaebo.adapter.OnClickContentItemListener;
 import com.app.ebaebo.adapter.TongxunluAdapter;
 import com.app.ebaebo.data.ErrorDATA;
 import com.app.ebaebo.data.TongxunluDATA;
+import com.app.ebaebo.entity.AccountMessage;
 import com.app.ebaebo.entity.Tongxunlu;
 import com.app.ebaebo.util.InternetURL;
 import com.app.ebaebo.widget.ContentListView;
@@ -48,6 +52,20 @@ public class TongxunluActivity extends BaseActivity implements OnClickContentIte
         clv.setAdapter(adapter);
         getData();
         adapter.setOnClickContentItemListener(this);
+        clv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent chat = new Intent(TongxunluActivity.this, ChatActivity.class);
+                Tongxunlu txl = list.get(position);
+                AccountMessage message = new AccountMessage();
+                message.setName(txl.getName());
+                message.setUid(txl.getUid());
+                message.setCover(txl.getCover());
+                message.setDept(txl.getDept());
+                chat.putExtra(Constants.ACCOUNT_MESSAGE, message);
+                startActivity(chat);
+            }
+        });
     }
 
     @Override

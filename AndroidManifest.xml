@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
@@ -132,9 +133,15 @@
                 android:screenOrientation="portrait"
                 >
         </activity>
-        <activity android:name=".ui.VideoViewActivity"/>
-        <activity android:name=".ui.OpenglDemo"/>
-
+        <activity android:name=".ui.VideoViewActivity"
+                  android:configChanges="orientation|keyboardHidden"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.OpenglDemo"
+                  android:configChanges="orientation|keyboardHidden"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.SetWifiActivity"
+                  android:configChanges="orientation|keyboardHidden"
+                  android:screenOrientation="portrait"/>
         <activity
                 android:name="io.vov.vitamio.activity.InitActivity"
                 android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
