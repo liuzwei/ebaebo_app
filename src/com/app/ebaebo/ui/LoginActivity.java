@@ -1,6 +1,7 @@
 package com.app.ebaebo.ui;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -72,6 +73,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 loginBtn.setClickable(false);
                 progressDialog = new ProgressDialog(LoginActivity.this);
                 progressDialog.setMessage("登录中...");
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        loginBtn.setClickable(true);
+                    }
+                });
                 progressDialog.show();
                 final String name = username.getText().toString();
                 final String pass = password.getText().toString();
@@ -123,8 +131,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                             @Override
                             public void onErrorResponse(VolleyError volleyError) {
                                 loginBtn.setClickable(true);
+                                progressDialog.dismiss();
+                                Toast.makeText(mContext, "请求超时，稍后重试", Toast.LENGTH_SHORT).show();
                             }
                 });
+                request.setRetryPolicy(new DefaultRetryPolicy(
+                        5000,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                 mRequestQueue.add(request);
                 break;
             case R.id.login_forgetpass://忘记密码

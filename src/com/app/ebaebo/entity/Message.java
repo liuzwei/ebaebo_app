@@ -18,6 +18,9 @@ public class Message implements Serializable{
     private int time;
     private boolean isComMsg;
 
+    public Message() {
+    }
+
     public Message(String uid, String to_uids, long dateline, String type, String content){
         this.uid = uid;
         this.to_uids = to_uids;
@@ -114,4 +117,5 @@ public class Message implements Serializable{
     public void setComMsg(boolean isComMsg) {
         this.isComMsg = isComMsg;
     }
+
 }

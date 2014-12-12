@@ -27,6 +27,7 @@ import com.app.ebaebo.entity.Account;
 import com.app.ebaebo.entity.Baby;
 import com.app.ebaebo.entity.Growing;
 import com.app.ebaebo.util.*;
+import com.app.ebaebo.util.face.FaceConversionUtil;
 import com.app.ebaebo.widget.ContentListView;
 import com.google.gson.Gson;
 import com.umeng.socialize.controller.UMServiceFactory;
@@ -119,6 +120,14 @@ public class MainActivity extends BaseActivity implements
         listView.setAdapter(adapter);
         getData(ContentListView.REFRESH);
         getBaby();
+
+        //初始化加载表情
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                FaceConversionUtil.getInstace().getFileText(getApplication());
+            }
+        }).start();
 //        radioGroups = (RadioGroup) findViewById(R.id.main_radiogroups);
 //
 //        fragments.add(new MessageFragment());
