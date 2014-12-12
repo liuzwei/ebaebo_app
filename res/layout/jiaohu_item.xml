@@ -31,7 +31,7 @@
                       <!--android:textColor="#ffffff"/>-->
             <TextView
                     android:text=" 3"
-                    android:id="@+id/user_type"
+                    android:id="@+id/jiaohu_item_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/yuan"

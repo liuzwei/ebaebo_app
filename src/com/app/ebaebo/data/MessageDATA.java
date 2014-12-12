@@ -5,7 +5,7 @@ import com.app.ebaebo.entity.MessageData;
 /**
  * Created by liuzwei on 2014/11/21.
  */
-public class MessageDATA {
+public class MessageDATA{
     private int code;
     private String msg;
     private MessageData data;

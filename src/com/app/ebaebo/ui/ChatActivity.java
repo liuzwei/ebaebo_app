@@ -1,8 +1,6 @@
 package com.app.ebaebo.ui;
 
-import android.content.ComponentName;
-import android.content.Intent;
-import android.content.ServiceConnection;
+import android.content.*;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -70,6 +68,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     private Handler mHandler = new Handler();
     private List<Message> list = new ArrayList<Message>();
     private static String PATH = Environment.getExternalStorageDirectory().getAbsolutePath();
+    private MessageReceiver messageReceiver;
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
@@ -95,18 +94,34 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 
         getData();
         bindMessageService();
+        messageReceiver = new MessageReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.app.ebaebo.ui.RECEIVER");
+        registerReceiver(messageReceiver, intentFilter);
 //        adapter = new ChatAdapter(list, mContext,sp, )
     }
 
     private void bindMessageService(){
-        Intent intent = new Intent(ChatActivity.this, MessageService.class);
+        Intent intent = new Intent();
+        intent.setClass(ChatActivity.this, MessageService.class);
         ArrayList<String> data = new ArrayList<String>();
         data.add(account.getUid());
         data.add(accountMessage.getUid());
         data.add(identity);
-        intent.putStringArrayListExtra("getData", data );
+        intent.putStringArrayListExtra("getData", data);
         ChatActivity.this.bindService(intent, serviceConnection, BIND_AUTO_CREATE);
         ChatActivity.this.startService(intent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Intent i  = new Intent();
+        i.setClass(ChatActivity.this, MessageService.class);
+        ChatActivity.this.unbindService(serviceConnection);
+        mContext.stopService(i);
+
+        unregisterReceiver(messageReceiver);
     }
 
     @Override
@@ -350,7 +365,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                             accountMessage.getUid(),
                             System.currentTimeMillis(),
                             "3",
-                            "");
+                            voiceName);
                     message.setUrl(voiceName);
 
                     //上传文件
@@ -475,6 +490,17 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
             default:
                 volume.setImageResource(R.drawable.amp7);
                 break;
+        }
+    }
+
+    public class MessageReceiver extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String messages = intent.getStringExtra("messages");
+            MessageDATA messageDATA = getGson().fromJson(messages, MessageDATA.class);
+            list.addAll(messageDATA.getData().getList());
+            adapter.notifyDataSetChanged();
         }
     }
 }

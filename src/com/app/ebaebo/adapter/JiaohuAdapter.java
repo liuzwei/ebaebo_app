@@ -54,6 +54,7 @@ public class JiaohuAdapter extends BaseAdapter {
            viewHolder.photo = (ImageView) convertView.findViewById(R.id.jiaohu_item_photo);
            viewHolder.dept = (TextView) convertView.findViewById(R.id.jiaohu_item_dept);
            viewHolder.name = (TextView) convertView.findViewById(R.id.jiaohu_item_name);
+           viewHolder.num = (TextView) convertView.findViewById(R.id.jiaohu_item_num);
            viewHolder.lastMessage = (TextView) convertView.findViewById(R.id.jiaohu_item_lastmessage);
            convertView.setTag(viewHolder);
        }else {
@@ -66,6 +67,12 @@ public class JiaohuAdapter extends BaseAdapter {
         viewHolder.name.setText(message.getName());
         viewHolder.dept.setText(message.getDept());
         viewHolder.lastMessage.setText(message.getLastmessage());
+        if (message.getPmnum()>0){
+            viewHolder.num.setVisibility(View.VISIBLE);
+            viewHolder.num.setText(" "+message.getPmnum());
+        }else {
+            viewHolder.num.setVisibility(View.GONE);
+        }
         return convertView;
     }
 
@@ -74,6 +81,6 @@ public class JiaohuAdapter extends BaseAdapter {
         TextView name;
         TextView dept;
         TextView lastMessage;
-
+        TextView num;
     }
 }
