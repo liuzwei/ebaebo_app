@@ -61,6 +61,7 @@ public class MainActivity extends BaseActivity implements
     private TextView addressBook;//通讯录
     private TextView yuyingInfo;//育英信息
     private TextView callName;//点名
+    private View callnameline;
     private TextView setting;//设置
     private Spinner growingManager;//成长管理下拉
     private ArrayAdapter<String> spinnerAdapter;
@@ -146,12 +147,18 @@ public class MainActivity extends BaseActivity implements
 //        });
         if(identity.equals("0")){
             user.setText("        "+account.getF_name());
+            callName.setVisibility(View.GONE);
+            callnameline.setVisibility(View.GONE);
         }
         if(identity.equals("1")){
             user.setText("        "+account.getM_name());
+            callName.setVisibility(View.GONE);
+            callnameline.setVisibility(View.GONE);
         }
         if(account.getIs_teacher().equals("1")){
             user.setText("        "+account.getNick_name());
+            callName.setVisibility(View.VISIBLE);
+            callnameline.setVisibility(View.VISIBLE);
         }
 
         //youmeng
@@ -197,6 +204,7 @@ public class MainActivity extends BaseActivity implements
         addressBook = (TextView) slideMenu.findViewById(R.id.leftmenu_address_book);
         yuyingInfo = (TextView) slideMenu.findViewById(R.id.leftmenu_info);
         callName = (TextView) slideMenu.findViewById(R.id.leftmenu_callname);
+        callnameline = slideMenu.findViewById(R.id.callnameline);
         setting = (TextView) slideMenu.findViewById(R.id.leftmenu_setting);
         growingManager = (Spinner) slideMenu.findViewById(R.id.growing_manager_spinner);
         listView = (ContentListView) slideMenu.findViewById(R.id.index_pull_refresh_lsv);

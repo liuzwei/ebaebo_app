@@ -174,6 +174,7 @@
     <View
             android:layout_width="240dip"
             android:layout_height="2.0dip"
+            android:id="@+id/callnameline"
             android:background="#FFFFFF" />
     <TextView
             android:id="@+id/leftmenu_setting"

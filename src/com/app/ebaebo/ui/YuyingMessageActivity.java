@@ -3,6 +3,8 @@ package com.app.ebaebo.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.android.volley.Request;
@@ -48,6 +50,16 @@ public class YuyingMessageActivity extends BaseActivity implements OnClickConten
         clv.setAdapter(adapter);
         getData();
         adapter.setOnClickContentItemListener(this);
+        clv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //将数据放到Intent中并进行页面跳转
+                Yuying yy = list.get(position);
+                Intent detailYY =  new Intent(YuyingMessageActivity.this, YuYiingDetailActivity.class);
+                detailYY.putExtra("yy", yy.getId());
+                startActivity(detailYY);
+            }
+        });
     }
 
     private void initView() {

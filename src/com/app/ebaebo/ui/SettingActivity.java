@@ -19,6 +19,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     LinearLayout babySet;//宝宝设置
     LinearLayout mumSet;//妈妈设置
     LinearLayout boundEmail;//绑定邮箱
+    LinearLayout settingwifiliner;//设置wifi
     LinearLayout about;//
     ImageView back;//返回
     TextView zhanghao;
@@ -69,6 +70,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         setting_question = (TextView) this.findViewById(R.id.setting_question);
         setting_baobao = (LinearLayout) this.findViewById(R.id.setting_baobao);
         setting_mama = (LinearLayout) this.findViewById(R.id.setting_mama);
+        settingwifiliner = (LinearLayout) this.findViewById(R.id.settingwifiliner);
+        settingwifiliner.setOnClickListener(this);
 
     }
 
@@ -105,6 +108,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             case R.id.setting_exit:
 //                ShellContext.clear();
                 ActivityTack.getInstanse().popUntilActivity(LoginActivity.class);
+                break;
+            case R.id.settingwifiliner:
+                Intent wifi = new Intent(this,SetWifiActivity.class);
+                startActivity(wifi);
                 break;
         }
     }
