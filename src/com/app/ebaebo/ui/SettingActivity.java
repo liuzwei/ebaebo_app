@@ -29,6 +29,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     private TextView setting_question;
     private LinearLayout setting_baobao;
     private LinearLayout setting_mama;
+    private LinearLayout setting_teacherliner;//老师设置
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +48,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         if(account.getIs_teacher().equals("1")){
             setting_baobao.setVisibility(View.GONE);
             setting_mama.setVisibility(View.GONE);
+            setting_teacherliner.setVisibility(View.VISIBLE);
         }
     }
 
@@ -72,7 +75,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         setting_mama = (LinearLayout) this.findViewById(R.id.setting_mama);
         settingwifiliner = (LinearLayout) this.findViewById(R.id.settingwifiliner);
         settingwifiliner.setOnClickListener(this);
-
+        setting_teacherliner = (LinearLayout) this.findViewById(R.id.setting_teacherliner);
+        setting_teacherliner.setOnClickListener(this);
     }
 
     @Override
@@ -112,6 +116,11 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             case R.id.settingwifiliner:
                 Intent wifi = new Intent(this,SetWifiActivity.class);
                 startActivity(wifi);
+                break;
+            case R.id.setting_teacherliner:
+                //老师设置
+                Intent teacher = new Intent(this,TeacherSettingActivity.class);
+                startActivity(teacher);
                 break;
         }
     }
