@@ -226,6 +226,7 @@
                 </action>
             </intent-filter>
         </service>
+        <!--<service android:name=".service.MessageService"/>-->
 
         <!-- meta-data需要写在application中 -->
         <meta-data

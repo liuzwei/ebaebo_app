@@ -1,8 +1,12 @@
 package com.app.ebaebo.ui;
 
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.IBinder;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -18,6 +22,7 @@ import com.app.ebaebo.data.ErrorDATA;
 import com.app.ebaebo.data.MessageDATA;
 import com.app.ebaebo.data.UploadDATA;
 import com.app.ebaebo.entity.*;
+import com.app.ebaebo.service.MessageService;
 import com.app.ebaebo.util.CommonUtil;
 import com.app.ebaebo.util.InternetURL;
 import com.app.ebaebo.util.StringUtil;
@@ -36,6 +41,7 @@ import java.util.*;
  * 双人聊天交互页面
  */
 public class ChatActivity extends BaseActivity implements View.OnClickListener {
+    private MessageService messageService;
     private ImageView back;
     private ListView listView;
     private EditText sendMessage;
@@ -65,6 +71,18 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     private List<Message> list = new ArrayList<Message>();
     private static String PATH = Environment.getExternalStorageDirectory().getAbsolutePath();
 
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            messageService = ((MessageService.MessageBinder)service).getService();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +94,19 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         chatTitle.setText(String.format("与 %s 聊天中", accountMessage.getName()));
 
         getData();
+        bindMessageService();
 //        adapter = new ChatAdapter(list, mContext,sp, )
+    }
+
+    private void bindMessageService(){
+        Intent intent = new Intent(ChatActivity.this, MessageService.class);
+        ArrayList<String> data = new ArrayList<String>();
+        data.add(account.getUid());
+        data.add(accountMessage.getUid());
+        data.add(identity);
+        intent.putStringArrayListExtra("getData", data );
+        ChatActivity.this.bindService(intent, serviceConnection, BIND_AUTO_CREATE);
+        ChatActivity.this.startService(intent);
     }
 
     @Override
