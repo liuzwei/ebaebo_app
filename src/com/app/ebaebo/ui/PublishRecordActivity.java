@@ -54,8 +54,7 @@ public class PublishRecordActivity extends BaseActivity implements View.OnClickL
     private MediaPlayer mPlayer = new MediaPlayer();
     /** 录音存储路径 */
     private static final String PATH = "/Recorder.mp3";
-    private MP3Recorder recorder = new MP3Recorder(Environment.getExternalStorageDirectory()
-            + PATH , 8000);
+    private MP3Recorder recorder = new MP3Recorder(8000);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +85,7 @@ public class PublishRecordActivity extends BaseActivity implements View.OnClickL
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()){
                     case MotionEvent.ACTION_DOWN:
-                        recorder.start();
+                        recorder.start(Environment.getExternalStorageDirectory()  + PATH);
                         break;
                     case MotionEvent.ACTION_UP:
                         play.setVisibility(View.VISIBLE);

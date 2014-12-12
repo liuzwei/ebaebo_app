@@ -16,18 +16,19 @@ import com.app.ebaebo.R;
 import com.app.ebaebo.adapter.ChatAdapter;
 import com.app.ebaebo.data.ErrorDATA;
 import com.app.ebaebo.data.MessageDATA;
+import com.app.ebaebo.data.UploadDATA;
 import com.app.ebaebo.entity.*;
 import com.app.ebaebo.util.CommonUtil;
 import com.app.ebaebo.util.InternetURL;
 import com.app.ebaebo.util.StringUtil;
 import com.app.ebaebo.util.ToastUtil;
+import com.app.ebaebo.util.face.FaceConversionUtil;
 import com.app.ebaebo.widget.SoundMeter;
+import com.kubility.demo.MP3Recorder;
 
 import java.io.File;
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by liuzwei on 2014/11/21.
@@ -50,6 +51,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     private View rcChat_popup;
     private LinearLayout del_re;
     private ImageView chatting_mode_btn, volume;
+    private LinearLayout layoutBottom;//底部引入的框
+    private View faceView;//表情框
 
     private boolean btn_vocie = false;
     private boolean isShosrt = false;
@@ -60,6 +63,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     private ChatAdapter adapter;
     private Handler mHandler = new Handler();
     private List<Message> list = new ArrayList<Message>();
+    private static String PATH = Environment.getExternalStorageDirectory().getAbsolutePath();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +83,16 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.chat_sendbtn://发送按钮
-                sendMsg();
+                if (!StringUtil.isNullOrEmpty(sendMessage.getText().toString())) {
+                    Message message = new Message();
+                    message.setUid(account.getUid());
+                    message.setTo_uids(accountMessage.getUid());
+                    message.setType("0");//文字消息
+                    message.setContent(sendMessage.getText().toString());
+                    sendMsg(message);
+                }else {
+                    sendMessage.setHint("请输入消息");
+                }
                 break;
             case R.id.chat_back://返回按钮
                 finish();
@@ -88,9 +101,12 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initView(){
-        mBtnRcd = (TextView) findViewById(R.id.btn_rcd);
-        mBottom = (RelativeLayout) findViewById(R.id.btn_bottom);
-        chatting_mode_btn = (ImageView) this.findViewById(R.id.ivPopUp);
+        layoutBottom = (LinearLayout) this.findViewById(R.id.rl_bottom);
+
+        mBtnRcd = (TextView) layoutBottom.findViewById(R.id.btn_rcd);
+        mBottom = (RelativeLayout) layoutBottom.findViewById(R.id.btn_bottom);
+        chatting_mode_btn = (ImageView) layoutBottom.findViewById(R.id.ivPopUp);
+        faceView = layoutBottom.findViewById(R.id.ll_facechoose);
         volume = (ImageView) this.findViewById(R.id.volume);
         rcChat_popup = this.findViewById(R.id.rcChat_popup);
         img1 = (ImageView) this.findViewById(R.id.img1);
@@ -104,11 +120,11 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                 .findViewById(R.id.voice_rcd_hint_tooshort);
         mSensor = new SoundMeter();
 
-        back = (ImageView) findViewById(R.id.chat_back);
-        listView = (ListView) findViewById(R.id.chat_listview);
-        sendMessage = (EditText) findViewById(R.id.chat_sendmessage);
-        send = (Button) findViewById(R.id.chat_sendbtn);
-        chatTitle = (TextView) findViewById(R.id.chat_title);
+        back = (ImageView) this.findViewById(R.id.chat_back);
+        listView = (ListView) this.findViewById(R.id.chat_listview);
+        sendMessage = (EditText) layoutBottom.findViewById(R.id.chat_sendmessage);
+        send = (Button) layoutBottom.findViewById(R.id.chat_sendbtn);
+        chatTitle = (TextView) this.findViewById(R.id.chat_title);
 
         back.setOnClickListener(this);
         send.setOnClickListener(this);
@@ -121,16 +137,18 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                 if (btn_vocie) {
                     mBtnRcd.setVisibility(View.GONE);
                     mBottom.setVisibility(View.VISIBLE);
+
                     btn_vocie = false;
-                    chatting_mode_btn
-                            .setImageResource(R.drawable.chatting_setmode_msg_btn);
+                    chatting_mode_btn.setImageResource(R.drawable.chatting_setmode_msg_btn);
 
                 } else {
                     mBtnRcd.setVisibility(View.VISIBLE);
                     mBottom.setVisibility(View.GONE);
-                    chatting_mode_btn
-                            .setImageResource(R.drawable.chatting_setmode_voice_btn);
+                    chatting_mode_btn.setImageResource(R.drawable.chatting_setmode_voice_btn);
                     btn_vocie = true;
+                    if (faceView.getVisibility() == View.VISIBLE) {
+                        faceView.setVisibility(View.GONE);
+                    }
                 }
             }
         });
@@ -178,9 +196,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     /**
      * 发送消息
      */
-    private void sendMsg(){
-        String cont = sendMessage.getText().toString();
-        String uri = String.format(InternetURL.MESSAGE_SEND_URL + "?content=%s&uid=%s&type=0&to_uids=%s&user_type=%s",cont, account.getUid(),accountMessage.getUid(), identity);
+    private void sendMsg(final Message message){
+        String uri = String.format(InternetURL.MESSAGE_SEND_URL + "?content=%s&uid=%s&type=0&to_uids=%s&file=%s&user_type=%s",message.getContent(), message.getUid(),message.getTo_uids(),message.getUrl(), identity);
         StringRequest request = new StringRequest(
                 Request.Method.GET,
                 uri,
@@ -190,11 +207,14 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                         if (CommonUtil.isJson(s)) {
                             ErrorDATA data = getGson().fromJson(s, ErrorDATA.class);
                             if (data.getCode() == 200) {
-                                Message message = new Message(account.getUid(), accountMessage.getUid(), System.currentTimeMillis(), "0", sendMessage.getText().toString());
-                                list.add(message);
-                                listView.setSelection(list.size()-1);
-                                adapter.notifyDataSetChanged();
-                                sendMessage.setText("");
+                                if ("0".equals(message.getType())) {
+//                                    Message message = new Message(account.getUid(), accountMessage.getUid(), System.currentTimeMillis(), "0", sendMessage.getText().toString());
+                                    message.setDateline(System.currentTimeMillis());
+                                    list.add(message);
+                                    listView.setSelection(list.size() - 1);
+                                    adapter.notifyDataSetChanged();
+                                    sendMessage.setText("");
+                                }
                             }
                         }
                     }
@@ -214,7 +234,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     public boolean onTouchEvent(MotionEvent event) {
 
         if (!Environment.getExternalStorageDirectory().exists()) {
-            Toast.makeText(this, "No SDCard", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "请检查内存卡", Toast.LENGTH_LONG).show();
             return false;
         }
 
@@ -230,7 +250,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
             int del_x = del_location[0];
             if (event.getAction() == MotionEvent.ACTION_DOWN && flag == 1) {
                 if (!Environment.getExternalStorageDirectory().exists()) {
-                    Toast.makeText(this, "No SDCard", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "请检查内存卡", Toast.LENGTH_LONG).show();
                     return false;
                 }
                 System.out.println("2");
@@ -253,7 +273,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                     img1.setVisibility(View.VISIBLE);
                     del_re.setVisibility(View.GONE);
                     startVoiceT = System.currentTimeMillis();
-                    voiceName = startVoiceT + ".amr";
+                    voiceName = PATH +"/"+startVoiceT + ".mp3";
                     start(voiceName);
                     flag = 2;
                 }
@@ -269,8 +289,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                     del_re.setVisibility(View.GONE);
                     stop();
                     flag = 1;
-                    File file = new File(android.os.Environment.getExternalStorageDirectory()+"/"
-                            + voiceName);
+                    File file = new File(voiceName);
                     if (file.exists()) {
                         file.delete();
                     }
@@ -280,7 +299,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                     stop();
                     endVoiceT = System.currentTimeMillis();
                     flag = 1;
-                    int time = (int) ((endVoiceT - startVoiceT) / 900);
+                    int time = (int) ((endVoiceT - startVoiceT) / 1000);
                     if (time < 1) {
                         isShosrt = true;
                         voice_rcd_hint_loading.setVisibility(View.GONE);
@@ -297,7 +316,42 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                         return false;
                     }
 
-                    Message message = new Message(account.getUid(), accountMessage.getUid(), System.currentTimeMillis(), "0", voiceName);
+                    final Message message = new Message(account.getUid(),
+                            accountMessage.getUid(),
+                            System.currentTimeMillis(),
+                            "3",
+                            "");
+                    message.setUrl(voiceName);
+
+                    //上传文件
+                    File file = new File(voiceName);
+                    Map<String, File> files = new HashMap<String, File>();
+                    files.put("file", file);
+                    Map<String, String> params = new HashMap<String, String>();
+                    addPutUploadFileRequest(
+                            InternetURL.UPLOAD_FILE,
+                            files,
+                            params,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String s) {
+                                    if (CommonUtil.isJson(s)) {
+                                        UploadDATA data = getGson().fromJson(s, UploadDATA.class);
+                                        //上传文件成功后进行发送消息
+                                        if (data.getCode() == 200){
+                                            message.setUrl(data.getUrl());
+                                            sendMsg(message);
+                                        }
+                                    }
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError volleyError) {
+
+                                }
+                            },
+                            null);
                     list.add(message);
                     listView.setSelection(list.size()-1);
                     adapter.notifyDataSetChanged();

@@ -3,6 +3,7 @@ package com.app.ebaebo.adapter;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.app.ebaebo.entity.UserData;
 import com.app.ebaebo.ui.Constants;
 import com.app.ebaebo.util.CommonUtil;
 import com.app.ebaebo.util.InternetURL;
+import com.app.ebaebo.util.face.FaceConversionUtil;
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
@@ -48,7 +50,7 @@ public class ChatAdapter extends BaseAdapter {
     private ViewHolder viewHolder;
     private SharedPreferences sp;
     private static Gson gson = new Gson();
-    private UserData userData;
+    private static UserData userData;
     private static boolean isMe = true;
     private MediaPlayer mMediaPlayer = new MediaPlayer();
 
@@ -69,12 +71,16 @@ public class ChatAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return list.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
+    }
+
+    public int getViewTypeCount() {
+        return 2;
     }
 
     @Override
@@ -83,11 +89,11 @@ public class ChatAdapter extends BaseAdapter {
         Account account = gson.fromJson(sp.getString(Constants.ACCOUNT_KEY, ""), Account.class);
 
         if (convertView == null){
-            if(message.getTo_uids().contains(account.getUid())){
-                convertView = LayoutInflater.from(context).inflate(R.layout.chatting_item_msg_text_left, null);
+            if(message.getUid().equals(account.getUid())){
+                convertView = LayoutInflater.from(context).inflate(R.layout.chatting_item_msg_text_right, null);
                 isMe = true;
             }else {
-                convertView = LayoutInflater.from(context).inflate(R.layout.chatting_item_msg_text_right, null);
+                convertView = LayoutInflater.from(context).inflate(R.layout.chatting_item_msg_text_left, null);
                 isMe = false;
             }
             viewHolder = new ViewHolder();
@@ -100,7 +106,7 @@ public class ChatAdapter extends BaseAdapter {
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        if (isMe){
+        if (!message.getUid().equals(account.getUid())){
             viewHolder.name.setText(userData.getTo().getName());
             imageLoader.displayImage(String.format("%s%s", Constants.API_HEAD, userData.getTo().getCover()), viewHolder.photo, EbaeboApplication.txOptions, animateFirstListener);
         }else {
@@ -108,18 +114,19 @@ public class ChatAdapter extends BaseAdapter {
             imageLoader.displayImage(String.format("%s%s", Constants.API_HEAD, userData.getFrom().getCover()), viewHolder.photo, EbaeboApplication.txOptions, animateFirstListener);
         }
         viewHolder.sendTime.setText(CommonUtil.longToString(message.getDateline()));
-        if (message.getContent().contains(".amr")) {
+        if (message.getUrl()!= null && message.getUrl().contains(".mp3")) {
             viewHolder.content.setText("");
             viewHolder.content.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.chatto_voice_playing, 0);
         } else {
-            viewHolder.content.setText(message.getContent());
+            SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(context,message.getContent());
+            viewHolder.content.setText(spannableString);
             viewHolder.content.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         }
         viewHolder.content.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                if (message.getContent().contains(".amr")) {
-                    playMusic(android.os.Environment.getExternalStorageDirectory() + "/" + message.getContent()) ;
+                if (message.getUrl() != null && message.getUrl().contains(".mp3")) {
+                    playMusic(message.getContent()) ;
                 }
             }
         });

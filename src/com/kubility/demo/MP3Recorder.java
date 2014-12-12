@@ -23,7 +23,7 @@ import java.io.IOException;
  * 修改备注：</br>
  */
 public class MP3Recorder {
-    private String filePath;
+//    private String filePath;
     private int sampleRate;
     private boolean isRecording = false;
     private boolean isPause = false;
@@ -84,15 +84,15 @@ public class MP3Recorder {
      */
     public static final int MSG_ERROR_CLOSE_FILE = -7;
 
-    public MP3Recorder(String filePath, int sampleRate) {
-        this.filePath = filePath;
+    public MP3Recorder(int sampleRate) {
+//        this.filePath = filePath;
         this.sampleRate = sampleRate;
     }
 
     /**
      * 开片
      */
-    public void start() {
+    public void start(final String filePath) {
         if (isRecording) {
             return;
         }
@@ -121,7 +121,16 @@ public class MP3Recorder {
 
                 FileOutputStream output = null;
                 try {
-                    output = new FileOutputStream(new File(filePath));
+
+                    File file = new File(filePath);
+                    if (!file.exists()){
+                        try {
+                            file.createNewFile();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    output = new FileOutputStream(file);
                 } catch (FileNotFoundException e) {
                     if (handler != null) {
                         handler.sendEmptyMessage(MSG_ERROR_CREATE_FILE);
@@ -285,7 +294,7 @@ public class MP3Recorder {
      * 初始化录制参数
      */
     public static void init(int inSamplerate, int outChannel, int outSamplerate, int outBitrate) {
-        init(inSamplerate, outChannel, outSamplerate, outBitrate, 7);
+        init(inSamplerate, outChannel, outSamplerate, outBitrate, 5);
     }
 
     /**
