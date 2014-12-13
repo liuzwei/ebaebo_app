@@ -56,7 +56,7 @@ public class TongxunluActivity extends BaseActivity implements OnClickContentIte
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent chat = new Intent(TongxunluActivity.this, ChatActivity.class);
-                Tongxunlu txl = list.get(position);
+                Tongxunlu txl = list.get(position-1);
                 AccountMessage message = new AccountMessage();
                 message.setName(txl.getName());
                 message.setUid(txl.getUid());
