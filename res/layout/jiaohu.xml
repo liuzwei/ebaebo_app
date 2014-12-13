@@ -32,6 +32,16 @@
                 android:textColor="#ffffff"
                 android:textSize="18sp"
                 />
+        <TextView
+                android:id="@+id/publish_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="#ffffff"
+                android:layout_marginRight="10dp"
+                android:text="群发"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"/>
     </RelativeLayout>
     <!-- head结束 -->
     <!-- 主体 -->

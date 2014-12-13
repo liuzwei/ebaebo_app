@@ -154,6 +154,8 @@
                 />
         <activity android:name=".ui.GalleryUrlActivity"
                 android:screenOrientation="portrait"/>
+        <activity android:name=".ui.SendGroupMessageActivity"
+                  android:screenOrientation="portrait"/>
         <!--友盟测试-->
         <meta-data android:name="UMENG_APPKEY" android:value="547bcffefd98c5b9000008ab"/>
         <meta-data android:name="UMENG_CHANNEL" android:value="e贝e宝"/>

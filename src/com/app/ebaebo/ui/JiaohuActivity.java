@@ -3,10 +3,7 @@ package com.app.ebaebo.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.*;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -32,6 +29,7 @@ public class JiaohuActivity extends BaseActivity implements View.OnClickListener
     private ListView listView;
     private List<AccountMessage> list = new ArrayList<AccountMessage>();
     private JiaohuAdapter adapter;
+    private TextView publishAll;//群发消息
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +52,9 @@ public class JiaohuActivity extends BaseActivity implements View.OnClickListener
         jiaohuback = (ImageView) this.findViewById(R.id.jiaohuback);
         jiaohuback.setOnClickListener(this);
         listView = (ListView) findViewById(R.id.jiaohu_lstv);
+
+        publishAll = (TextView) this.findViewById(R.id.publish_all);
+        publishAll.setOnClickListener(this);
     }
 
     @Override
@@ -62,6 +63,9 @@ public class JiaohuActivity extends BaseActivity implements View.OnClickListener
         {
             case R.id.jiaohuback:
                 finish();
+                break;
+            case R.id.publish_all:
+                startActivity(new Intent(JiaohuActivity.this, SendGroupMessageActivity.class));
                 break;
         }
     }
