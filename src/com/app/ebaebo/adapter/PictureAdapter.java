@@ -1,5 +1,6 @@
 package com.app.ebaebo.adapter;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,8 @@ import com.app.ebaebo.EbaeboApplication;
 import com.app.ebaebo.R;
 import com.app.ebaebo.entity.Photos;
 import com.app.ebaebo.entity.Pictures;
+import com.app.ebaebo.ui.Constants;
+import com.app.ebaebo.ui.GalleryUrlActivity;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
@@ -66,8 +69,21 @@ public class PictureAdapter extends BaseAdapter {
         }
 
         final Pictures cell = list.get(position);
+        final String[] pics = new String[list.size()];
+        for (int i=0; i< list.size(); i++){
+            pics[i] = list.get(i).getPic();
+        }
         try {
             imageLoader.displayImage(cell.getPic(), holder.picture, EbaeboApplication.options, animateFirstListener);
+            holder.picture.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, GalleryUrlActivity.class);
+                    intent.putExtra(Constants.IMAGE_URLS, pics);
+                    intent.putExtra(Constants.IMAGE_POSITION, position);
+                    context.startActivity(intent);
+                }
+            });
         }catch (Exception e){
             Log.d("没有网络图片", e.getMessage());
         }

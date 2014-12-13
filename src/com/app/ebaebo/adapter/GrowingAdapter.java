@@ -12,6 +12,7 @@ import com.app.ebaebo.EbaeboApplication;
 import com.app.ebaebo.R;
 import com.app.ebaebo.entity.Growing;
 import com.app.ebaebo.ui.Constants;
+import com.app.ebaebo.ui.GalleryUrlActivity;
 import com.app.ebaebo.ui.VideoViewActivity;
 import com.app.ebaebo.util.StringUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -106,9 +107,18 @@ public class GrowingAdapter extends BaseAdapter {
                 break;
             case 1://照片
                 if (!StringUtil.isNullOrEmpty(growing.getUrl())) {
-                    String[] picUrls = growing.getUrl().split(",");
+                    final String[] picUrls = growing.getUrl().split(",");
                     viewHolder.gridView.setAdapter(new ImageAdapter(picUrls, context));
                     viewHolder.gridView.setVisibility(View.VISIBLE);
+                    viewHolder.gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            Intent intent = new Intent(context, GalleryUrlActivity.class);
+                            intent.putExtra(Constants.IMAGE_URLS, picUrls);
+                            intent.putExtra(Constants.IMAGE_POSITION, position);
+                            context.startActivity(intent);
+                        }
+                    });
                 }
                 break;
             case 2://视频

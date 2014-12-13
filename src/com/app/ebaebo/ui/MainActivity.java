@@ -1,7 +1,5 @@
 package com.app.ebaebo.ui;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,12 +15,10 @@ import com.android.volley.toolbox.Volley;
 import com.app.ebaebo.ActivityTack;
 import com.app.ebaebo.R;
 import com.app.ebaebo.adapter.GrowingAdapter;
-import com.app.ebaebo.adapter.ImageAdapter;
 import com.app.ebaebo.adapter.OnClickContentItemListener;
 import com.app.ebaebo.data.BabyDATA;
 import com.app.ebaebo.data.ErrorDATA;
 import com.app.ebaebo.data.GrowingDATA;
-import com.app.ebaebo.dw.LocationActivity;
 import com.app.ebaebo.entity.Account;
 import com.app.ebaebo.entity.Baby;
 import com.app.ebaebo.entity.Growing;
@@ -489,7 +485,12 @@ public class MainActivity extends BaseActivity implements
             Toast.makeText(mContext, R.string.check_network_isuse, Toast.LENGTH_SHORT).show();
             return;
         }
-        String uri = String.format(InternetURL.GROWING_MANAGER_API+"?uid=%s&pageIndex=%d&pageSize=%d&child_id=%s",uid, pageIndex, pageSize, child_id);
+        String uri;
+        if (StringUtil.isNullOrEmpty(child_id)) {
+            uri = String.format(InternetURL.GROWING_MANAGER_API + "?uid=%s&pageIndex=%d&pageSize=%d", uid, pageIndex, pageSize);
+        }else {
+            uri = String.format(InternetURL.GROWING_MANAGER_API + "?uid=%s&pageIndex=%d&pageSize=%d&child_id=%s", uid, pageIndex, pageSize, child_id);
+        }
         StringRequest request = new StringRequest(Request.Method.GET,
                 uri,
                 new Response.Listener<String>() {
