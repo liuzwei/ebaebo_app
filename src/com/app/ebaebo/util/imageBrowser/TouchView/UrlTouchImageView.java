@@ -175,7 +175,7 @@ public class UrlTouchImageView extends RelativeLayout {
             byte[] bytes = getBytes(stream);
             options.inJustDecodeBounds = true;
             BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
-            options.inSampleSize = computeSampleSize(options, -1, _displayPixels);
+            options.inSampleSize = computeSampleSize(options, -1,  _displayWidth * _displayHeight);
 
             options.inJustDecodeBounds = false;
             bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
