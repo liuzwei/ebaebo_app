@@ -29,7 +29,7 @@ public class GrowingAdapter extends BaseAdapter {
     private List<Growing> list;
     private Context context;
     private ViewHolder viewHolder;
-    private RoundImagePhoto roundImagePhoto;
+//    private RoundImagePhoto roundImagePhoto;
 
     ImageLoader imageLoader = ImageLoader.getInstance();//图片加载类
     private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
@@ -37,7 +37,7 @@ public class GrowingAdapter extends BaseAdapter {
     public GrowingAdapter(List<Growing> list, Context context){
         this.list = list;
         this.context = context;
-        roundImagePhoto = new RoundImagePhoto(context);
+//        roundImagePhoto = new RoundImagePhoto(context);
     }
 
     private OnClickContentItemListener onClickContentItemListener;
@@ -89,8 +89,8 @@ public class GrowingAdapter extends BaseAdapter {
         final Growing growing = list.get(position);
         viewHolder.publisher.setText(growing.getPublisher());
         viewHolder.time.setText(growing.getTime());
-        roundImagePhoto.readBitmapViaVolley(growing.getPublisher_cover(), viewHolder.photo);
-//        imageLoader.displayImage(growing.getPublisher_cover(), viewHolder.photo, EbaeboApplication.txOptions, animateFirstListener);
+//        roundImagePhoto.readBitmapViaVolley(growing.getPublisher_cover(), viewHolder.photo);
+        imageLoader.displayImage(growing.getPublisher_cover(), viewHolder.photo, EbaeboApplication.txOptions, animateFirstListener);
 //        if (!StringUtil.isNullOrEmpty(growing.getUrl())) {
 //            viewHolder.picture.setVisibility(View.VISIBLE);
 //            imageLoader.displayImage(growing.getUrl(), viewHolder.picture, EbaeboApplication.tpOptions, animateFirstListener);
