@@ -16,7 +16,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:descendantFocusability="blocksDescendants"
-
                 >
 
             <LinearLayout
@@ -93,7 +92,7 @@
                             android:verticalSpacing="5dp"
                             android:horizontalSpacing="5dp"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="200dp">
 
                     </GridView>
                     <ImageView
@@ -105,6 +104,32 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="播放视频"/>
+                </LinearLayout>
+                <LinearLayout
+                        android:id="@+id/growing_item_favours_detail"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent" 
+                        android:layout_height="wrap_content">
+                    <ImageView
+                            android:layout_marginLeft="10dp"
+                            android:src="@drawable/red_favours"
+                            android:layout_width="20dp"
+                            android:layout_height="30dp"/>
+                    <TextView
+                            android:id="@+id/growing_item_favours_num"
+                            android:layout_marginLeft="5dp"
+                            android:layout_gravity="center"
+                            android:textSize="18sp"
+                            android:text="5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    <!--<LinearLayout-->
+                            <!--android:id="@+id/growing_item_favours_people"-->
+                            <!--android:orientation="horizontal"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content">-->
+                    <!--</LinearLayout>-->
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

@@ -1,15 +1,16 @@
 package com.app.ebaebo.adapter;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.app.ebaebo.EbaeboApplication;
 import com.app.ebaebo.R;
+import com.app.ebaebo.entity.Favours;
+import com.app.ebaebo.entity.FavoursObj;
 import com.app.ebaebo.entity.Growing;
 import com.app.ebaebo.ui.Constants;
 import com.app.ebaebo.ui.GalleryUrlActivity;
@@ -74,6 +75,9 @@ public class GrowingAdapter extends BaseAdapter {
             viewHolder.gridView = (GridView) convertView.findViewById(R.id.growing_item_gridview);
             viewHolder.playRecord = (ImageView) convertView.findViewById(R.id.growing_item_play_record);
             viewHolder.playVideo = (Button) convertView.findViewById(R.id.growing_item_play_video);
+            viewHolder.favoursLayout = (LinearLayout) convertView.findViewById(R.id.growing_item_favours_detail);
+            viewHolder.favoursNum = (TextView) convertView.findViewById(R.id.growing_item_favours_num);
+//            viewHolder.favoursPeople = (LinearLayout) convertView.findViewById(R.id.growing_item_favours_people);
             convertView.setTag(viewHolder);
         }else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -98,6 +102,36 @@ public class GrowingAdapter extends BaseAdapter {
         viewHolder.gridView.setVisibility(View.GONE);
         viewHolder.playRecord.setVisibility(View.GONE);
         viewHolder.playVideo.setVisibility(View.GONE);
+
+        //判断有没有收藏过
+        if ("1".equals(growing.getIs_favoured())){
+            FavoursObj favoursObj = growing.getFavours();
+            viewHolder.favoursLayout.setVisibility(View.VISIBLE);
+            viewHolder.favoursNum.setText(favoursObj.getCount()+"");
+            List<Favours> favoursList = favoursObj.getList();
+            for (Favours favours : favoursList){
+                if (viewHolder.favoursLayout.getChildCount()>=2) {
+                    viewHolder.favoursLayout.removeViewAt(2);
+                    LinearLayout linearLayout = new LinearLayout(context);
+                    linearLayout.setHorizontalGravity(LinearLayout.HORIZONTAL);
+                    linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                    ImageView imageView = new ImageView(context);
+                    imageView.setLayoutParams(new LinearLayout.LayoutParams(40, 40));
+                    imageLoader.displayImage(favours.getCover(), imageView, EbaeboApplication.txOptions, animateFirstListener);
+                    TextView textView = new TextView(context);
+                    textView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                    textView.setTextSize(12);
+                    textView.setText(favours.getName());
+                    linearLayout.addView(imageView);
+                    linearLayout.addView(textView);
+                    viewHolder.favoursLayout.setGravity(Gravity.CENTER_VERTICAL);
+                    viewHolder.favoursLayout.setPadding(10, 0,0,0);
+                    viewHolder.favoursLayout.addView(linearLayout);
+                }
+            }
+        }else {
+            viewHolder.favoursLayout.setVisibility(View.GONE);
+        }
 
         //todo   type类型返回的为空
         switch (Integer.parseInt(growing.getType()) ){
@@ -186,5 +220,9 @@ public class GrowingAdapter extends BaseAdapter {
         ImageView playRecord;
         GridView gridView;
         Button playVideo;//播放视频按钮
+
+        LinearLayout favoursLayout;
+        TextView favoursNum;//喜爱的数量
+//        LinearLayout favoursPeople;//喜爱的人
     }
 }

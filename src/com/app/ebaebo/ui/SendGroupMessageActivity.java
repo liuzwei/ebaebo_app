@@ -16,6 +16,7 @@ import com.app.ebaebo.entity.Message;
 import com.app.ebaebo.entity.Tongxunlu;
 import com.app.ebaebo.util.CommonUtil;
 import com.app.ebaebo.util.InternetURL;
+import com.app.ebaebo.util.StringUtil;
 import com.google.gson.Gson;
 
 import java.util.*;
@@ -101,6 +102,14 @@ public class SendGroupMessageActivity extends BaseActivity implements View.OnCli
 
                 break;
             case R.id.send_group_message_send://发送
+                if (uidMap.size() == 0){
+                    Toast.makeText(mContext, "请选择接受人 ", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (StringUtil.isNullOrEmpty(content.getText().toString())){
+                    Toast.makeText(mContext, "请输入信息", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 String to_uids = "";
                 Iterator iterator = uidMap.keySet().iterator();
                 while (iterator.hasNext()){

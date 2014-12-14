@@ -41,6 +41,7 @@
                 android:layout_alignParentRight="true"/>
     </RelativeLayout>
     <RadioGroup
+            android:orientation="horizontal"
             android:id="@+id/send_group_message_radio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

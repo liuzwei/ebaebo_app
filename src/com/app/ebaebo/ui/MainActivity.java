@@ -21,6 +21,7 @@ import com.app.ebaebo.data.ErrorDATA;
 import com.app.ebaebo.data.GrowingDATA;
 import com.app.ebaebo.entity.Account;
 import com.app.ebaebo.entity.Baby;
+import com.app.ebaebo.entity.Favours;
 import com.app.ebaebo.entity.Growing;
 import com.app.ebaebo.util.*;
 import com.app.ebaebo.util.face.FaceConversionUtil;
@@ -334,10 +335,12 @@ public class MainActivity extends BaseActivity implements
                                     if (data.getCode() == 200){
                                         if (!"1".equals(growing.getIs_favoured())){
                                             growingList.get(position).setIs_favoured("1");
+                                            addFavours(position);
                                             Toast.makeText(mContext, "已收藏", Toast.LENGTH_SHORT).show();
                                         }else {
                                             growingList.get(position).setIs_favoured("0");
                                             Toast.makeText(mContext, "已取消收藏", Toast.LENGTH_SHORT).show();
+                                            removeFavours(position);
                                         }
                                         adapter.notifyDataSetChanged();
                                     }else {
@@ -477,6 +480,46 @@ public class MainActivity extends BaseActivity implements
                     }
                 });
                 break;
+        }
+    }
+
+    /**
+     * 处理添加收藏
+     * @param position
+     */
+    private void addFavours(int position){
+        Growing growing = growingList.get(position);
+        growing.getFavours().setCount(growing.getFavours().getCount()+1);
+        List<Favours> list = growing.getFavours().getList();
+        Favours favours = new Favours();
+        favours.setUid(account.getUid());
+
+        if (identity.equals("1")) {
+            favours.setName(account.getM_name());
+            favours.setCover(account.getM_cover());
+        }else if (identity.equals("0")){
+            favours.setName(account.getF_name());
+            favours.setCover(account.getF_cover());
+        }else {
+            favours.setName(account.getNick_name());
+            favours.setCover(account.getCover());
+        }
+        list.add(favours);
+    }
+
+    /**
+     * 处理取消收藏
+     * @param position
+     */
+    private void removeFavours(int position){
+        Growing growing = growingList.get(position);
+        growing.getFavours().setCount(growing.getFavours().getCount()-1);
+        List<Favours> list = growing.getFavours().getList();
+        for (int i=list.size()-1; i>=0; i--){
+            Favours favours = list.get(i);
+            if (favours.getUid().equals(account.getUid())){
+                list.remove(i);
+            }
         }
     }
 
