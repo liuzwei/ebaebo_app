@@ -1,8 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:background="#f1f1f1" >
+
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="horizontal"
+                      >
+            <ImageView android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:maxWidth="60dp"
+                       android:maxHeight="60dp"
+                       android:adjustViewBounds="true"
+                       android:id="@+id/musicimage"
+                       android:src="@drawable/txhc"/>
+            -<LinearLayout android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_weight="1"
+                           android:orientation="vertical"
+                           android:layout_marginTop="5dp"
+                           android:layout_marginLeft="5dp">
+            -<LinearLayout android:layout_width="wrap_content"
+                           android:layout_height="match_parent"
+                           android:orientation="horizontal"
+                           android:layout_weight="1">
+
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="name"
+                      android:id="@+id/MUZname"
+                      android:textSize="20sp"
+                      android:textColor="#000000"/>
+            <TextView android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:id="@+id/totalnum"
+                      android:textSize="18dp"
+                      android:text=":1232123131213"/>
+
+        </LinearLayout>
+
+            <TextView android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:text="2012-10-10"
+                      android:id="@+id/musiccontext"
+                      android:textSize="14sp"
+                      android:singleLine="true"
+                      />
+
+        </LinearLayout>
+
+        </LinearLayout>
+
+
 
 </LinearLayout>
+
+

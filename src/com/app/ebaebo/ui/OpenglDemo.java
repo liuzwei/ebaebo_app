@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PointF;
+import android.opengl.GLUtils;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -36,6 +37,7 @@ import javax.microedition.khronos.opengles.GL10;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.nio.ShortBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +60,7 @@ public class OpenglDemo extends BaseActivity implements OnMapDrawFrameCallback, 
 	private FloatBuffer vertexBuffer;
 
     private LocationClient locationClient = null;
-    private static final int UPDATE_TIME = 300000;
+    private static final int UPDATE_TIME = 60000;
     private static int LOCATION_COUTNS = 0;
 
     private Double lat;
@@ -66,8 +68,6 @@ public class OpenglDemo extends BaseActivity implements OnMapDrawFrameCallback, 
     private String line_id;//定义一个路线的ID
 
     private List<Trace> listDw  = new ArrayList<Trace>();
-    private boolean isRequest = false;//是否手动触发请求定位
-//    private LocationClient mLocClient;
     private Toast mToast;
 
 	@Override
@@ -104,64 +104,9 @@ public class OpenglDemo extends BaseActivity implements OnMapDrawFrameCallback, 
         });
         locationClient.start();
         locationClient.requestLocation();
-        //实例化定位服务，LocationClient类必须在主线程中声明
-//        mLocClient = new LocationClient(getApplicationContext());
-//        mLocClient.registerLocationListener(new BDLocationListenerImpl());//注册定位监听接口
-//        mLocClient.setLocOption(option);
-//        mLocClient.start();  //	调用此方法开始定位
-        
-        //点击按钮手动请求定位
-        ((Button) findViewById(R.id.request)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requestLocation();
-            }
-        });
 
 	}
-    /**
-     * 手动请求定位的方法
-     */
-    public void requestLocation() {
-        isRequest = true;
-        if(locationClient != null && locationClient.isStarted()){
-            showToast("正在更新校车位置......");
-            locationClient.requestLocation();
-        }else{
-            Log.d("LocSDK3", "locClient is null or not started");
-        }
-    }
-    /**
-     * 定位接口，需要实现两个方法
-     * @author xiaanming
-     *
-     */
-    public class BDLocationListenerImpl implements BDLocationListener {
-        /**
-         * 接收异步返回的定位结果，参数是BDLocation类型参数
-         */
-        @Override
-        public void onReceiveLocation(BDLocation location) {
-            if (location == null) {
-                return;
-            }
-            lat = location.getLatitude();
-            lon = location.getLongitude();
-            //更新车辆位置数据
-//            updateCar(line_id);
-            startCar("1");
-        }
 
-    }
-    private void showToast(String msg){
-        if(mToast == null){
-            mToast = Toast.makeText(this, msg, Toast.LENGTH_SHORT);
-        }else{
-            mToast.setText(msg);
-            mToast.setDuration(Toast.LENGTH_SHORT);
-        }
-        mToast.show();
-    }
     private void initView() {
         schoolbusback = (ImageView) this.findViewById(R.id.schoolbusback);
         schoolbusback.setOnClickListener(this);
@@ -175,7 +120,6 @@ public class OpenglDemo extends BaseActivity implements OnMapDrawFrameCallback, 
         mBaiduMap.setOnMapDrawFrameCallback(this);
         bitmap = BitmapFactory.decodeResource(this.getResources(),
                 R.drawable.ground_overlay);
-        locationClient = new LocationClient(this);
     }
 
     @Override
@@ -294,7 +238,6 @@ public class OpenglDemo extends BaseActivity implements OnMapDrawFrameCallback, 
                                 OpenCarDATA data = getGson().fromJson(s, OpenCarDATA.class);
                                 OpenCar openCar = data.getData();
                                 line_id = openCar.getLine_id()==null?"":openCar.getLine_id();//获得路线的ID
-//                                Toast.makeText(mContext, "校车位置更新成功", Toast.LENGTH_SHORT).show();
                                 //更新车辆位置数据
                                 updateCar(line_id);
                             }else {
@@ -363,7 +306,6 @@ public class OpenglDemo extends BaseActivity implements OnMapDrawFrameCallback, 
                                     for(int i =0;i<listDw.size();i++){
                                         Trace trace=listDw.get(i);
                                         LatLng latlng = new LatLng(Double.parseDouble(trace.getLat()) , Double.parseDouble(trace.getLng()));
-//                                        LatLng latlng = new LatLng( 24.956247+i,121.514817+i);
                                         latLngPolygon.add(latlng);
                                     }
                                 }

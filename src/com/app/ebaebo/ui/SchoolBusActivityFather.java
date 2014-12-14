@@ -99,7 +99,10 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
         registerReceiver(mReceiver, iFilter);
         setContentView(R.layout.shoolbusfather);
         initView();
-
+        // 初始化地图
+        mMapView = (MapView) findViewById(R.id.bmapView);
+        mBaiduMap = mMapView.getMap();
+        mBaiduMap.setOnMapDrawFrameCallback(this);
         //设置定位条件
         LocationClientOption option = new LocationClientOption();
         option.setOpenGps(true);        //是否打开GPS
@@ -181,10 +184,7 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
         schoolbusback = (ImageView) findViewById(R.id.schoolbusbackfather);
         schoolbusback.setOnClickListener(this);
         shoolbusinstance = (TextView) findViewById(R.id.shoolbusinstance);
-        // 初始化地图
-        mMapView = (MapView) findViewById(R.id.bmapView);
-        mBaiduMap = mMapView.getMap();
-        mBaiduMap.setOnMapDrawFrameCallback(this);
+
     }
     @Override
     public void onClick(View v) {
