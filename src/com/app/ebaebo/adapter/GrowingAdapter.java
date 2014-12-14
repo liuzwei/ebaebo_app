@@ -2,10 +2,7 @@ package com.app.ebaebo.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.*;
 import com.app.ebaebo.EbaeboApplication;
 import com.app.ebaebo.R;
