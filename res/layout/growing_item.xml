@@ -31,14 +31,27 @@
                               android:paddingRight="10dp"
                               android:paddingTop="10dp"
                               android:orientation="horizontal">
-                    <!-- 头像 -->
-                    <ImageView
-                            android:id="@+id/growing_item_photo"
+                    <FrameLayout
                             android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:src="@drawable/txhc"
-                            android:adjustViewBounds="true"
-                            android:scaleType="centerCrop"/>
+                            android:layout_height="50dp" >
+                        <ImageView
+                                android:id="@+id/growing_item_photo"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:src="@drawable/txhc"
+                                android:adjustViewBounds="true"
+                                android:scaleType="centerCrop"/>
+
+
+                        <ImageView
+                                android:background="#0000"
+                                android:src="@drawable/txhc"
+                                android:scaleType="centerCrop"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                />
+                    </FrameLayout>
+
                     <TextView
                             android:layout_marginLeft="10dp"
                             android:id="@+id/growing_item_name"
