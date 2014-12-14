@@ -15,12 +15,12 @@ import com.app.ebaebo.entity.Growing;
 import com.app.ebaebo.ui.Constants;
 import com.app.ebaebo.ui.GalleryUrlActivity;
 import com.app.ebaebo.ui.VideoViewActivity;
+import com.app.ebaebo.util.RoundImagePhoto;
 import com.app.ebaebo.util.StringUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.List;
-import java.util.zip.Inflater;
 
 /**
  * Created by liuzwei on 2014/11/16.
@@ -29,6 +29,7 @@ public class GrowingAdapter extends BaseAdapter {
     private List<Growing> list;
     private Context context;
     private ViewHolder viewHolder;
+    private RoundImagePhoto roundImagePhoto;
 
     ImageLoader imageLoader = ImageLoader.getInstance();//图片加载类
     private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
@@ -36,6 +37,7 @@ public class GrowingAdapter extends BaseAdapter {
     public GrowingAdapter(List<Growing> list, Context context){
         this.list = list;
         this.context = context;
+        roundImagePhoto = new RoundImagePhoto(context);
     }
 
     private OnClickContentItemListener onClickContentItemListener;
@@ -77,6 +79,7 @@ public class GrowingAdapter extends BaseAdapter {
             viewHolder.playVideo = (Button) convertView.findViewById(R.id.growing_item_play_video);
             viewHolder.favoursLayout = (LinearLayout) convertView.findViewById(R.id.growing_item_favours_detail);
             viewHolder.favoursNum = (TextView) convertView.findViewById(R.id.growing_item_favours_num);
+            viewHolder.commentLayout = (LinearLayout) convertView.findViewById(R.id.growing_item_comment_list);
 //            viewHolder.favoursPeople = (LinearLayout) convertView.findViewById(R.id.growing_item_favours_people);
             convertView.setTag(viewHolder);
         }else {
@@ -86,7 +89,8 @@ public class GrowingAdapter extends BaseAdapter {
         final Growing growing = list.get(position);
         viewHolder.publisher.setText(growing.getPublisher());
         viewHolder.time.setText(growing.getTime());
-        imageLoader.displayImage(growing.getPublisher_cover(), viewHolder.photo, EbaeboApplication.txOptions, animateFirstListener);
+        roundImagePhoto.readBitmapViaVolley(growing.getPublisher_cover(), viewHolder.photo);
+//        imageLoader.displayImage(growing.getPublisher_cover(), viewHolder.photo, EbaeboApplication.txOptions, animateFirstListener);
 //        if (!StringUtil.isNullOrEmpty(growing.getUrl())) {
 //            viewHolder.picture.setVisibility(View.VISIBLE);
 //            imageLoader.displayImage(growing.getUrl(), viewHolder.picture, EbaeboApplication.tpOptions, animateFirstListener);
@@ -117,6 +121,7 @@ public class GrowingAdapter extends BaseAdapter {
                     linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                     ImageView imageView = new ImageView(context);
                     imageView.setLayoutParams(new LinearLayout.LayoutParams(40, 40));
+//                    roundImagePhoto.readBitmapViaVolley(favours.getCover(), imageView);
                     imageLoader.displayImage(favours.getCover(), imageView, EbaeboApplication.txOptions, animateFirstListener);
                     TextView textView = new TextView(context);
                     textView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -131,6 +136,25 @@ public class GrowingAdapter extends BaseAdapter {
             }
         }else {
             viewHolder.favoursLayout.setVisibility(View.GONE);
+        }
+
+        //添加评论
+        if (growing.getComments().size()>0){
+            viewHolder.commentLayout.removeAllViews();
+            List<Favours> comments = growing.getComments();
+            for (Favours favours : comments){
+                View view = LayoutInflater.from(context).inflate(R.layout.comment_list_item,null);
+                ImageView imageView = (ImageView) view.findViewById(R.id.comment_list_item_photo);
+                TextView name = (TextView) view.findViewById(R.id.comment_list_item_name);
+                TextView content = (TextView) view.findViewById(R.id.comment_list_item_content);
+                TextView time = (TextView) view.findViewById(R.id.comment_list_item_time);
+//                roundImagePhoto.readBitmapViaVolley(favours.getCover(), imageView);
+                imageLoader.displayImage(favours.getCover(), imageView, EbaeboApplication.txOptions, animateFirstListener);
+                name.setText(favours.getName());
+                content.setText(":"+favours.getContent());
+                time.setText(favours.getTime());
+                viewHolder.commentLayout.addView(view);
+            }
         }
 
         //todo   type类型返回的为空
@@ -221,6 +245,7 @@ public class GrowingAdapter extends BaseAdapter {
         GridView gridView;
         Button playVideo;//播放视频按钮
 
+        LinearLayout commentLayout;
         LinearLayout favoursLayout;
         TextView favoursNum;//喜爱的数量
 //        LinearLayout favoursPeople;//喜爱的人
