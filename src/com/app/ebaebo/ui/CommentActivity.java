@@ -8,10 +8,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import com.android.volley.*;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.ebaebo.R;
@@ -20,6 +17,9 @@ import com.app.ebaebo.entity.Account;
 import com.app.ebaebo.entity.Growing;
 import com.app.ebaebo.util.InternetURL;
 import com.app.ebaebo.util.StringUtil;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by liuzwei on 2014/11/19.
@@ -66,10 +66,9 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
                     Toast.makeText(mContext, "评论内容不能为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                String uri =String.format(InternetURL.GROWING_COMMENT_URL +"?growing_id=%s&uid=%s&user_type=%s&content=%s",growing.getId(), account.getUid(), identity,commentContent);
                 StringRequest request = new StringRequest(
-                        Request.Method.GET,
-                        uri,
+                        Request.Method.POST,
+                        InternetURL.GROWING_COMMENT_URL,
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String s) {
@@ -88,7 +87,25 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
 
                             }
                         }
-                );
+                ){
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String,String> params = new HashMap<String, String>();
+                        params.put("growing_id", growing.getId() );
+                        params.put("uid", account.getUid());
+                        params.put("user_type", identity);
+                        params.put("content", content.getText().toString());
+
+                        return params;
+                    }
+
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        Map<String,String> params = new HashMap<String, String>();
+                        params.put("Content-Type","application/x-www-form-urlencoded");
+                        return params;
+                    }
+                };
                 mRequestQueue.add(request);
                 break;
         }

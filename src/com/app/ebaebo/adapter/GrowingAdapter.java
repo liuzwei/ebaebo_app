@@ -155,6 +155,8 @@ public class GrowingAdapter extends BaseAdapter {
                 time.setText(favours.getTime());
                 viewHolder.commentLayout.addView(view);
             }
+        }else {
+            viewHolder.commentLayout.removeAllViews();
         }
 
         //todo   type类型返回的为空

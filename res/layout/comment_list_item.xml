@@ -11,11 +11,31 @@
                       android:layout_height="wrap_content"
                       android:orientation="horizontal"
                       >
-            <ImageView android:layout_width="35dp"
-                       android:layout_height="35dp"
-                       android:adjustViewBounds="true"
-                       android:id="@+id/comment_list_item_photo"
-                       android:src="@drawable/txhc"/>
+            <FrameLayout
+                    android:layout_width="35dp"
+                    android:layout_height="35dp" >
+                <ImageView
+                        android:id="@+id/comment_list_item_photo"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/txhc"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"/>
+
+
+                <ImageView
+                        android:background="#0000"
+                        android:src="@drawable/round_corner"
+                        android:scaleType="centerCrop"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        />
+            </FrameLayout>
+            <!--<ImageView android:layout_width="35dp"-->
+                       <!--android:layout_height="35dp"-->
+                       <!--android:adjustViewBounds="true"-->
+                       <!--android:id="@+id/comment_list_item_photo"-->
+                       <!--android:src="@drawable/txhc"/>-->
             <LinearLayout android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
                            android:layout_weight="1"

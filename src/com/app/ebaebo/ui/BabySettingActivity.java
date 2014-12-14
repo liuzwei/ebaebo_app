@@ -311,9 +311,10 @@ public class BabySettingActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void setting(final String cover){
-        String uri = String.format(InternetURL.SELECT_BABY_URL+"?uid=%s&name=%s&cover=%s", account.getUid(), nickName,InternetURL.INTENT +cover);
-        StringRequest request = new StringRequest(Request.Method.GET,
-                uri,
+//        String uri = String.format(InternetURL.SELECT_BABY_URL+"?uid=%s&name=%s&cover=%s", account.getUid(), nickName,InternetURL.INTENT +cover);
+        StringRequest request = new StringRequest(
+                Request.Method.POST,
+                InternetURL.SELECT_BABY_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
@@ -339,9 +340,9 @@ public class BabySettingActivity extends BaseActivity implements View.OnClickLis
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<String, String>();
-//                params.put("uid", account.getUid());
-//                params.put("name", nickName);
-//                params.put("cover",cover);
+                params.put("uid", account.getUid());
+                params.put("name", nickName);
+                params.put("cover",cover);
                 return params;
             }
 

@@ -45,7 +45,7 @@
 
                         <ImageView
                                 android:background="#0000"
-                                android:src="@drawable/txhc"
+                                android:src="@drawable/round_corner"
                                 android:scaleType="centerCrop"
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
