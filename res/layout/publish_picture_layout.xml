@@ -61,6 +61,23 @@
 
         </Spinner>
     </LinearLayout>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <TextView
+                android:layout_marginLeft="10dp"
+                android:textColor="#000"
+                android:textSize="18sp"
+                android:text="是否共享给老师:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        <CheckBox
+                android:layout_marginLeft="10dp"
+                android:id="@+id/publish_picture_cb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+    </LinearLayout>
     <EditText
             android:id="@+id/publish_picture_content"
             android:layout_width="match_parent"

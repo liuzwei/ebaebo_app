@@ -48,6 +48,7 @@ public class PublishVideoActivity extends BaseActivity implements View.OnClickLi
     private String babyId;//要发布的宝宝ID
     private ProgressDialog progressDialog;
     private Button videoRecord;
+    private CheckBox isShare;
 
     private String path;
 
@@ -75,6 +76,7 @@ public class PublishVideoActivity extends BaseActivity implements View.OnClickLi
         filePath = (TextView) findViewById(R.id.publish_video_filepath);
         spinner = (Spinner) findViewById(R.id.publish_video_spinner);
         videoRecord = (Button) findViewById(R.id.publish_video_record);
+        isShare = (CheckBox) findViewById(R.id.publish_video_cb);
 
         videoRecord.setOnClickListener(this);
         back.setOnClickListener(this);
@@ -211,6 +213,9 @@ public class PublishVideoActivity extends BaseActivity implements View.OnClickLi
                 params.put("child_id", babyId);
                 params.put("url", videoPath);
                 params.put("content", content.getText().toString());
+                if (isShare.isChecked()){
+                    params.put("is_share", "1");
+                }
                 return params;
             }
 

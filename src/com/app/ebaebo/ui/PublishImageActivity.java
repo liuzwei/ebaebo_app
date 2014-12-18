@@ -41,6 +41,7 @@ public class PublishImageActivity extends BaseActivity implements View.OnClickLi
     private int res[] = new int[]{R.drawable.abaose};
     private List<Baby> babies = new ArrayList<Baby>();//下拉列表宝宝
     private ProgressDialog progressDialog;
+    private CheckBox isShare;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +66,7 @@ public class PublishImageActivity extends BaseActivity implements View.OnClickLi
         spinner = (Spinner) findViewById(R.id.publish_image_spinner);
         content = (EditText) findViewById(R.id.publish_image_content);
         gridView = (GridView) findViewById(R.id.publish_image_gv);
+        isShare = (CheckBox) findViewById(R.id.publish_image_cb);
 
         back.setOnClickListener(this);
         publish.setOnClickListener(this);
@@ -189,6 +191,9 @@ public class PublishImageActivity extends BaseActivity implements View.OnClickLi
                 params.put("user_type", identity);
                 params.put("type","0");
                 params.put("child_id", babyId);
+                if (isShare.isChecked()){
+                    params.put("is_share", "1");
+                }
 
                 return params;
             }

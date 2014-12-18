@@ -83,6 +83,8 @@ public class PublishRecordActivity extends BaseActivity implements View.OnClickL
     private ProgressBar voiceProgressbar;
     private TextView voiceTime;
 
+    private CheckBox isShare;
+
     /**
      * 用来控制动画效果
      */
@@ -161,6 +163,7 @@ public class PublishRecordActivity extends BaseActivity implements View.OnClickL
         spinner = (Spinner) findViewById(R.id.publish_record_spinner);
         content = (EditText) findViewById(R.id.publish_record_content);
 //        cancel = (ImageView) findViewById(R.id.publish_record_cancel);
+        isShare = (CheckBox) findViewById(R.id.publish_record_cb);
 
         mRecordLight_1 = (ImageView) findViewById(R.id.voice_recordinglight_1);
         mRecordLight_2 = (ImageView) findViewById(R.id.voice_recordinglight_2);
@@ -458,6 +461,9 @@ public class PublishRecordActivity extends BaseActivity implements View.OnClickL
                 params.put("child_id", babyId);
                 params.put("url", recordPath);
                 params.put("content", content.getText().toString());
+                if (isShare.isChecked()){
+                    params.put("is_share", "1");
+                }
                 return params;
             }
 

@@ -54,6 +54,7 @@ public class PublishPhotoActivity extends BaseActivity implements View.OnClickLi
     private String pictureDir;
     private Account account;
     private List<Baby> babies = new ArrayList<Baby>();//下拉列表宝宝
+    private CheckBox isShare;//是否分享给老师
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +134,7 @@ public class PublishPhotoActivity extends BaseActivity implements View.OnClickLi
         content = (EditText) findViewById(R.id.publish_photo_content);
         publish = (TextView) findViewById(R.id.publish_photo_run);
         spinner = (Spinner) findViewById(R.id.publish_photo_spinner);
+        isShare = (CheckBox) findViewById(R.id.publish_photo_cb);
 
         back.setOnClickListener(this);
         publish.setOnClickListener(this);
@@ -271,6 +273,9 @@ public class PublishPhotoActivity extends BaseActivity implements View.OnClickLi
                 params.put("type","1");
                 params.put("child_id", babyId);
                 params.put("url", picPath);
+                if (isShare.isChecked()){
+                    params.put("is_share", "1");
+                }
                 return params;
             }
 

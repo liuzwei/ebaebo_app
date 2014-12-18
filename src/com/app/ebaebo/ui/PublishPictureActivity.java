@@ -52,6 +52,7 @@ public class PublishPictureActivity extends BaseActivity implements View.OnClick
     private String babyId;
     private ProgressDialog progressDialog;
 
+    private CheckBox isShare;
     private Uri uri;
     private Account account;
 
@@ -164,6 +165,9 @@ public class PublishPictureActivity extends BaseActivity implements View.OnClick
                 params.put("type","1");
                 params.put("child_id", babyId);
                 params.put("url", filePath.toString());
+                if (isShare.isChecked()){
+                    params.put("is_share", "1");
+                }
                 return params;
             }
 
@@ -189,6 +193,7 @@ public class PublishPictureActivity extends BaseActivity implements View.OnClick
         gridImageAdapter = new GridImageAdapter(mContext, dataList);
         gridView.setAdapter(gridImageAdapter);
 
+        isShare = (CheckBox) findViewById(R.id.publish_picture_cb);
         spinner = (Spinner) findViewById(R.id.publish_picture_spinner);
 
         gridView.setOnItemClickListener(new GridView.OnItemClickListener() {
