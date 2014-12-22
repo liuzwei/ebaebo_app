@@ -1,5 +1,6 @@
 package com.app.ebaebo.ui;
 
+import android.app.DownloadManager;
 import android.content.*;
 import android.os.Bundle;
 import android.os.Environment;
@@ -13,7 +14,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.*;
 import com.android.volley.*;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.app.ebaebo.R;
 import com.app.ebaebo.adapter.ChatAdapter;
 import com.app.ebaebo.data.ErrorDATA;
@@ -22,9 +22,9 @@ import com.app.ebaebo.data.UploadDATA;
 import com.app.ebaebo.entity.*;
 import com.app.ebaebo.service.MessageService;
 import com.app.ebaebo.util.CommonUtil;
+import com.app.ebaebo.util.DownloadUtil;
 import com.app.ebaebo.util.InternetURL;
 import com.app.ebaebo.util.StringUtil;
-import com.app.ebaebo.util.upload.MultiPartStack;
 import com.app.ebaebo.widget.SoundMeter;
 
 import java.io.File;
@@ -519,7 +519,18 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         public void onReceive(Context context, Intent intent) {
             String messages = intent.getStringExtra("messages");
             MessageDATA messageDATA = getGson().fromJson(messages, MessageDATA.class);
-            list.addAll(messageDATA.getData().getList());
+
+            List<Message> listMessage = messageDATA.getData().getList();
+            for (Message message : listMessage){
+                if (!StringUtil.isNullOrEmpty(message.getUrl())){
+                    new Thread( new DownloadUtil(message.getUrl())).start();
+                    message.setUrl(DownloadUtil.getFilePath(message.getUrl()));
+                    list.add(message);
+                }else {
+                    list.add(message);
+                }
+            }
+//            list.addAll(messageDATA.getData().getList());
             adapter.notifyDataSetChanged();
         }
     }
