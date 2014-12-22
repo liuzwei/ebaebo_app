@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.app.ebaebo.EbaeboApplication;
 import com.app.ebaebo.R;
@@ -69,6 +70,7 @@ public class YuyingAdapter extends BaseAdapter {
             holder.content = (TextView) convertView.findViewById(R.id.content);
             holder.time = (TextView) convertView.findViewById(R.id.time);
             holder.detail = (ImageView) convertView.findViewById(R.id.detail);
+            holder.liner = (LinearLayout) convertView.findViewById(R.id.liner);
             convertView.setTag(holder);
         }else{
             holder=(ViewHolder)convertView.getTag();
@@ -99,6 +101,13 @@ public class YuyingAdapter extends BaseAdapter {
                 onClickContentItemListener.onClickContentItem(position, 1, null);
             }
         });
+        holder.liner.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                onClickContentItemListener.onClickContentItem(position, 1, null);
+            }
+        });
+
         return convertView;
     }
 
@@ -108,5 +117,6 @@ public class YuyingAdapter extends BaseAdapter {
         TextView title;
         TextView content;
         TextView time;
+        LinearLayout liner;
     }
 }

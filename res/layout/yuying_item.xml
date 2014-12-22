@@ -11,6 +11,7 @@
 	        android:layout_height="wrap_content"
 	        android:orientation="vertical"
             android:padding="10dp"
+            android:id="@+id/liner"
             android:background="@drawable/zhuye_item_select"
 	        >
 	        <LinearLayout android:layout_width="match_parent"

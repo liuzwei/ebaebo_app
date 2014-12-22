@@ -32,7 +32,6 @@ public class SendGroupMessageActivity extends BaseActivity implements View.OnCli
     private Map<String, String> uidMap = new HashMap<String, String>();
     private String identity;
     private Account account;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +98,7 @@ public class SendGroupMessageActivity extends BaseActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.send_group_message_back://返回
-
+                finish();
                 break;
             case R.id.send_group_message_send://发送
                 if (uidMap.size() == 0){
@@ -122,6 +121,7 @@ public class SendGroupMessageActivity extends BaseActivity implements View.OnCli
                 message.setContent(content.getText().toString());
                 sendMsg(message);
                 break;
+
         }
     }
 
