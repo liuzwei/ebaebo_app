@@ -5,15 +5,15 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import com.android.volley.*;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.app.ebaebo.R;
 import com.app.ebaebo.adapter.ChatAdapter;
 import com.app.ebaebo.data.ErrorDATA;
@@ -24,13 +24,10 @@ import com.app.ebaebo.service.MessageService;
 import com.app.ebaebo.util.CommonUtil;
 import com.app.ebaebo.util.InternetURL;
 import com.app.ebaebo.util.StringUtil;
-import com.app.ebaebo.util.ToastUtil;
-import com.app.ebaebo.util.face.FaceConversionUtil;
+import com.app.ebaebo.util.upload.MultiPartStack;
 import com.app.ebaebo.widget.SoundMeter;
-import com.kubility.demo.MP3Recorder;
 
 import java.io.File;
-import java.io.StringReader;
 import java.util.*;
 
 /**
@@ -242,10 +239,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
      * 发送消息
      */
     private void sendMsg(final Message message){
-        String uri = String.format(InternetURL.MESSAGE_SEND_URL + "?content=%s&uid=%s&type=0&to_uids=%s&file=%s&user_type=%s",message.getContent(), message.getUid(),message.getTo_uids(),message.getUrl(), identity);
+//        String uri = String.format(InternetURL.MESSAGE_SEND_URL + "?content=%s&uid=%s&type=0&to_uids=%s&url=%s&user_type=%s",message.getContent(), message.getUid(),message.getTo_uids(),message.getUrl(), identity);
         StringRequest request = new StringRequest(
-                Request.Method.GET,
-                uri,
+                Request.Method.POST,
+                InternetURL.MESSAGE_SEND_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
@@ -267,10 +264,33 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-
+                        Log.e("ChatActivity", volleyError.toString());
                     }
                 }
-        );
+        ){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("uid", message.getUid());
+                if (!StringUtil.isNullOrEmpty(message.getContent())) {
+                    params.put("content", message.getContent());
+                }
+                params.put("type",message.getType());
+                params.put("to_uids",message.getTo_uids());
+                if (!StringUtil.isNullOrEmpty(message.getUrl())) {
+                    params.put("url", message.getUrl());
+                }
+                params.put("user_type",identity);
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("Content-Type","application/x-www-form-urlencoded");
+                return params;
+            }
+        };
         getRequestQueue().add(request);
     }
 
