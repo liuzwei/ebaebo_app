@@ -4,6 +4,7 @@ package com.kubility.demo;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
+import android.os.Environment;
 import android.os.Handler;
 
 import java.io.File;
@@ -121,7 +122,10 @@ public class MP3Recorder {
 
                 FileOutputStream output = null;
                 try {
-
+                    File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/ebaebo");
+                    if (!dir.exists()){
+                        dir.mkdir();
+                    }
                     File file = new File(filePath);
                     if (!file.exists()){
                         try {
@@ -269,17 +273,17 @@ public class MP3Recorder {
     /**
      * 录音状态管理
      * 
-     * @see RecMicToMp3#MSG_REC_STARTED
-     * @see RecMicToMp3#MSG_REC_STOPPED
-     * @see RecMicToMp3#MSG_REC_PAUSE
-     * @see RecMicToMp3#MSG_REC_RESTORE
-     * @see RecMicToMp3#MSG_ERROR_GET_MIN_BUFFERSIZE
-     * @see RecMicToMp3#MSG_ERROR_CREATE_FILE
-     * @see RecMicToMp3#MSG_ERROR_REC_START
-     * @see RecMicToMp3#MSG_ERROR_AUDIO_RECORD
-     * @see RecMicToMp3#MSG_ERROR_AUDIO_ENCODE
-     * @see RecMicToMp3#MSG_ERROR_WRITE_FILE
-     * @see RecMicToMp3#MSG_ERROR_CLOSE_FILE
+//     * @see RecMicToMp3#MSG_REC_STARTED
+//     * @see RecMicToMp3#MSG_REC_STOPPED
+//     * @see RecMicToMp3#MSG_REC_PAUSE
+//     * @see RecMicToMp3#MSG_REC_RESTORE
+//     * @see RecMicToMp3#MSG_ERROR_GET_MIN_BUFFERSIZE
+//     * @see RecMicToMp3#MSG_ERROR_CREATE_FILE
+//     * @see RecMicToMp3#MSG_ERROR_REC_START
+//     * @see RecMicToMp3#MSG_ERROR_AUDIO_RECORD
+//     * @see RecMicToMp3#MSG_ERROR_AUDIO_ENCODE
+//     * @see RecMicToMp3#MSG_ERROR_WRITE_FILE
+//     * @see RecMicToMp3#MSG_ERROR_CLOSE_FILE
      */
     public void setHandle(Handler handler) {
         this.handler = handler;

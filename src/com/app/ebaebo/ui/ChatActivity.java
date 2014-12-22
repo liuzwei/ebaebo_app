@@ -338,7 +338,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                     img1.setVisibility(View.VISIBLE);
                     del_re.setVisibility(View.GONE);
                     startVoiceT = System.currentTimeMillis();
-                    voiceName = PATH +"/"+startVoiceT + ".mp3";
+                    voiceName = PATH +"/ebaebo/"+startVoiceT + ".mp3";
                     start(voiceName);
                     flag = 2;
                 }
