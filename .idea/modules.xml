@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://F:/app/VitamioBundle/VitamioBundle.iml" filepath="F:/app/VitamioBundle/VitamioBundle.iml" />
       <module fileurl="file://D:/VitamioBundle/VitamioBundle.iml" filepath="D:/VitamioBundle/VitamioBundle.iml" />
+      <module fileurl="file://F:/app/VitamioBundle/VitamioBundle.iml" filepath="F:/app/VitamioBundle/VitamioBundle.iml" />
       <module fileurl="file://$PROJECT_DIR$/app.iml" filepath="$PROJECT_DIR$/app.iml" />
     </modules>
   </component>
 </project>
-

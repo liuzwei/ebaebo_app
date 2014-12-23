@@ -16,7 +16,14 @@
                   android:layout_centerHorizontal="true"
                   android:paddingBottom="10dp"
                   android:layout_height="wrap_content">
-
+        <ImageView
+                android:src="@drawable/tpxiazai"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="download"
+                android:id="@+id/gallery_url_download"
+                />
     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
               android:paddingRight="10dp"
               android:textSize="16sp"

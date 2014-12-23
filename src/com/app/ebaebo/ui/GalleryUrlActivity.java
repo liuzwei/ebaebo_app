@@ -2,8 +2,11 @@ package com.app.ebaebo.ui;
 
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.app.ebaebo.R;
+import com.app.ebaebo.util.PicUtil;
 import com.app.ebaebo.util.imageBrowser.GalleryWidget.BasePagerAdapter;
 import com.app.ebaebo.util.imageBrowser.GalleryWidget.GalleryViewPager;
 import com.app.ebaebo.util.imageBrowser.GalleryWidget.UrlPagerAdapter;
@@ -49,5 +52,12 @@ public class GalleryUrlActivity extends BaseActivity{
         mViewPager.setOffscreenPageLimit(3);
         mViewPager.setAdapter(pagerAdapter);
         mViewPager.setCurrentItem(pagerPosition);
+    }
+
+    public void download(View view){
+        int i = mViewPager.getCurrentItem();
+        getAppThread().execute(new PicUtil(imageUrls[i]));
+        String fileName = PicUtil.getImagePath(imageUrls[i]);
+        Toast.makeText(mContext, "已保存至" + fileName, Toast.LENGTH_SHORT).show();
     }
 }
