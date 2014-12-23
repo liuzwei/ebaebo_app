@@ -5,12 +5,16 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.opengl.GLUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.nio.ShortBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +62,9 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
     // 地图相关
     MapView mMapView;
     BaiduMap mBaiduMap;
-    private List<LatLng> latLngPolygon  = new ArrayList<LatLng>();
+    Bitmap bitmap;
+    private List<LatLng> latLngPolygon = new ArrayList<LatLng>() ;
+
     private List<Trace> listDw  = new ArrayList<Trace>();
     private float[] vertexs;
     private FloatBuffer vertexBuffer;
@@ -103,12 +109,13 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
         mMapView = (MapView) findViewById(R.id.bmapView);
         mBaiduMap = mMapView.getMap();
         mBaiduMap.setOnMapDrawFrameCallback(this);
+        bitmap = BitmapFactory.decodeResource(this.getResources(),
+                R.drawable.ground_overlay);
         //设置定位条件
         LocationClientOption option = new LocationClientOption();
         option.setOpenGps(true);        //是否打开GPS
         option.setCoorType("bd09ll");       //设置返回值的坐标类型。
-//        option.setPriority(LocationClientOption.NetWorkFirst);  //设置定位优先级
-        option.setProdName("RIvp33GcGSGSwwntWPGXMxBs"); //设置产品线名称。强烈建议您使用自定义的产品线名称，方便我们以后为您提供更高效准确的定位服务。
+        option.setProdName("RIvp33GcGSGSwwntWPGXMxBs"); //设置产品线名称
         option.setScanSpan(UPDATE_TIME);    //设置定时定位的时间间隔。单位毫秒
         mLocationClient = new LocationClient(getApplicationContext());
         mLocationClient.setLocOption(option);
@@ -130,12 +137,6 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
         });
         mLocationClient.start();
         mLocationClient.requestLocation();
-//        //定位到当期位置
-//        LatLng ll = new LatLng(32.00, 120.00);
-//        MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
-//        mBaiduMap.setMapStatus( u );
-//        MydrawPointCurrentLocation(32.00, 120.00);
-
         getData();
     }
 
@@ -212,16 +213,15 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
                                     for(int i =0;i<listDw.size();i++){
                                         Trace trace=listDw.get(i);
                                         LatLng latlng = new LatLng(Double.parseDouble(trace.getLat()) , Double.parseDouble(trace.getLng()));
-//                                        LatLng latlng = new LatLng( 24.956247+i,121.514817+i);
                                         latLngPolygon.add(latlng);
                                     }
                                 }
                                 //开始处理数据
                                 if(latLngPolygon!=null &&latLngPolygon.size()>0){
                                     //绘制起点
-                                    MydrawPointStart(latLngPolygon.get(0).latitude, latLngPolygon.get(0).longitude);
+                                    MydrawPointEnd(latLngPolygon.get(0).latitude, latLngPolygon.get(0).longitude);
                                     //绘制终点
-                                    MydrawPointEnd(latLngPolygon.get(latLngPolygon.size() - 1).latitude, latLngPolygon.get(latLngPolygon.size() - 1).longitude);
+                                    MydrawPointStart(latLngPolygon.get(latLngPolygon.size() - 1).latitude, latLngPolygon.get(latLngPolygon.size() - 1).longitude);
                                     //获得距离
                                     Double instant = getInstant(latLngPolygon);
                                     String strLong = String.valueOf(instant/1000);
@@ -229,10 +229,6 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
                                         strLong = strLong.substring(0,6);
                                     }
                                     shoolbusinstance.setText("距离  "+ strLong +"公里");
-//                                    //定位到当期位置
-//                                    LatLng ll = new LatLng(latLngPolygon.get(0).latitude, latLngPolygon.get(0).longitude);
-//                                    MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
-//                                    mBaiduMap.setMapStatus( u );
                                 }else{
                                     shoolbusinstance.setText("距离0.0公里");
                                 }
@@ -279,13 +275,15 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
     }
 
     public void onMapDrawFrame(GL10 gl, MapStatus drawingMapStatus) {
-        if (mBaiduMap.getProjection() != null && vertexBuffer!=null) {
+        if (mBaiduMap.getProjection() != null) {
             calPolylinePoint(drawingMapStatus);
-            drawPolyline(gl, Color.argb(255, 255, 0, 0), vertexBuffer, 10, 3,
-                    drawingMapStatus);
+            if(vertexBuffer != null){
+                drawPolyline(gl, Color.argb(255, 255, 0, 0), vertexBuffer, 10, 3,
+                        drawingMapStatus);
+            }
+
         }
     }
-
     public void calPolylinePoint(MapStatus mspStatus) {
         if(latLngPolygon!=null && latLngPolygon.size()>0){
             PointF[] polyPoints = new PointF[latLngPolygon.size()];
@@ -304,7 +302,6 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
             }
             vertexBuffer = makeFloatBuffer(vertexs);
         }
-
     }
 
     private FloatBuffer makeFloatBuffer(float[] fs) {
@@ -338,11 +335,7 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
         gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
     }
     int textureId = -1;
-//    double mLat1 = 39.90923; // point1纬度
-//    double mLon1 = 116.357428; // point1经度
-//    double mLat2 = 39.90923;// point2纬度
-//    double mLon2 = 116.397428;// point2经度
-//    double distance = GetShortDistance(mLon1, mLat1, mLon2, mLat2);
+
     //获得距离
     public Double getInstant(List<LatLng> lists){
         Double countDistant=0.0;
@@ -357,4 +350,7 @@ public class SchoolBusActivityFather extends BaseActivity  implements OnMapDrawF
         }
         return countDistant;
     }
+
+
+
 }

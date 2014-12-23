@@ -51,9 +51,7 @@ public class OpenglDemo extends BaseActivity implements OnMapDrawFrameCallback, 
 	MapView mMapView;
 	BaiduMap mBaiduMap;
 	Bitmap bitmap;
-//	private LatLng latlng1 = new LatLng(39.97923, 116.357428);
-//	LatLng latlng2 = new LatLng(39.94923, 116.397428);
-//	LatLng latlng3 = new LatLng(39.96923, 116.437428);
+
 	private List<LatLng> latLngPolygon = new ArrayList<LatLng>();
 
 	private float[] vertexs;
@@ -89,7 +87,6 @@ public class OpenglDemo extends BaseActivity implements OnMapDrawFrameCallback, 
         locationClient.registerLocationListener(new BDLocationListener() {
             @Override
             public void onReceiveLocation(BDLocation location) {
-                // TODO Auto-generated method stub
                 if (location == null) {
                     return;
                 }
@@ -149,8 +146,10 @@ public class OpenglDemo extends BaseActivity implements OnMapDrawFrameCallback, 
     public void onMapDrawFrame(GL10 gl, MapStatus drawingMapStatus) {
         if (mBaiduMap.getProjection() != null && vertexBuffer!=null) {
             calPolylinePoint(drawingMapStatus);
-            drawPolyline(gl, Color.argb(255, 255, 0, 0), vertexBuffer, 10, 3,
-                    drawingMapStatus);
+            if(vertexBuffer != null){
+                drawPolyline(gl, Color.argb(255, 255, 0, 0), vertexBuffer, 10, 3,
+                        drawingMapStatus);
+            }
         }
     }
 
@@ -312,10 +311,10 @@ public class OpenglDemo extends BaseActivity implements OnMapDrawFrameCallback, 
                                 //开始处理数据
                                 if(latLngPolygon!=null && latLngPolygon.size()>0){
                                     //绘制起点
-                                    MydrawPointStart(latLngPolygon.get(0).latitude, latLngPolygon.get(0).longitude);
+                                    MydrawPointEnd(latLngPolygon.get(0).latitude, latLngPolygon.get(0).longitude);
                                     if(latLngPolygon.size() > 1){
                                         //绘制终点
-                                        MydrawPointEnd(latLngPolygon.get(latLngPolygon.size() - 1).latitude, latLngPolygon.get(latLngPolygon.size() - 1).longitude);
+                                         MydrawPointStart(latLngPolygon.get(latLngPolygon.size() - 1).latitude, latLngPolygon.get(latLngPolygon.size() - 1).longitude);
                                     }
                                 }
                             }else {
@@ -373,4 +372,6 @@ public class OpenglDemo extends BaseActivity implements OnMapDrawFrameCallback, 
         mBaiduMap.addOverlay(option);
 
     }
+
+
 }

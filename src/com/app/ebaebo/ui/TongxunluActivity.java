@@ -36,6 +36,7 @@ import java.util.List;
 public class TongxunluActivity extends BaseActivity implements OnClickContentItemListener, View.OnClickListener,ContentListView.OnRefreshListener, ContentListView.OnLoadListener {
     private ImageView back;//返回按钮
     private TongxunluAdapter adapter;
+
     private ContentListView clv;
     private int pageIndex = 1;
     private static boolean IS_REFRESH = true;
@@ -74,6 +75,7 @@ public class TongxunluActivity extends BaseActivity implements OnClickContentIte
             {
                 case R.id.back:
                     finish();
+
                     break;
             }
     }
