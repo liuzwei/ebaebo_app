@@ -15,6 +15,7 @@ import com.app.ebaebo.util.ToastUtil;
 import com.app.ebaebo.util.upload.MultiPartStack;
 import com.app.ebaebo.util.upload.MultiPartStringRequest;
 import com.google.gson.Gson;
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 import java.util.Map;
@@ -38,6 +39,8 @@ public class BaseActivity extends Activity {
 
     ConnectivityManager connectMgr ;
 
+    private final  String mPageName = "BaseActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +51,9 @@ public class BaseActivity extends Activity {
         mRequestQueue = Volley.newRequestQueue(this);
         mSingleQueue = Volley.newRequestQueue(this, new MultiPartStack());
         tack.addActivity(this);
+
+        MobclickAgent.openActivityDurationTrack(false);
+        MobclickAgent.updateOnlineConfig(this);
     }
 
     /**
@@ -111,5 +117,19 @@ public class BaseActivity extends Activity {
         };
 
         mSingleQueue.add(multiPartRequest);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart( mPageName );
+        MobclickAgent.onResume(mContext);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd( mPageName );
+        MobclickAgent.onPause(mContext);
     }
 }

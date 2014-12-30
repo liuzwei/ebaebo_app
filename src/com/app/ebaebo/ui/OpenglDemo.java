@@ -120,13 +120,13 @@ public class OpenglDemo extends BaseActivity implements OnMapDrawFrameCallback, 
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         mMapView.onPause();
         super.onPause();
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         mMapView.onResume();
         // onResume 纹理失效
         textureId = -1;

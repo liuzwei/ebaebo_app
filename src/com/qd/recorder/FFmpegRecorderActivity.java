@@ -291,7 +291,7 @@ public class FFmpegRecorderActivity extends BaseActivity implements OnClickListe
 
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         mHandler.sendEmptyMessage(2);
 
@@ -304,7 +304,7 @@ public class FFmpegRecorderActivity extends BaseActivity implements OnClickListe
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
 //        if(!isFinalizing)
 //            finish();

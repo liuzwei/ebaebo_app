@@ -157,8 +157,14 @@
         <activity android:name=".ui.SendGroupMessageActivity"
                   android:screenOrientation="portrait"/>
         <!--友盟测试-->
-        <meta-data android:name="UMENG_APPKEY" android:value="547bcffefd98c5b9000008ab"/>
-        <meta-data android:name="UMENG_CHANNEL" android:value="e贝e宝"/>
+        <meta-data
+                android:name="UMENG_APPKEY"
+                android:value="54a2a59bfd98c5278e000076" >
+        </meta-data>
+        <meta-data
+                android:name="UMENG_CHANNEL"
+                android:value="ebaebo" >
+        </meta-data>
         <meta-data android:name="UMENG_MESSAGE_SECRET" android:value="64eef779483348c5eff4d2e3bba233ec"/>
 
         <!-- 友盟自动更新 -->
@@ -237,6 +243,8 @@
                 android:name="com.baidu.lbsapi.API_KEY"
                 android:value="RIvp33GcGSGSwwntWPGXMxBs" />
         <activity android:name=".dw.LocationActivity"/>
-<activity android:name="com.tencent.connect.common.AssistActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+<activity android:name="com.tencent.connect.common.AssistActivity"
+          android:screenOrientation="portrait"
+          android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
 </application>
 </manifest>
