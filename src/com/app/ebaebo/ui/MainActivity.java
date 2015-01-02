@@ -191,6 +191,16 @@ public class MainActivity extends BaseActivity implements
     private void initView() {
         leftbutton = (ImageView) this.findViewById(R.id.leftbutton);
         leftbutton.setOnClickListener(this);
+        leftbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (slideMenu.isMainScreenShowing()) {
+                    slideMenu.openMenu();
+                } else {
+                    slideMenu.closeMenu();
+                }
+            }
+        });
         slideMenu = (SlideMenu) findViewById(R.id.slide_menu);
 
         user = (TextView) slideMenu.findViewById(R.id.leftmenu_user);
@@ -235,13 +245,13 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.leftbutton:
-                if (slideMenu.isMainScreenShowing()) {
-                    slideMenu.openMenu();
-                } else {
-                    slideMenu.closeMenu();
-                }
-                break;
+//            case R.id.leftbutton:
+//                if (slideMenu.isMainScreenShowing()) {
+//                    slideMenu.openMenu();
+//                } else {
+//                    slideMenu.closeMenu();
+//                }
+//                break;
             case R.id.leftmenu_user://用户
 
                 break;
@@ -308,6 +318,8 @@ public class MainActivity extends BaseActivity implements
                 startActivity(new Intent(MainActivity.this, PublishPictureActivity.class));
                 break;
         }
+        //响应动作后关闭按钮
+        slideMenu.closeMenu();
     }
 
     @Override
