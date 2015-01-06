@@ -42,6 +42,8 @@ public class InternetURL {
 
     //获得点名宝宝列表
     public static String DIANMING_URL = "http://yey.xqb668.com/index/ServiceJson/dianmingChilds";
+    //点名动作
+    public static String DIANMING_ACTION = "http://yey.xqb668.com/index/ServiceJson/dianming";
     //绑定邮箱
     public static String BANGDING_EMAIL_URL="http://yey.xqb668.com/json.php/user.api-emailSetting";
 

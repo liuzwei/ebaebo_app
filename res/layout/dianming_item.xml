@@ -38,6 +38,11 @@
             android:textSize="12sp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"/>
+    <Button
+            android:text="点名"
+            android:id="@+id/dianming_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
         </LinearLayout>
     <ImageView
             android:src="@drawable/line"

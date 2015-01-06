@@ -26,6 +26,7 @@ import com.app.ebaebo.entity.Growing;
 import com.app.ebaebo.util.*;
 import com.app.ebaebo.util.face.FaceConversionUtil;
 import com.app.ebaebo.widget.ContentListView;
+import com.app.ebaebo.widget.DianmingDialog;
 import com.google.gson.Gson;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
@@ -290,8 +291,10 @@ public class MainActivity extends BaseActivity implements
                 startActivity(yuying);
                 break;
             case R.id.leftmenu_callname://点名
-                Intent dianming = new Intent(this, DianmingActivity.class);
-                startActivity(dianming);
+                DianmingDialog dianmingDialog = new DianmingDialog(MainActivity.this, R.style.dialog );
+                dianmingDialog.show();
+//                Intent dianming = new Intent(this, DianmingActivity.class);
+//                startActivity(dianming);
                 break;
 
             case R.id.leftmenu_setting://设置

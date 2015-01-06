@@ -5,12 +5,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.app.ebaebo.EbaeboApplication;
 import com.app.ebaebo.R;
 import com.app.ebaebo.entity.Child;
 import com.app.ebaebo.util.CommonUtil;
+import com.app.ebaebo.util.StringUtil;
+import com.app.ebaebo.util.TimeUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
@@ -23,13 +26,20 @@ public class DianmingAdapter extends BaseAdapter {
     private List<Child> list;
     private Context context;
     private ViewHolder holder;
+    private String type;//0 签到，1 签退
 
     ImageLoader imageLoader = ImageLoader.getInstance();//图片加载类
     private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
 
-    public DianmingAdapter(List<Child> list, Context context){
+    private OnClickContentItemListener onClickContentItemListener;
+    public void setOnClickContentItemListener(OnClickContentItemListener onClickContentItemListener) {
+        this.onClickContentItemListener = onClickContentItemListener;
+    }
+
+    public DianmingAdapter(List<Child> list, Context context, String type){
         this.list = list;
         this.context = context;
+        this.type = type;
     }
     @Override
     public int getCount() {
@@ -47,13 +57,14 @@ public class DianmingAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         if (convertView == null){
             holder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.dianming_item, null);
             holder.photo = (ImageView) convertView.findViewById(R.id.dianming_photo);
             holder.name = (TextView) convertView.findViewById(R.id.dianming_name);
             holder.time = (TextView) convertView.findViewById(R.id.dianming_time);
+            holder.dianming = (Button) convertView.findViewById(R.id.dianming_btn);
             convertView.setTag(holder);
         }else {
             holder = (ViewHolder) convertView.getTag();
@@ -61,7 +72,32 @@ public class DianmingAdapter extends BaseAdapter {
         Child child = list.get(position);
         imageLoader.displayImage(child.getCover(), holder.photo, EbaeboApplication.txOptions, animateFirstListener);
         holder.name.setText(child.getName());
-        holder.time.setText(child.getDateline());
+        if (!StringUtil.isNullOrEmpty(child.getDateline())) {
+            holder.time.setText(TimeUtils.zhuanhuanTime(Long.parseLong(child.getDateline())));
+        }
+
+        if (type.equals("0")) {
+            if (child.isIs_come()) {
+                holder.dianming.setText("已签到");
+                holder.dianming.setEnabled(false);
+            } else {
+                holder.dianming.setText("签到");
+            }
+        }else {
+            if (!child.isIs_come()) {
+                holder.dianming.setText("已签退");
+                holder.dianming.setEnabled(false);
+            } else {
+                holder.dianming.setText("签退");
+            }
+        }
+        holder.dianming.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickContentItemListener.onClickContentItem(position, 1, type);
+            }
+        });
+
         return convertView;
     }
 
@@ -69,5 +105,6 @@ public class DianmingAdapter extends BaseAdapter {
         ImageView photo;
         TextView name;
         TextView time;
+        Button dianming;
     }
 }
