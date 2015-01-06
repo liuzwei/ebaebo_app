@@ -27,6 +27,8 @@ import com.app.ebaebo.util.*;
 import com.app.ebaebo.util.face.FaceConversionUtil;
 import com.app.ebaebo.widget.ContentListView;
 import com.app.ebaebo.widget.DianmingDialog;
+import com.baidu.android.pushservice.PushConstants;
+import com.baidu.android.pushservice.PushManager;
 import com.google.gson.Gson;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
@@ -187,6 +189,9 @@ public class MainActivity extends BaseActivity implements
         //umVideo.setTitle("友盟社会化分享!");
         //mController.setShareMedia(umVideo);
 
+        PushManager.startWork(getApplicationContext(),
+                PushConstants.LOGIN_TYPE_API_KEY,
+                Utils.getMetaValue(MainActivity.this, "push_api_key"));
     }
 
     private void initView() {

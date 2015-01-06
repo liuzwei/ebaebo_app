@@ -9,6 +9,7 @@ import android.os.Vibrator;
 import android.util.Log;
 import android.widget.TextView;
 import com.app.ebaebo.db.DBManager;
+import com.baidu.frontia.FrontiaApplication;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.GeofenceClient;
@@ -29,7 +30,7 @@ import com.umeng.message.PushAgent;
  * Time: 21:54
  * 类的功能、说明写在此处.
  */
-public class EbaeboApplication extends Application {
+public class EbaeboApplication extends FrontiaApplication {
     //----------------百度地图------------------
     public LocationClient mLocationClient;
     public GeofenceClient mGeofenceClient;

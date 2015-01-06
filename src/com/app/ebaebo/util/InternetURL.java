@@ -70,4 +70,7 @@ public class InternetURL {
     public static String CAR_OPEN_URL = "http://yey.xqb668.com/index/ServiceJson/schoolbusopen";
     //33.	校车经纬度更新
     public static String UPDATE_CAR_URL = "http://yey.xqb668.com/index/ServiceJson/updateSchoolBusLatLng";
+
+    //更新Chinal_id
+    public static String CHANEL_ID = "http://yey.xqb668.com/index/ServiceJson/get_user_channelid";
 }
