@@ -1,16 +1,11 @@
 package com.app.ebaebo.ui;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.app.ebaebo.R;
-import com.app.ebaebo.adapter.PhotoAdapter;
 import com.app.ebaebo.adapter.PictureAdapter;
 import com.app.ebaebo.entity.Photos;
 import com.app.ebaebo.entity.Pictures;

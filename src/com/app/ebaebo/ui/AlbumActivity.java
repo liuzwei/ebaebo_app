@@ -100,6 +100,8 @@ public class AlbumActivity extends AbsActivity {
 
 			@Override
 			public void onClick(View v) {
+				Intent intent = new Intent();
+				setResult(RESULT_OK, intent);
 				AlbumActivity.this.finish();
 			}
 		});

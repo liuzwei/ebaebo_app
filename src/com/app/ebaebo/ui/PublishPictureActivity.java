@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.*;
 import com.android.volley.*;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.app.ebaebo.R;
 import com.app.ebaebo.adapter.GridImageAdapter;
 import com.app.ebaebo.data.BabyDATA;
@@ -22,7 +21,6 @@ import com.app.ebaebo.data.UploadDATA;
 import com.app.ebaebo.entity.Account;
 import com.app.ebaebo.entity.Baby;
 import com.app.ebaebo.util.*;
-import com.app.ebaebo.util.upload.MultiPartStack;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -75,6 +73,18 @@ public class PublishPictureActivity extends BaseActivity implements View.OnClick
                 progressDialog = new ProgressDialog(PublishPictureActivity.this);
                 progressDialog.setMessage("正在发布，请稍后");
                 progressDialog.show();
+                //检查有没有选择图片
+                if (dataList.size() == 1){
+                    progressDialog.dismiss();
+                    Toast.makeText(mContext, R.string.check_is_picture,Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                //检查有没有选择宝宝
+                if (StringUtil.isNullOrEmpty(babyId)){
+                    progressDialog.dismiss();
+                    Toast.makeText(mContext, "请选择宝宝", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 for (int i=0; i<dataList.size(); i++){
                     File file = new File(dataList.get(i));
 
@@ -114,10 +124,7 @@ public class PublishPictureActivity extends BaseActivity implements View.OnClick
     }
     //上传完图片后开始发布
     private void publishAll(){
-        if (StringUtil.isNullOrEmpty(babyId)){
-            Toast.makeText(mContext, "请选择宝宝", Toast.LENGTH_SHORT).show();
-            return;
-        }
+
         final String contentStr = content.getText().toString();
         final String user_type = getGson().fromJson(sp.getString(Constants.IDENTITY, ""), String.class);
         final StringBuffer filePath = new StringBuffer();
@@ -290,6 +297,8 @@ public class PublishPictureActivity extends BaseActivity implements View.OnClick
                             dataList.add("camera_default");
                         }
                         gridImageAdapter.notifyDataSetChanged();
+                    }else {
+                        finish();
                     }
                     break;
                 case CommonDefine.TAKE_PICTURE_FROM_CAMERA:
