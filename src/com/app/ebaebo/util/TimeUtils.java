@@ -21,11 +21,9 @@ public class TimeUtils {
 		return getCurrentTime("yyyy-MM-dd  HH:mm:ss");
 	}
     public static String zhuanhuanTime(long sd){
-        Date dat=new Date(sd);
-        GregorianCalendar gc = new GregorianCalendar();
-        gc.setTime(dat);
+        Date date = new Date(sd*1000);
         java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        String sb=format.format(gc.getTime());
+        String sb=format.format(date.getTime());
         return sb;
-    }
+}
 }

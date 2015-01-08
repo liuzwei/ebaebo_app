@@ -39,11 +39,13 @@ public class YuyingMessageActivity extends BaseActivity implements OnClickConten
     private static boolean IS_REFRESH = true;
     private List<Yuying> list = new ArrayList<Yuying>();
     private RequestQueue mRequestQueue;
+    private Account account;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.yuyingmessages);
         initView();
+        account = getGson().fromJson(sp.getString(Constants.ACCOUNT_KEY, ""), Account.class);
         setTheme(R.style.index_theme);
         adapter = new YuyingAdapter(list, this);
         mRequestQueue = Volley.newRequestQueue(this);
@@ -81,7 +83,7 @@ public class YuyingMessageActivity extends BaseActivity implements OnClickConten
     }
 
     private void getData(){
-        String uri = String.format(InternetURL.GET_YUYING_MESSAGE+"?school_id=%s&pageIndex=%d&pageSize=%d",1, pageIndex, 20 );
+        String uri = String.format(InternetURL.GET_YUYING_MESSAGE+"?school_id=%s&pageIndex=%d&pageSize=%d",account.getSchool_id(), pageIndex, 20 );
         StringRequest request = new StringRequest(Request.Method.GET,
                 uri,
                 new Response.Listener<String>() {

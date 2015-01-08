@@ -30,9 +30,19 @@
                           android:textSize="14sp"
                           android:textColor="#333333"
                           android:id="@+id/gifttitle"
-                          android:layout_marginLeft="5dp"/>
+                          android:layout_marginLeft="10dp"/>
+                <TextView android:layout_width="wrap_content"
+                          android:text="(5张)"
+                          android:id="@+id/phosnumber"
+                          android:layout_marginLeft="10dp"
+                          android:layout_height="wrap_content"/>
             </LinearLayout>
-
+            <TextView android:layout_width="wrap_content"
+                      android:text="2014-09-20 10:00"
+                      android:layout_marginLeft="5dp"
+                      android:id="@+id/datetimephot"
+                      android:layout_marginTop="10dp"
+                      android:layout_height="wrap_content"/>
         </LinearLayout>
         <LinearLayout android:layout_width="wrap_content"
                       android:layout_height="match_parent"

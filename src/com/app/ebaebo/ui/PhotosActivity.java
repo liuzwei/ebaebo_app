@@ -3,6 +3,7 @@ package com.app.ebaebo.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.android.volley.Request;
@@ -53,6 +54,15 @@ public class PhotosActivity extends BaseActivity implements OnClickContentItemLi
         adapter = new PhotoAdapter(list, this);
         clv.setAdapter(adapter);
         adapter.setOnClickContentItemListener(this);
+        clv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Photos photo = list.get(position == 0 ? 0 : position - 1);
+                Intent pic = new Intent(PhotosActivity.this, PictureActivity.class);
+                pic.putExtra("photo", photo);
+                startActivity(pic);
+            }
+        });
         uid = getIntent().getExtras().getString("uid");//会员ID
         getData();
     }

@@ -11,6 +11,7 @@ import com.app.ebaebo.EbaeboApplication;
 import com.app.ebaebo.R;
 import com.app.ebaebo.entity.Photos;
 import com.app.ebaebo.entity.Pictures;
+import com.app.ebaebo.util.TimeUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
@@ -62,6 +63,8 @@ public class PhotoAdapter extends BaseAdapter {
             holder.picture = (ImageView)convertView.findViewById(R.id.giftpic);
             holder.name = (TextView) convertView.findViewById(R.id.gifttitle);
             holder.detailphoto = (ImageView) convertView.findViewById(R.id.detailphoto);
+            holder.phosnumber = (TextView) convertView.findViewById(R.id.phosnumber);
+            holder.datetime = (TextView) convertView.findViewById(R.id.datetimephot);
             convertView.setTag(holder);
         }else{
             holder=(ViewHolder)convertView.getTag();
@@ -80,6 +83,8 @@ public class PhotoAdapter extends BaseAdapter {
                 onClickContentItemListener.onClickContentItem(position, 1, null);
             }
         });
+        holder.datetime.setText(TimeUtils.zhuanhuanTime(Long.parseLong(cell.getDateline())));
+        holder.phosnumber.setText("("+cell.getNumber()+")张");
         return convertView;
     }
 
@@ -88,5 +93,7 @@ public class PhotoAdapter extends BaseAdapter {
         TextView name;
         ImageView detailphoto;
 
+        TextView phosnumber;//张数
+        TextView datetime;//时间
     }
 }

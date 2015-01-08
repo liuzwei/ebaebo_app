@@ -38,7 +38,7 @@ public class PublishImageActivity extends BaseActivity implements View.OnClickLi
 
     private String babyId;//要发布的宝宝ID
     private Account account;
-    private int res[] = new int[]{R.drawable.abaose};
+    private int res[] = new int[]{R.drawable.txhc};
     private List<Baby> babies = new ArrayList<Baby>();//下拉列表宝宝
     private ProgressDialog progressDialog;
     private CheckBox isShare;

@@ -355,11 +355,4 @@ public class BabySettingActivity extends BaseActivity implements View.OnClickLis
         };
         mSingleQueue.add(request);
     }
-//    private void resetAccount(String name, String cover){
-//        if (!StringUtil.isNullOrEmpty(identity)) {
-//            account.setM_cover(Constants.API_HEAD+cover);
-//            account.setM_name(name);
-//            save(Constants.ACCOUNT_KEY, account);
-//        }
-//    }
 }
