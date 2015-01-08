@@ -204,7 +204,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void getData(){
-        String uri = String.format(InternetURL.MESSAGE_DETAIL_LIST+"?uid=%s&friend_id=%s&user_type=%s&new=0", account.getUid(), accountMessage.getUid(),identity);
+        String uri = String.format(InternetURL.MESSAGE_DETAIL_LIST+"?uid=%s&friend_id=%s&user_type=%s&new=1", account.getUid(), accountMessage.getUid(),identity);
 //        String uri = String.format(InternetURL.MESSAGE_DETAIL_LIST+"?uid=%s&friend_id=%s&user_type=%s&new=0&pageSize=2", 91, 75,identity);
 
         StringRequest request = new StringRequest(
