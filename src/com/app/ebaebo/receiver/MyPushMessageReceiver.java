@@ -26,7 +26,7 @@ import java.util.List;
 public class MyPushMessageReceiver extends FrontiaPushMessageReceiver {
     @Override
     public void onBind(Context context, int errorCode, String appid,String userId, String channelId, String requestId) {
-        updateChanelId(context, channelId);
+        updateChanelId(context, channelId, userId);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class MyPushMessageReceiver extends FrontiaPushMessageReceiver {
 
     @Override
     public void onListTags(Context context, int i, List<String> strings, String s) {
-
+        Log.e("Message",s);
     }
 
     @Override
@@ -60,10 +60,10 @@ public class MyPushMessageReceiver extends FrontiaPushMessageReceiver {
         Log.e("Message",s);
     }
 
-    public void updateChanelId(final Context context, String chanelId){
+    public void updateChanelId(final Context context, String chanelId, String userId){
         Account account = new Gson().fromJson(context.getSharedPreferences("ebaebo", Context.MODE_PRIVATE).getString(Constants.ACCOUNT_KEY, ""), Account.class);
         RequestQueue queue = Volley.newRequestQueue(context);
-        String uri = String.format(InternetURL.CHANEL_ID+"?uid=%s&type=android&channel_id=%s&op=add", account.getUid(), chanelId);
+        String uri = String.format(InternetURL.CHANEL_ID+"?uid=%s&type=android&channel_id=%s&op=add&userid=%s", account.getUid(), chanelId, userId);
         StringRequest request = new StringRequest(
                 Request.Method.GET,
                 uri,

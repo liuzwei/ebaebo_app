@@ -295,7 +295,7 @@
         <!-- push结束 -->
 
         <!-- 在百度开发者中心查询应用的API Key -->
-        <meta-data android:name="push_api_key" android:value="efjZsYPVKb5USyEQ6bLKf5fX" />
+        <meta-data android:name="push_api_key" android:value="buR2xzGifcwxEmiVt6T7EmOC" />
 
 
 </application>
