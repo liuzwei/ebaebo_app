@@ -251,7 +251,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                             if (data.getCode() == 200) {
                                 if ("0".equals(message.getType())) {
 //                                    Message message = new Message(account.getUid(), accountMessage.getUid(), System.currentTimeMillis(), "0", sendMessage.getText().toString());
-                                    message.setDateline(System.currentTimeMillis());
+                                    message.setDateline(System.currentTimeMillis()/1000+"");
                                     list.add(message);
                                     listView.setSelection(list.size() - 1);
                                     adapter.notifyDataSetChanged();
@@ -383,7 +383,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 
                     final Message message = new Message(account.getUid(),
                             accountMessage.getUid(),
-                            System.currentTimeMillis(),
+                            System.currentTimeMillis()/1000+"",
                             "3",
                             voiceName);
                     message.setUrl(voiceName);

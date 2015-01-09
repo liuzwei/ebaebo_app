@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.text.SpannableString;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.app.ebaebo.entity.UserData;
 import com.app.ebaebo.ui.Constants;
 import com.app.ebaebo.util.CommonUtil;
 import com.app.ebaebo.util.InternetURL;
+import com.app.ebaebo.util.TimeUtils;
 import com.app.ebaebo.util.face.FaceConversionUtil;
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -113,7 +115,11 @@ public class ChatAdapter extends BaseAdapter {
             viewHolder.name.setText(userData.getFrom().getName());
             imageLoader.displayImage(String.format("%s%s", Constants.API_HEAD, userData.getFrom().getCover()), viewHolder.photo, EbaeboApplication.txOptions, animateFirstListener);
         }
-        viewHolder.sendTime.setText(CommonUtil.longToString(message.getDateline()));
+        try {
+            viewHolder.sendTime.setText(TimeUtils.zhuanhuanTime(Long.parseLong(message.getDateline())));
+        }catch (Exception e){
+            Log.e("ChatAdapter", e.getMessage());
+        }
         if (message.getUrl()!= null && message.getUrl().contains(".mp3")) {
             viewHolder.content.setText("");
             viewHolder.content.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.chatto_voice_playing, 0);

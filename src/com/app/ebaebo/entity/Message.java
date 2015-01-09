@@ -10,7 +10,7 @@ public class Message implements Serializable{
     private String uid;
     private String to_uids;
     private String pmid;
-    private long dateline;
+    private String dateline;
     private String type;
     private String content;
     private String url;
@@ -21,14 +21,14 @@ public class Message implements Serializable{
     public Message() {
     }
 
-    public Message(String uid, String to_uids, long dateline, String type, String content){
+    public Message(String uid, String to_uids, String dateline, String type, String content){
         this.uid = uid;
         this.to_uids = to_uids;
         this.dateline = dateline;
         this.type = type;
         this.content = content;
     }
-    public Message(String uid, String to_uids, long dateline, String type, String content, int time, boolean isComMsg) {
+    public Message(String uid, String to_uids, String dateline, String type, String content, int time, boolean isComMsg) {
         this.uid = uid;
         this.to_uids = to_uids;
         this.dateline = dateline;
@@ -70,11 +70,11 @@ public class Message implements Serializable{
         this.pmid = pmid;
     }
 
-    public long getDateline() {
+    public String getDateline() {
         return dateline;
     }
 
-    public void setDateline(long dateline) {
+    public void setDateline(String dateline) {
         this.dateline = dateline;
     }
 

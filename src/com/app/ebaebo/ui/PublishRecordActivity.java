@@ -42,7 +42,7 @@ public class PublishRecordActivity extends BaseActivity implements View.OnClickL
 //    private ImageView play;
 //    private ImageView cancel;
     private Button voice;
-    private EditText content;
+    private EditText contentET;
 
     private Spinner spinner;
     private GridView gridView;
@@ -161,7 +161,7 @@ public class PublishRecordActivity extends BaseActivity implements View.OnClickL
 //        play = (ImageView) findViewById(R.id.publish_record_play);
         voice = (Button) findViewById(R.id.voice_record_btn);
         spinner = (Spinner) findViewById(R.id.publish_record_spinner);
-        content = (EditText) findViewById(R.id.publish_record_content);
+        contentET = (EditText) this.findViewById(R.id.voice_content);
 //        cancel = (ImageView) findViewById(R.id.publish_record_cancel);
         isShare = (CheckBox) findViewById(R.id.publish_record_cb);
 
@@ -432,12 +432,14 @@ public class PublishRecordActivity extends BaseActivity implements View.OnClickL
                     public void onResponse(String s) {
                         if (CommonUtil.isJson(s)){
                             ErrorDATA data  = getGson().fromJson(s, ErrorDATA.class);
+                            if (progressDialog != null){
+                                progressDialog.dismiss();
+                            }
                             if (data.getCode() == 200){
-                                if (progressDialog != null){
-                                    progressDialog.dismiss();
-                                }
                                 Toast.makeText(mContext, "发布成功", Toast.LENGTH_SHORT).show();
                                 finish();
+                            }else {
+                                Toast.makeText(mContext, "发布失败,请稍后重试", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
@@ -460,7 +462,9 @@ public class PublishRecordActivity extends BaseActivity implements View.OnClickL
                 params.put("type","3");
                 params.put("child_id", babyId);
                 params.put("url", recordPath);
-                params.put("content", content.getText().toString());
+                if (!StringUtil.isNullOrEmpty(contentET.getText().toString())) {
+                    params.put("content", contentET.getText().toString());
+                }
                 if (isShare.isChecked()){
                     params.put("is_share", "1");
                 }
