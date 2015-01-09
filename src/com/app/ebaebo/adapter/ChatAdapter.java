@@ -110,10 +110,10 @@ public class ChatAdapter extends BaseAdapter {
         }
         if (!message.getUid().equals(account.getUid())){
             viewHolder.name.setText(userData.getTo().getName());
-            imageLoader.displayImage(String.format("%s%s", Constants.API_HEAD, userData.getTo().getCover()), viewHolder.photo, EbaeboApplication.txOptions, animateFirstListener);
+            imageLoader.displayImage(userData.getTo().getCover(), viewHolder.photo, EbaeboApplication.txOptions, animateFirstListener);
         }else {
             viewHolder.name.setText(userData.getFrom().getName());
-            imageLoader.displayImage(String.format("%s%s", Constants.API_HEAD, userData.getFrom().getCover()), viewHolder.photo, EbaeboApplication.txOptions, animateFirstListener);
+            imageLoader.displayImage(userData.getFrom().getCover(), viewHolder.photo, EbaeboApplication.txOptions, animateFirstListener);
         }
         try {
             viewHolder.sendTime.setText(TimeUtils.zhuanhuanTime(Long.parseLong(message.getDateline())));
