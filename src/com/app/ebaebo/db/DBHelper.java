@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by apple on 14-9-15.
  */
 public class DBHelper extends SQLiteOpenHelper{
-    private static final String DATABASE_NAME = "liangxun.db";
+    private static final String DATABASE_NAME = "ebaebo.db";
     private static final int DATABASE_VERSION = 1;
 
     public DBHelper(Context context) {
@@ -17,7 +17,7 @@ public class DBHelper extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE IF NOT EXISTS lx_message (id INTEGER PRIMARY KEY AUTOINCREMENT, title VARCHAR, content TEXT, custom TEXT, time TEXT)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS bb_message (id INTEGER PRIMARY KEY AUTOINCREMENT, title VARCHAR, content TEXT, custom TEXT, time TEXT)");
     }
 
     @Override

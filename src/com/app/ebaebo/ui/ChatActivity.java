@@ -7,6 +7,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -54,6 +55,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     private ImageView chatting_mode_btn, volume;
     private LinearLayout layoutBottom;//底部引入的框
     private View faceView;//表情框
+    private TextView searchMore;//查看更多
 
     private boolean btn_vocie = false;
     private boolean isShosrt = false;
@@ -66,6 +68,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     private List<Message> list = new ArrayList<Message>();
     private static String PATH = Environment.getExternalStorageDirectory().getAbsolutePath();
     private MessageReceiver messageReceiver;
+    private int pageIndex = 0;
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
@@ -89,7 +92,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         initView();
         chatTitle.setText(String.format("与 %s 聊天中", accountMessage.getName()));
 
-        getData();
+        getData("1", "1", "20", true);
         bindMessageService();
         messageReceiver = new MessageReceiver();
         IntentFilter intentFilter = new IntentFilter();
@@ -201,10 +204,22 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                 return false;
             }
         });
+
+        LayoutInflater lif = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View headerView = lif.inflate(R.layout.listview_header, listView ,false);
+        listView.addHeaderView(headerView);
+        searchMore = (TextView) headerView.findViewById(R.id.listview_header_search);
+        searchMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Toast.makeText(mContext, "查看更多", Toast.LENGTH_SHORT).show();
+                getData("0",++pageIndex + "", "20", false );
+            }
+        });
     }
 
-    private void getData(){
-        String uri = String.format(InternetURL.MESSAGE_DETAIL_LIST+"?uid=%s&friend_id=%s&user_type=%s&new=1", account.getUid(), accountMessage.getUid(),identity);
+    private void getData(String newType, String pageIndex, String pageSize, final boolean blow){
+        String uri = String.format(InternetURL.MESSAGE_DETAIL_LIST+"?uid=%s&friend_id=%s&user_type=%s&new=%s&pageIndex=%s&pageSize=%s", account.getUid(), accountMessage.getUid(),identity, newType, pageIndex, pageSize);
 //        String uri = String.format(InternetURL.MESSAGE_DETAIL_LIST+"?uid=%s&friend_id=%s&user_type=%s&new=0&pageSize=2", 91, 75,identity);
 
         StringRequest request = new StringRequest(
@@ -216,8 +231,16 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                         if (CommonUtil.isJson(s)){
                             MessageDATA data = getGson().fromJson(s, MessageDATA.class);
                             list.addAll(data.getData().getList());
+                            Collections.sort(list);
                             adapter = new ChatAdapter(list, mContext,sp, data.getData().getUser());
                             listView.setAdapter(adapter);
+                            if (!blow) {
+                                if (data.getData().getList().size()==0){
+                                    searchMore.setText("没有更多消息");
+                                    searchMore.setEnabled(false);
+                                }
+                                listView.setSelection(data.getData().getList().size());
+                            }
                             adapter.notifyDataSetChanged();
                             //todo
                         }else {
@@ -521,17 +544,19 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
             MessageDATA messageDATA = getGson().fromJson(messages, MessageDATA.class);
 
             List<Message> listMessage = messageDATA.getData().getList();
-            for (Message message : listMessage){
-                if (!StringUtil.isNullOrEmpty(message.getUrl())){
-                    new Thread( new DownloadUtil(message.getUrl())).start();
-                    message.setUrl(DownloadUtil.getFilePath(message.getUrl()));
-                    list.add(message);
-                }else {
-                    list.add(message);
+            if (listMessage.size()> 0) {
+                for (Message message : listMessage) {
+                    if (!StringUtil.isNullOrEmpty(message.getUrl())) {
+                        new Thread(new DownloadUtil(message.getUrl())).start();
+                        message.setUrl(DownloadUtil.getFilePath(message.getUrl()));
+                        list.add(message);
+                    } else {
+                        list.add(message);
+                    }
                 }
-            }
 //            list.addAll(messageDATA.getData().getList());
-            adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
+            }
         }
     }
 }
