@@ -40,6 +40,8 @@
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:orientation="vertical"
+                  android:layout_gravity="center"
+                  android:gravity="center"
                   android:padding="10dp"
                   android:id="@+id/linearname">
 
@@ -56,9 +58,7 @@
                   android:textStyle="bold"
                   android:textColor="#FFFFFF"
                   android:layout_marginTop="10dp"
-                  android:layout_marginLeft="10dp"
-                  android:layout_marginRight="10dp"
-                  android:gravity="center_vertical|center_horizontal"
+                  android:gravity="center"
                   android:background="@drawable/loginbtn_background"
                   android:layout_height="50dp"/>
 

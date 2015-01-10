@@ -92,8 +92,8 @@ public class MainActivity extends BaseActivity implements
     private RequestQueue mRequestQueue;
     // 首先在您的Activity中添加如下成员变量
     final UMSocialService mController = UMServiceFactory.getUMSocialService("com.umeng.share");
-    String shareUrl = "http://yey.xqb668.com";
-    String sharePic="http://yey.xqb668.com/Public/index/image/p_logo.png";//分享图片
+    String shareUrl = InternetURL.INTENT;
+    String sharePic= InternetURL.INTENT+"/Public/index/image/p_logo.png";//分享图片
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,23 +128,7 @@ public class MainActivity extends BaseActivity implements
                 FaceConversionUtil.getInstace().getFileText(getApplication());
             }
         }).start();
-//        radioGroups = (RadioGroup) findViewById(R.id.main_radiogroups);
-//
-//        fragments.add(new MessageFragment());
-//        fragments.add(new PhotoFragment());
-//        fragments.add(new VideoFragment());
-//        fragments.add(new RecordFragment());
-//        fragments.add(new PictureFragment());
-//
-//
-//        FragmentTabAdapter tabAdapter = new FragmentTabAdapter(this, fragments, R.id.tab_content,  radioGroups);
-//        tabAdapter.setOnRgsExtraCheckedChangedListener(new FragmentTabAdapter.OnRgsExtraCheckedChangedListener(){
-//            @Override
-//            public void OnRgsExtraCheckedChanged(RadioGroup radioGroup, int checkedId, int index) {
-//                super.OnRgsExtraCheckedChanged(radioGroup, checkedId, index);
-//
-//            }
-//        });
+
         if(identity.equals("0")){
             user.setText("        "+account.getF_name());
             callName.setVisibility(View.GONE);
@@ -251,13 +235,6 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-//            case R.id.leftbutton:
-//                if (slideMenu.isMainScreenShowing()) {
-//                    slideMenu.openMenu();
-//                } else {
-//                    slideMenu.closeMenu();
-//                }
-//                break;
             case R.id.leftmenu_user://用户
 
                 break;
@@ -298,10 +275,7 @@ public class MainActivity extends BaseActivity implements
             case R.id.leftmenu_callname://点名
                 DianmingDialog dianmingDialog = new DianmingDialog(MainActivity.this, R.style.dialog );
                 dianmingDialog.show();
-//                Intent dianming = new Intent(this, DianmingActivity.class);
-//                startActivity(dianming);
                 break;
-
             case R.id.leftmenu_setting://设置
                 Intent setting = new Intent(MainActivity.this, SettingActivity.class);
                 startActivity(setting);

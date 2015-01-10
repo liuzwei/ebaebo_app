@@ -381,7 +381,6 @@ public class PublishPictureActivity extends BaseActivity implements View.OnClick
      */
     private void  getBabyList(){
         String uri = String.format(InternetURL.GET_BABY_URL +"?uid=%s", account.getUid());
-//        String uri = "http://yey.xqb668.com/json.php/growing.api-childrens/?uid=102";
         StringRequest request = new StringRequest(
                 Request.Method.GET,
                 uri,

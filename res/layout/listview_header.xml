@@ -6,6 +6,9 @@
 <TextView
         android:id="@+id/listview_header_search"
         android:text="查看更多消息"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textColor="@color/text_color_huangse_ff8800"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 </LinearLayout>
