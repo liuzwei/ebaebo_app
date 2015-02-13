@@ -26,9 +26,7 @@ public class ImageDelActivity extends AbsActivity {
 		String path = intent.getStringExtra("path");
 		image_show = (ImageView) findViewById(R.id.image_show);
 		Bitmap bitmap = ImageUtils.getSmallBitmap(path);
-//		Bitmap bitmap = Utils.getImageFromLocal(path);
 		image_show.setImageBitmap(bitmap);
-
 		findViewById(R.id.group_photo_cancel).setOnClickListener(
 				new OnClickListener() {
 

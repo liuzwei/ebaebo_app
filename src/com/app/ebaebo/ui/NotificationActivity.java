@@ -5,12 +5,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.app.ebaebo.R;
-import com.app.ebaebo.entity.Message;
 import com.app.ebaebo.entity.NotifMessage;
 
-/**
- * Created by apple on 14-9-15.
- */
 public class NotificationActivity extends BaseActivity implements View.OnClickListener{
     private NotifMessage message;
 

@@ -3,7 +3,6 @@ package com.app.ebaebo.ui;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,7 +17,6 @@ import com.app.ebaebo.EbaeboApplication;
 import com.app.ebaebo.R;
 import com.app.ebaebo.adapter.AnimateFirstDisplayListener;
 import com.app.ebaebo.data.ErrorDATA;
-import com.app.ebaebo.data.YuyingDATA;
 import com.app.ebaebo.data.YuyingDetailDATA;
 import com.app.ebaebo.entity.Yuying;
 import com.app.ebaebo.util.InternetURL;
@@ -51,10 +49,6 @@ public class YuYiingDetailActivity extends BaseActivity implements View.OnClickL
         mRequestQueue = Volley.newRequestQueue(this);
         initView();
         getData();
-//        title.setText(yy.getTitle());
-//        cont.setText(Html.fromHtml(yy.getContent(), null, new MxgsaTagHandler(this)));
-//        cont.setClickable(true);
-//        cont.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     private void initView() {

@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.app.ebaebo.EbaeboApplication;
 import com.app.ebaebo.R;
-import com.app.ebaebo.entity.Pictures;
 import com.app.ebaebo.entity.Yuying;
 import com.app.ebaebo.util.MxgsaTagHandler;
 import com.app.ebaebo.util.StringUtil;

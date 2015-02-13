@@ -20,7 +20,6 @@ import com.app.ebaebo.util.upload.MultiPartStack;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.logging.LogRecord;
 
 /**
  * Created by liuzwei on 2014/12/12.

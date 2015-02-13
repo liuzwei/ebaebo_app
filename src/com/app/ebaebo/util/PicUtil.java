@@ -68,11 +68,6 @@ public class PicUtil implements Runnable {
             }
         }
         if (imageFile != null) {
-//            Bitmap bitmap = ImageLoader.decodeSampledBitmapFromResource(imageFile.getPath(),
-//                    columnWidth);
-//            if (bitmap != null) {
-//                imageLoader.addBitmapToMemoryCache(imageUrl, bitmap);
-//            }
         }
     }
 

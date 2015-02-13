@@ -12,7 +12,6 @@ import com.app.ebaebo.entity.Growing;
 import com.app.ebaebo.ui.Constants;
 import com.app.ebaebo.ui.GalleryUrlActivity;
 import com.app.ebaebo.ui.VideoViewActivity;
-import com.app.ebaebo.util.RoundImagePhoto;
 import com.app.ebaebo.util.StringUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;

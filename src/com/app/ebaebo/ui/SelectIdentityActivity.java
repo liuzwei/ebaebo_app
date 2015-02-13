@@ -39,8 +39,6 @@ public class SelectIdentityActivity extends BaseActivity implements View.OnClick
         if (account != null){
             roundImagePhoto.readBitmapViaVolley(account.getF_cover(), fatherPhoto);
             roundImagePhoto.readBitmapViaVolley(account.getM_cover(), motherPhoto);
-//            imageLoader.displayImage(account.getF_cover(), fatherPhoto, EbaeboApplication.txOptions, animateFirstListener);
-//            imageLoader.displayImage(account.getM_cover(), motherPhoto, EbaeboApplication.txOptions, animateFirstListener);
             fatherName.setText(account.getF_name());
             motherName.setText(account.getM_name());
         }

@@ -14,23 +14,17 @@ import java.util.List;
 
 
 public class MediaStoreCursorHelper {
-
-//    public static final String[] PHOTOS_PROJECTION = { Images.Media.DATA };
     public static final String[] PHOTOS_PROJECTION = {Images.Media._ID,
     	Images.Media.MINI_THUMB_MAGIC,
     	Images.Media.DATA, Images.Media.BUCKET_DISPLAY_NAME, Images.Media.BUCKET_ID};
     public static final String PHOTOS_ORDER_BY = Images.Media.DATE_ADDED + " desc";
-
     public static final Uri MEDIA_STORE_CONTENT_URI = Images.Media.EXTERNAL_CONTENT_URI;
-    
     public static List<MediaStoreBucket> getBucket(Context context) {
 		ArrayList<MediaStoreBucket> result = null;
 		if (null != context) {
 			result = new ArrayList<MediaStoreBucket>();
 			result.add(MediaStoreBucket.getAllPhotosBucket(context));
-
 			Cursor cursor = MediaStoreCursorHelper.openPhotosCursor(context, MediaStoreCursorHelper.MEDIA_STORE_CONTENT_URI);
-
 			if (null != cursor) {
 				MediaStoreCursorHelper.photosCursorToBucketList(cursor, result);
 				if (VERSION.SDK_INT < 14){

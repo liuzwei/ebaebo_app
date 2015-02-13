@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -39,8 +38,6 @@ import java.util.*;
 public class PublishRecordActivity extends BaseActivity implements View.OnClickListener {
     private ImageView back;
     private TextView publish;
-//    private ImageView play;
-//    private ImageView cancel;
     private Button voice;
     private EditText contentET;
 
@@ -51,12 +48,8 @@ public class PublishRecordActivity extends BaseActivity implements View.OnClickL
     private ProgressDialog progressDialog;
     private Account account;
     private List<Baby> babies = new ArrayList<Baby>();//下拉列表宝宝
-
-    /** log标记 */
     private static final String LOG_TAG = PublishRecordActivity.class.getSimpleName();
-    /** 用于语音播放 */
     private MediaPlayer mPlayer = new MediaPlayer();
-    /** 录音存储路径 */
     private static final String PATH = "/Recorder.mp3";
     private MP3Recorder recorder = new MP3Recorder(8000);
 
@@ -158,11 +151,9 @@ public class PublishRecordActivity extends BaseActivity implements View.OnClickL
         deleteVoice = (TextView) this.findViewById(R.id.record_activity_delete);
         deleteVoice.setOnClickListener(this);
         publish = (TextView) findViewById(R.id.publish_record_run);
-//        play = (ImageView) findViewById(R.id.publish_record_play);
         voice = (Button) findViewById(R.id.voice_record_btn);
         spinner = (Spinner) findViewById(R.id.publish_record_spinner);
         contentET = (EditText) this.findViewById(R.id.voice_content);
-//        cancel = (ImageView) findViewById(R.id.publish_record_cancel);
         isShare = (CheckBox) findViewById(R.id.publish_record_cb);
 
         mRecordLight_1 = (ImageView) findViewById(R.id.voice_recordinglight_1);
@@ -175,12 +166,8 @@ public class PublishRecordActivity extends BaseActivity implements View.OnClickL
         voiceTime = (TextView) this.findViewById(R.id.voice_display_voice_time);
          voicePlay.setOnClickListener(this);
 
-//        play.setVisibility(View.GONE);
-//        cancel.setVisibility(View.GONE);
-//        cancel.setOnClickListener(this);
         back.setOnClickListener(this);
         publish.setOnClickListener(this);
-//        play.setOnClickListener(this);
         voice.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -295,13 +282,10 @@ public class PublishRecordActivity extends BaseActivity implements View.OnClickL
                 if (file.isFile() && file.exists()){
                     file.delete();
                     voicePlayLayout.setVisibility(View.GONE);
-//                    play.setVisibility(View.GONE);
-//                    cancel.setVisibility(View.GONE);
                     Toast.makeText(mContext, "删除文件成功", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.voice_display_voice_play://播放音乐
-// 播放录音
                 if (!mPlayState) {
                     mPlayer = new MediaPlayer();
                     try {

@@ -1,9 +1,7 @@
 package com.app.ebaebo.receiver;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -13,7 +11,6 @@ import com.android.volley.toolbox.Volley;
 import com.app.ebaebo.data.SuccessDATA;
 import com.app.ebaebo.entity.Account;
 import com.app.ebaebo.ui.Constants;
-import com.app.ebaebo.ui.MainActivity;
 import com.app.ebaebo.util.InternetURL;
 import com.baidu.frontia.api.FrontiaPushMessageReceiver;
 import com.google.gson.Gson;
@@ -73,7 +70,7 @@ public class MyPushMessageReceiver extends FrontiaPushMessageReceiver {
                         try {
                             SuccessDATA successDATA = new Gson().fromJson(s, SuccessDATA.class);
                             if (successDATA.getCode() == 200){
-                                Toast.makeText(context, "成功", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(context, "成功", Toast.LENGTH_SHORT).show();
                             }
                         }catch (Exception e){
 

@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.app.ebaebo.EbaeboApplication;
 import com.app.ebaebo.R;
 import com.app.ebaebo.entity.Tongxunlu;
-import com.app.ebaebo.entity.Yuying;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 

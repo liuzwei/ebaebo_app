@@ -68,11 +68,6 @@ public class DownloadUtil implements Runnable {
             }
         }
         if (imageFile != null) {
-//            Bitmap bitmap = ImageLoader.decodeSampledBitmapFromResource(imageFile.getPath(),
-//                    columnWidth);
-//            if (bitmap != null) {
-//                imageLoader.addBitmapToMemoryCache(imageUrl, bitmap);
-//            }
         }
     }
 
@@ -112,16 +107,5 @@ public class DownloadUtil implements Runnable {
      */
     public static boolean hasSDCard() {
         return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
-    }
-
-
-    /** * 计算sdcard上的剩余空间 * @return */
-    public static int freeSpaceOnSd() {
-        StatFs stat = new StatFs(Environment.getExternalStorageDirectory()
-                .getPath());
-        double sdFreeMB = ((double) stat.getAvailableBlocks() * (double) stat
-                .getBlockSize()) / MB;
-
-        return (int) sdFreeMB;
     }
 }

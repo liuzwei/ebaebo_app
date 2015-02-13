@@ -1,7 +1,6 @@
 package com.app.ebaebo.ui;
 
 import android.app.ProgressDialog;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
@@ -17,7 +16,6 @@ import com.app.ebaebo.entity.Account;
 import com.app.ebaebo.entity.Baby;
 import com.app.ebaebo.util.InternetURL;
 import com.app.ebaebo.util.StringUtil;
-import com.app.ebaebo.widget.ContentListView;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -56,8 +54,6 @@ public class PublishImageActivity extends BaseActivity implements View.OnClickLi
             map.put("imageView",res[i]);
             data.add(map);
         }
-//        SimpleAdapter simpleAdapter = new SimpleAdapter(this, data, R.layout.image_cell_layout , new String[]{"imageView"}, new int[]{R.id.imageView1});
-//        gridView.setAdapter(simpleAdapter);
     }
 
     private void initView(){
@@ -120,10 +116,6 @@ public class PublishImageActivity extends BaseActivity implements View.OnClickLi
                                 }
                             });
                         }catch (Exception e){
-//                            ErrorDATA data = gson.fromJson(s, ErrorDATA.class);
-//                            if (data.getCode() == 500){
-//                                Log.i("ErrorData", "获取baby信息数据错误");
-//                            }
                         }
 
                     }

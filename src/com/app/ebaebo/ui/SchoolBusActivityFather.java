@@ -7,14 +7,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.opengl.GLUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import java.nio.ShortBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +28,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.app.ebaebo.EbaeboApplication;
 import com.app.ebaebo.R;
 import com.app.ebaebo.data.TraceDATA;
 import com.app.ebaebo.entity.Account;
@@ -38,7 +35,6 @@ import com.app.ebaebo.entity.Trace;
 import com.app.ebaebo.util.CommonUtil;
 import com.app.ebaebo.util.InternetURL;
 import com.app.ebaebo.util.StringUtil;
-//import com.baidu.lbsapi.BMapManager;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -47,7 +43,6 @@ import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.*;
 import com.baidu.mapapi.map.BaiduMap.OnMapDrawFrameCallback;
 import com.baidu.mapapi.model.LatLng;
-//import com.baidu.nplatform.comapi.map.MapController;
 
 /**
  * author: ${zhanghailong}

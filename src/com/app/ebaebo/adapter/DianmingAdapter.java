@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.app.ebaebo.EbaeboApplication;
 import com.app.ebaebo.R;
 import com.app.ebaebo.entity.Child;
-import com.app.ebaebo.util.CommonUtil;
 import com.app.ebaebo.util.StringUtil;
 import com.app.ebaebo.util.TimeUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;

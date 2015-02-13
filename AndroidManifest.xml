@@ -66,8 +66,6 @@
 
         <activity android:name=".ui.YuyingMessageActivity"
                   android:screenOrientation="portrait"/>
-        <activity android:name=".ui.SchoolBusActivity"
-                  android:screenOrientation="portrait"/>
         <activity android:name=".ui.JiaohuActivity"
                   android:screenOrientation="portrait"/>
         <activity android:name=".ui.DianmingActivity"
@@ -137,9 +135,6 @@
                   android:configChanges="orientation|keyboardHidden"
                   android:screenOrientation="portrait"/>
         <activity android:name=".ui.OpenglDemo"
-                  android:configChanges="orientation|keyboardHidden"
-                  android:screenOrientation="portrait"/>
-        <activity android:name=".ui.SetWifiActivity"
                   android:configChanges="orientation|keyboardHidden"
                   android:screenOrientation="portrait"/>
         <activity
@@ -242,7 +237,7 @@
         <meta-data
                 android:name="com.baidu.lbsapi.API_KEY"
                 android:value="RIvp33GcGSGSwwntWPGXMxBs" />
-        <activity android:name=".dw.LocationActivity"/>
+
         <activity android:name="com.tencent.connect.common.AssistActivity"
                   android:screenOrientation="portrait"
                   android:theme="@android:style/Theme.Translucent.NoTitleBar"/>

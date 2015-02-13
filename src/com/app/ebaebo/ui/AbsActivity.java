@@ -14,17 +14,6 @@ public abstract class AbsActivity extends FragmentActivity {
 	protected ImageLoader loader;
 	protected DisplayImageOptions options;
 	
-//	@SuppressLint("HandlerLeak")
-//	public final Handler mHandlerEx = new Handler() {
-//		@Override
-//		public void handleMessage(Message msg) {
-//			super.handleMessage(msg);
-//			onHandleMessage(msg);
-//		}
-//	};
-	
-//	protected abstract void onHandleMessage(Message message);
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -39,21 +28,4 @@ public abstract class AbsActivity extends FragmentActivity {
 	    .cacheOnDisc(true)
 	    .build();
 	}
-	
-	
-//
-//	protected void sendMessageWithArg(int what, int arg) {
-//		Message msg = mHandlerEx.obtainMessage(what);
-//		msg.what = what;
-//		msg.arg1 = arg;
-//		mHandlerEx.sendMessage(msg);
-//	}
-//		
-//	protected void sendMessageWithObj(int what, Object obj) {
-//		Message msg = mHandlerEx.obtainMessage(what);
-//		msg.what = what;
-//		msg.obj = obj;
-//		mHandlerEx.sendMessage(msg);
-//	}
-	
 }

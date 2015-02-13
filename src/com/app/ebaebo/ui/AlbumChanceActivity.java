@@ -36,9 +36,6 @@ public class AlbumChanceActivity extends AbsActivity implements OnItemClickListe
 			
 			@Override
 			public void onClick(View v) {
-//				Intent intent = new Intent(AlbumChanceActivity.this, AlbumActivity.class);
-//				intent.putExtra("selectedDataList", selectedDataList);
-//				startActivity(intent);
 				AlbumChanceActivity.this.finish();
 			}
 		});
@@ -114,13 +111,6 @@ public class AlbumChanceActivity extends AbsActivity implements OnItemClickListe
 			} else {
 				ArrayList<String> list = MediaStoreCursorHelper.queryAllPhoto((Activity) mActThis);
 				String string = list.get(0);
-//				DisplayImageOptions options = new DisplayImageOptions.Builder()
-//				        .bitmapConfig(Bitmap.Config.RGB_565)
-//				        .imageScaleType(ImageScaleType.EXACTLY)
-//						.showStubImage(R.drawable.group_item_pic_bg)
-//						.cacheInMemory(true)
-//						.cacheOnDisc(true)
-//						.build();
 				loader.displayImage("file://" + string, itemAlbum.itemIVAlbum, options);
 			}
 			String name = mediaStoreBucket.getName();
@@ -154,7 +144,6 @@ public class AlbumChanceActivity extends AbsActivity implements OnItemClickListe
 			intent.putExtra("selectedDataList", selectedDataList);
 			intent.putExtra("name", "最近照片");
 			intent.putExtra("album", booleanExtra);
-//			startActivity(intent);
 		} else {
 			String id = item.getId();
 			ArrayList<String> listPath = MediaStoreCursorHelper.queryPhoto(this, id);
@@ -162,7 +151,6 @@ public class AlbumChanceActivity extends AbsActivity implements OnItemClickListe
 			intent.putExtra("selectedDataList", selectedDataList);
 			intent.putExtra("name", item.getName());
 			intent.putExtra("album", booleanExtra);
-//			startActivity(intent);
 		}
 		setResult(-1, intent);
 		AlbumChanceActivity.this.finish();

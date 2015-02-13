@@ -36,8 +36,6 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMVideo;
 import com.umeng.socialize.media.UMusic;
 import com.umeng.socialize.sso.QZoneSsoHandler;
-import com.umeng.socialize.sso.SinaSsoHandler;
-import com.umeng.socialize.sso.TencentWBSsoHandler;
 import com.umeng.socialize.sso.UMQQSsoHandler;
 import com.umeng.socialize.weixin.controller.UMWXHandler;
 import com.umeng.socialize.weixin.media.CircleShareContent;
@@ -49,8 +47,6 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity implements
         View.OnClickListener,OnClickContentItemListener,ContentListView.OnRefreshListener, ContentListView.OnLoadListener {
-//    public List<Fragment> fragments = new ArrayList<Fragment>();
-//    RadioGroup radioGroups;
     private ImageView leftbutton;
     private SlideMenu slideMenu;
     private TextView user;//用户
@@ -144,35 +140,10 @@ public class MainActivity extends BaseActivity implements
             callName.setVisibility(View.VISIBLE);
             callnameline.setVisibility(View.VISIBLE);
         }
-
-        //youmeng
-
         // 设置分享内容
         mController.setShareContent("");
         // 设置分享图片, 参数2为图片的url地址
         mController.setShareMedia(new UMImage(this, ""));
-        // 设置分享图片，参数2为本地图片的资源引用
-        //mController.setShareMedia(new UMImage(getActivity(), R.drawable.icon));
-        // 设置分享图片，参数2为本地图片的路径(绝对路径)
-        //mController.setShareMedia(new UMImage(getActivity(),
-        //                                BitmapFactory.decodeFile("/mnt/sdcard/icon.png")));
-
-        // 设置分享音乐
-        //UMusic uMusic = new UMusic("http://sns.whalecloud.com/test_music.mp3");
-        //uMusic.setAuthor("GuGu");
-        //uMusic.setTitle("天籁之音");
-        // 设置音乐缩略图
-        //uMusic.setThumb("http://www.umeng.com/images/pic/banner_module_social.png");
-        //mController.setShareMedia(uMusic);
-
-        // 设置分享视频
-        //UMVideo umVideo = new UMVideo(
-        //          "http://v.youku.com/v_show/id_XNTE5ODAwMDM2.html?f=19001023");
-        // 设置视频缩略图
-        //umVideo.setThumb("http://www.umeng.com/images/pic/banner_module_social.png");
-        //umVideo.setTitle("友盟社会化分享!");
-        //mController.setShareMedia(umVideo);
-
         PushManager.startWork(getApplicationContext(),
                 PushConstants.LOGIN_TYPE_API_KEY,
                 Utils.getMetaValue(MainActivity.this, "push_api_key"));

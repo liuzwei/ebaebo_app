@@ -4,11 +4,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PointF;
-import android.opengl.GLUtils;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +35,6 @@ import javax.microedition.khronos.opengles.GL10;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import java.nio.ShortBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,12 +70,9 @@ public class OpenglDemo extends BaseActivity implements OnMapDrawFrameCallback, 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shoolbus);
         initView();
-
-        //设置定位条件
         LocationClientOption option = new LocationClientOption();
         option.setOpenGps(true);        //是否打开GPS
         option.setCoorType("bd09ll");       //设置返回值的坐标类型。
-//        option.setPriority(LocationClientOption.NetWorkFirst);  //设置定位优先级
         option.setProdName("RIvp33GcGSGSwwntWPGXMxBs"); //设置产品线名称。强烈建议您使用自定义的产品线名称，方便我们以后为您提供更高效准确的定位服务。
         option.setScanSpan(UPDATE_TIME);    //设置定时定位的时间间隔。单位毫秒
         locationClient = new LocationClient(getApplicationContext());

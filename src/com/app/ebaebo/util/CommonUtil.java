@@ -32,14 +32,6 @@ public class CommonUtil {
         }
     }
 
-    public static String longToString(long sd){
-        Date dat=new Date(sd);
-        GregorianCalendar gc = new GregorianCalendar();
-        gc.setTime(dat);
-        java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        return format.format(gc.getTime());
-    }
-
     public static int getMp3TrackLength(File mp3File){
         try {
             MP3File f = (MP3File) AudioFileIO.read(mp3File);

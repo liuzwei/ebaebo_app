@@ -63,7 +63,6 @@ public class CompressPhotoUtil {
             }
             stream = new FileOutputStream(savePth+"/" + filename);
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         bmp.compress(format, quality, stream);

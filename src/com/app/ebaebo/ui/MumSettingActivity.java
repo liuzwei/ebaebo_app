@@ -48,9 +48,6 @@ public class MumSettingActivity extends BaseActivity implements View.OnClickList
     private ImageView tx;//头像
     private EditText name;
     private String nickName;
-//    private EditText zhanghao;//账号
-//    private EditText mobile;//手机
-//    private EditText password;//密码
     private TextView set;//设置
     TextView settingTitle;
 
@@ -73,17 +70,11 @@ public class MumSettingActivity extends BaseActivity implements View.OnClickList
         identity = getGson().fromJson(sp.getString(Constants.IDENTITY, ""), String.class);
         initView();
         initData();
-
     }
-
-
 
     private void initView(){
         back = (ImageView) findViewById(R.id.back);
         back.setOnClickListener(this);
-//        zhanghao = (EditText) this.findViewById(R.id.zhanghao);
-//        mobile = (EditText) this.findViewById(R.id.mobile);
-//        password = (EditText) this.findViewById(R.id.password);
         set = (TextView) this.findViewById(R.id.mum_setting_sure);
         set.setOnClickListener(this);
         tx = (ImageView) this.findViewById(R.id.mum_setting_tx);
@@ -136,10 +127,8 @@ public class MumSettingActivity extends BaseActivity implements View.OnClickList
                 }else {
                     if (identity.equals("0")){
                         pics = account.getF_cover().replaceAll(Constants.API_HEAD, "");
-                        Log.i("爸爸头像============", account.getF_cover());
                     }else {
                         pics = account.getM_cover();
-                        Log.i("妈妈头像=============", account.getM_cover());
                     }
                     if (StringUtil.isNullOrEmpty(pics)){
                         Toast.makeText(mContext, "请设置头像", Toast.LENGTH_SHORT).show();
@@ -178,9 +167,6 @@ public class MumSettingActivity extends BaseActivity implements View.OnClickList
     };
 
     private void setting(final String cover){
-
-//        final String type = getGson().fromJson(sp.getString(Constants.IDENTITY, ""), String.class);
-//        String uri = String.format(InternetURL.FATHER_MOTHER_SETTING + "?uid=%s&type=%s&name=%s&cover=%s",account.getUid(), type,  nickName, cover);
         StringRequest request = new StringRequest(
                 Request.Method.POST,
                 InternetURL.FATHER_MOTHER_SETTING,

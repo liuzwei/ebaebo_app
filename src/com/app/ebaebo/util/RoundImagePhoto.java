@@ -19,8 +19,6 @@ public class RoundImagePhoto {
     public RoundImagePhoto(Context context) {
         this.context = context;
     }
-// 方式1  获取本地图片做圆头像
-
     /**
      * 转换图片成圆形
      *
@@ -68,38 +66,19 @@ public class RoundImagePhoto {
             dst_right = height;
             dst_bottom = height;
         }
-
-
         Bitmap output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(output);
-
-
         final Paint paint = new Paint();
         final Rect src = new Rect((int) left, (int) top, (int) right, (int) bottom);
         final Rect dst = new Rect((int) dst_left, (int) dst_top, (int) dst_right, (int) dst_bottom);
         final RectF rectF = new RectF(dst);
-
-
         paint.setAntiAlias(true);// 设置画笔无锯齿
-
-
         canvas.drawARGB(0, 0, 0, 0); // 填充整个Canvas
-
-
-// 以下有两种方法画圆,drawRounRect和drawCircle
         canvas.drawRoundRect(rectF, roundPx, roundPx, paint);// 画圆角矩形，第一个参数为图形显示区域，第二个参数和第三个参数分别是水平圆角半径和垂直圆角半径。
-// canvas.drawCircle(roundPx, roundPx, roundPx, paint);
-
-
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));// 设置两张图片相交时的模式,参考http://trylovecatch.iteye.com/blog/1189452
         canvas.drawBitmap(bitmap, src, dst, paint); // 以Mode.SRC_IN模式合并bitmap和已经draw了的Circle
-
-
         return output;
     }
-
-    //参数1、是获取图片的url
-    //参数2、是你要设置成圆头像的imageview的id
 
     public void readBitmapViaVolley(String imgUrl, final ImageView imageView) {    //通过volley获取网络图片
         reQueue= Volley.newRequestQueue(context);

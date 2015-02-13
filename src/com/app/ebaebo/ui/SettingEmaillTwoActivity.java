@@ -119,9 +119,5 @@ public class SettingEmaillTwoActivity extends BaseActivity implements View.OnCli
         });
         mRequestQueue.add(request);
     }
-    private void saveAccount(String username, String password, Account account){
-        save(Constants.USERNAME_KEY, username);
-        save(Constants.PASSWORD_KEY, password);
-        save(Constants.ACCOUNT_KEY, account);
-    }
+
 }
