@@ -50,7 +50,7 @@
                   android:orientation="vertical"
                   android:layout_marginLeft="20dp"
                   android:layout_marginRight="20dp"
-                  android:background="@drawable/loginbtn_background"
+                  android:background="@drawable/login_background"
                   android:layout_marginTop="10dp">
         <TextView
                 android:id="@+id/login_btn"

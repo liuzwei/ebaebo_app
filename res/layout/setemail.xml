@@ -62,7 +62,7 @@
                   android:textStyle="bold"
                   android:textColor="#FFFFFF"
                   android:gravity="center_vertical|center_horizontal"
-                  android:background="@drawable/loginbtn_background"
+                  android:background="@drawable/login_background"
                   android:layout_height="50dp"/>
 
     </LinearLayout>

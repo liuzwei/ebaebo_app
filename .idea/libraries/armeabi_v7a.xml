@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="armeabi-v7a">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../VitamioBundle/libs/vitamio.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <NATIVE>
+      <root url="file://$PROJECT_DIR$/../VitamioBundle/libs/armeabi-v7a" />
+    </NATIVE>
+    <SOURCES />
+  </library>
+</component>

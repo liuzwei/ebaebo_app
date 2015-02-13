@@ -86,7 +86,7 @@
                   android:layout_marginTop="10dp"
                   android:gravity="center"
                   android:layout_gravity="center"
-                  android:background="@drawable/loginbtn_background"
+                  android:background="@drawable/login_background"
                   android:layout_height="50dp"/>
 
     </LinearLayout>
