@@ -19,8 +19,15 @@
     <orderEntry type="jdk" jdkName="Android API 16 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="VitamioBundle" />
-    <orderEntry type="library" name="armeabi-v7a" level="project" />
-    <orderEntry type="library" name="armeabi-v7a1" level="project" />
     <orderEntry type="library" name="android-support-v4" level="project" />
+    <orderEntry type="library" name="vitamio" level="project" />
+    <orderEntry type="library" name="gson-2.0" level="project" />
+    <orderEntry type="library" name="universal-image-loader-1.9.2" level="project" />
+    <orderEntry type="library" name="javacpp" level="project" />
+    <orderEntry type="library" name="jaudiotagger-2.0.3" level="project" />
+    <orderEntry type="library" name="httpmime-4.3.5" level="project" />
+    <orderEntry type="library" name="httpcore-4.3.2" level="project" />
+    <orderEntry type="library" name="galaxy_mini" level="project" />
+    <orderEntry type="library" name="android_api_1.1_forsdk" level="project" />
   </component>
 </module>
