@@ -71,8 +71,6 @@ public class MultiPartStack extends HurlStack {
 
         return httpClient.execute(httpRequest);
 	}
-	
-	
 
     static HttpUriRequest createMultiPartRequest(Request<?> request,
             Map<String, String> additionalHeaders) throws AuthFailureError {
@@ -113,13 +111,6 @@ public class MultiPartStack extends HurlStack {
                 setMultiPartBody(putRequest,request);
                 return putRequest;
             }
-            // Added in source code of Volley libray.
-//            case Method.PATCH: {
-//            	HttpPatch patchRequest = new HttpPatch(request.getUrl());
-//            	if(request.getBodyContentType() != null)
-//            		patchRequest.addHeader(HEADER_CONTENT_TYPE, request.getBodyContentType());
-//                return patchRequest;
-//            }
             default:
                 throw new IllegalStateException("Unknown request method.");
         }
@@ -135,29 +126,17 @@ public class MultiPartStack extends HurlStack {
 	 */
 	private static void setMultiPartBody(HttpEntityEnclosingRequestBase httpRequest,
 			Request<?> request) throws AuthFailureError {
-
-		// Return if Request is not MultiPartRequest
 		if (!(request instanceof MultiPartRequest)) {
 			return;
 		}
-
-		// MultipartEntity multipartEntity = new
-		// MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-
-		/* example for setting a HttpMultipartMode */
 		builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-
-		// Iterate the fileUploads
 		Map<String, File> fileUpload = ((MultiPartRequest) request).getFileUploads();
 		for (Map.Entry<String, File> entry : fileUpload.entrySet()) {
 
 			builder.addPart(((String) entry.getKey()), new FileBody((File) entry.getValue()));
 		}
-
 		ContentType contentType = ContentType.create(HTTP.PLAIN_TEXT_TYPE, HTTP.UTF_8);
-		// Iterate the stringUploads
 		Map<String, String> stringUpload = ((MultiPartRequest) request).getStringUploads();
 		for (Map.Entry<String, String> entry : stringUpload.entrySet()) {
 			try {
@@ -167,7 +146,6 @@ public class MultiPartStack extends HurlStack {
 				e.printStackTrace();
 			}
 		}
-
 		httpRequest.setEntity(builder.build());
 	}
 
