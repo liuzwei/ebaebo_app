@@ -2,7 +2,11 @@ package com.app.ebaebo.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.view.*;
+import android.graphics.drawable.AnimationDrawable;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.*;
 import com.app.ebaebo.EbaeboApplication;
 import com.app.ebaebo.R;
@@ -13,6 +17,7 @@ import com.app.ebaebo.ui.Constants;
 import com.app.ebaebo.ui.GalleryUrlActivity;
 import com.app.ebaebo.ui.VideoViewActivity;
 import com.app.ebaebo.util.StringUtil;
+import com.app.ebaebo.widget.PictureGridview;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
@@ -68,46 +73,45 @@ public class GrowingAdapter extends BaseAdapter {
             viewHolder.favours = (LinearLayout) convertView.findViewById(R.id.growing_item_favours);
             viewHolder.comment = (LinearLayout) convertView.findViewById(R.id.growing_item_comment);
             viewHolder.share = (ImageView) convertView.findViewById(R.id.growing_item_share);
-//            viewHolder.picture = (ImageView) convertView.findViewById(R.id.growing_item_picture);
             viewHolder.redHeart = (ImageView) convertView.findViewById(R.id.red_heart);
-            viewHolder.gridView = (GridView) convertView.findViewById(R.id.growing_item_gridview);
-            viewHolder.playRecord = (ImageView) convertView.findViewById(R.id.growing_item_play_record);
-            viewHolder.playVideo = (Button) convertView.findViewById(R.id.growing_item_play_video);
+            viewHolder.gridView = (PictureGridview) convertView.findViewById(R.id.growing_item_gridview);
+            viewHolder.iv2 = (ImageView) convertView.findViewById(R.id.iv2);
+            viewHolder.home_photo_item_photo_video = (ImageView) convertView.findViewById(R.id.home_photo_item_photo_video);
+            viewHolder.playVideo = (ImageView) convertView.findViewById(R.id.growing_item_play_video);
             viewHolder.favoursLayout = (LinearLayout) convertView.findViewById(R.id.growing_item_favours_detail);
             viewHolder.favoursNum = (TextView) convertView.findViewById(R.id.growing_item_favours_num);
             viewHolder.commentLayout = (LinearLayout) convertView.findViewById(R.id.growing_item_comment_list);
-//            viewHolder.favoursPeople = (LinearLayout) convertView.findViewById(R.id.growing_item_favours_people);
+            viewHolder.liner_record = (LinearLayout) convertView.findViewById(R.id.liner_record);
+            viewHolder.video = (RelativeLayout) convertView.findViewById(R.id.video);
+            viewHolder.tv2 = (TextView) convertView.findViewById(R.id.tv2);
             convertView.setTag(viewHolder);
         }else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
+        viewHolder.video.setVisibility(View.GONE);
+        viewHolder.liner_record.setVisibility(View.GONE);
+        viewHolder.gridView.setVisibility(View.GONE);
+
         final Growing growing = list.get(position);
         viewHolder.publisher.setText(growing.getPublisher());
         viewHolder.time.setText(growing.getTime());
-//        roundImagePhoto.readBitmapViaVolley(growing.getPublisher_cover(), viewHolder.photo);
         imageLoader.displayImage(growing.getPublisher_cover(), viewHolder.photo, EbaeboApplication.txOptions, animateFirstListener);
-//        if (!StringUtil.isNullOrEmpty(growing.getUrl())) {
-//            viewHolder.picture.setVisibility(View.VISIBLE);
-//            imageLoader.displayImage(growing.getUrl(), viewHolder.picture, EbaeboApplication.tpOptions, animateFirstListener);
-//        }else {
-//            viewHolder.picture.setVisibility(View.GONE);
-//        }
         if ("1".equals(growing.getIs_favoured())){
             viewHolder.redHeart.setImageDrawable(context.getResources().getDrawable(R.drawable.red_favours));
         }else {
             viewHolder.redHeart.setImageDrawable(context.getResources().getDrawable(R.drawable.favours));
         }
+        if(!StringUtil.isNullOrEmpty(growing.getDept())){
+            viewHolder.content.setVisibility(View.VISIBLE);
+        }
         viewHolder.content.setText(growing.getDept());
-        viewHolder.gridView.setVisibility(View.GONE);
-        viewHolder.playRecord.setVisibility(View.GONE);
-        viewHolder.playVideo.setVisibility(View.GONE);
 
         //判断有没有收藏过
         if ("1".equals(growing.getIs_favoured())){
             FavoursObj favoursObj = growing.getFavours();
             viewHolder.favoursLayout.setVisibility(View.VISIBLE);
-            viewHolder.favoursNum.setText(favoursObj.getCount()+"");
+            viewHolder.favoursNum.setText(favoursObj.getCount() + "");
             List<Favours> favoursList = favoursObj.getList();
             for (Favours favours : favoursList){
                 if (viewHolder.favoursLayout.getChildCount()>=2) {
@@ -117,7 +121,6 @@ public class GrowingAdapter extends BaseAdapter {
                     linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                     ImageView imageView = new ImageView(context);
                     imageView.setLayoutParams(new LinearLayout.LayoutParams(40, 40));
-//                    roundImagePhoto.readBitmapViaVolley(favours.getCover(), imageView);
                     imageLoader.displayImage(favours.getCover(), imageView, EbaeboApplication.txOptions, animateFirstListener);
                     TextView textView = new TextView(context);
                     textView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -144,7 +147,6 @@ public class GrowingAdapter extends BaseAdapter {
                 TextView name = (TextView) view.findViewById(R.id.comment_list_item_name);
                 TextView content = (TextView) view.findViewById(R.id.comment_list_item_content);
                 TextView time = (TextView) view.findViewById(R.id.comment_list_item_time);
-//                roundImagePhoto.readBitmapViaVolley(favours.getCover(), imageView);
                 imageLoader.displayImage(favours.getCover(), imageView, EbaeboApplication.txOptions, animateFirstListener);
                 name.setText(favours.getName());
                 content.setText(":"+favours.getContent());
@@ -154,18 +156,16 @@ public class GrowingAdapter extends BaseAdapter {
         }else {
             viewHolder.commentLayout.removeAllViews();
         }
-
-        //todo   type类型返回的为空
         switch (Integer.parseInt(growing.getType()) ){
-//        switch (0){
             case 0://文字
+                viewHolder.gridView.setVisibility(View.GONE);
                 viewHolder.content.setText(growing.getDept());
                 break;
             case 1://照片
                 if (!StringUtil.isNullOrEmpty(growing.getUrl())) {
                     final String[] picUrls = growing.getUrl().split(",");
-                    viewHolder.gridView.setAdapter(new ImageAdapter(picUrls, context));
                     viewHolder.gridView.setVisibility(View.VISIBLE);
+                    viewHolder.gridView.setAdapter(new ImageGridViewAdapter(picUrls, context));
                     viewHolder.gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -178,7 +178,8 @@ public class GrowingAdapter extends BaseAdapter {
                 }
                 break;
             case 2://视频
-                viewHolder.playVideo.setVisibility(View.VISIBLE);
+                viewHolder.gridView.setVisibility(View.GONE);
+                viewHolder.video.setVisibility(View.VISIBLE);
                 viewHolder.playVideo.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -191,13 +192,15 @@ public class GrowingAdapter extends BaseAdapter {
                 });
                 break;
             case 3://录音
-                viewHolder.playRecord.setVisibility(View.VISIBLE);
+                viewHolder.liner_record.setVisibility(View.VISIBLE);
+                viewHolder.gridView.setVisibility(View.GONE);
+                AnimationDrawable ad2 =  (AnimationDrawable) viewHolder.iv2.getBackground();
                 if (growing.isPlay()) {
-                    viewHolder.playRecord.setImageDrawable(context.getResources().getDrawable(R.drawable.pause_record));
+                    ad2.start();
                 }else {
-                    viewHolder.playRecord.setImageDrawable(context.getResources().getDrawable(R.drawable.play_record));
+                    ad2.stop();
                 }
-                viewHolder.playRecord.setOnClickListener(new View.OnClickListener() {
+                viewHolder.liner_record.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         onClickContentItemListener.onClickContentItem(position, 4, growing.getUrl());
@@ -236,16 +239,20 @@ public class GrowingAdapter extends BaseAdapter {
         LinearLayout favours;//收藏
         LinearLayout comment;//评论
         ImageView share;//分享
-//        ImageView picture;
         ImageView redHeart;
 
-        ImageView playRecord;
-        GridView gridView;
-        Button playVideo;//播放视频按钮
+//        ImageView playRecord;
+        PictureGridview gridView;
+        ImageView playVideo;//播放视频按钮
 
         LinearLayout commentLayout;
+        LinearLayout liner_record;
         LinearLayout favoursLayout;
         TextView favoursNum;//喜爱的数量
-//        LinearLayout favoursPeople;//喜爱的人
+        RelativeLayout video;
+        ImageView home_photo_item_photo_video;
+        ImageView iv2;
+        TextView tv2;
+
     }
 }

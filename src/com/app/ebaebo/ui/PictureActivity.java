@@ -2,13 +2,14 @@ package com.app.ebaebo.ui;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import com.app.ebaebo.R;
 import com.app.ebaebo.adapter.PictureAdapter;
 import com.app.ebaebo.entity.Photos;
 import com.app.ebaebo.entity.Pictures;
+import com.app.ebaebo.util.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +23,13 @@ import java.util.List;
 public class PictureActivity extends BaseActivity implements View.OnClickListener {
     private ImageView back;
     private TextView title;
+    private TextView name;
     private PictureAdapter adapter;
-    private ListView clv;
+    private GridView clv;
 
     List<Pictures> list = new ArrayList<Pictures>();
+
+    private ImageView add;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +45,18 @@ public class PictureActivity extends BaseActivity implements View.OnClickListene
         }
         adapter = new PictureAdapter(list, this);
         clv.setAdapter(adapter);
+        String time =  TimeUtils.zhuanhuanTime(Long.parseLong(photos.getDateline()));
+        name.setText(photos.getPublisher()+"创建于"+time);
     }
 
     private void initView() {
         back = (ImageView) this.findViewById(R.id.picturesback);
         title  = (TextView) this.findViewById(R.id.title);
-        clv = (ListView) this.findViewById(R.id.lstv);
+        name  = (TextView) this.findViewById(R.id.name);
+        clv = (GridView) this.findViewById(R.id.lstv);
+        add = (ImageView) this.findViewById(R.id.add);
 
+        add.setOnClickListener(this);
         back.setOnClickListener(this);
     }
 
@@ -57,6 +66,8 @@ public class PictureActivity extends BaseActivity implements View.OnClickListene
         {
             case R.id.picturesback:
                 finish();
+                break;
+            case R.id.add:
                 break;
         }
     }

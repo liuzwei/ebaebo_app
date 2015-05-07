@@ -2,14 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:orientation="vertical"
-
-        >
+              android:orientation="vertical">
 
     <RelativeLayout
             android:id="@+id/zxit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="3dp"
             android:background="@drawable/zhuye_item_select" >
         <LinearLayout
                 android:id="@+id/zxitb"
@@ -34,22 +33,18 @@
                     <FrameLayout
                             android:layout_width="50dp"
                             android:layout_height="50dp" >
-                        <ImageView
+                        <com.app.ebaebo.widget.CircleImageView
                                 android:id="@+id/growing_item_photo"
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
-                                android:src="@drawable/txhc"
-                                android:adjustViewBounds="true"
-                                android:scaleType="centerCrop"/>
-
-
-                        <ImageView
-                                android:background="#0000"
-                                android:src="@drawable/round_corner"
-                                android:scaleType="centerCrop"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                />
+                                android:src="@drawable/txhc"/>
+                        <!--<-->
+                                <!--android:background="#0000"-->
+                                <!--android:src="@drawable/round_corner"-->
+                                <!--android:scaleType="centerCrop"-->
+                                <!--android:layout_width="50dp"-->
+                                <!--android:layout_height="50dp"-->
+                                <!--/>-->
                     </FrameLayout>
 
                     <TextView
@@ -58,8 +53,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:text="昵称"
-                            android:textSize="20sp"
-                            android:textColor="#424242"
+                            android:textSize="16sp"
+                            android:textColor="@color/zhuye_zhuanfa_content"
                             android:singleLine="true"
                             android:gravity="center_vertical"
                             />
@@ -77,6 +72,7 @@
 
                 <LinearLayout
                         android:id="@+id/zxitb6"
+                        android:layout_marginLeft="55dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
@@ -90,36 +86,85 @@
                             android:layout_height="wrap_content"
                             android:textSize="18sp"
                             android:autoLink="web"
+                            android:visibility="gone"
                             android:lineSpacingExtra="5dp"
                             android:text="内容"
                             android:textColor="#333333" />
 
                     <!-- 内部图片 -->
-                    <GridView
-
-                            android:layout_gravity="center"
+                    <com.app.ebaebo.widget.PictureGridview
                             android:id="@+id/growing_item_gridview"
-                            android:gravity="center"
-                            android:numColumns="auto_fit"
-                            android:verticalSpacing="5dp"
-                            android:horizontalSpacing="5dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                    </GridView>
-                    <ImageView
-                            android:id="@+id/growing_item_play_record"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"/>
-                    <Button
-                            android:id="@+id/growing_item_play_video"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="播放视频"/>
+                            android:gravity="center"
+                            android:horizontalSpacing="4dip"
+                            android:numColumns="3"
+                            android:visibility="gone"
+                            android:stretchMode="columnWidth"
+                            android:verticalSpacing="4dip"
+                            android:padding="4dip"/>
+
+                    <!--<ImageView-->
+                            <!--android:id="@+id/growing_item_play_record"-->
+                            <!--android:layout_width="60dp"-->
+                            <!--android:visibility="gone"-->
+                            <!--android:layout_height="60dp"/>-->
+
+
+                    <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:id="@+id/liner_record"
+                            android:layout_height="30dp"
+                            android:background="@drawable/customer_audio_bg_l"
+                            android:gravity="left|center_vertical"
+                            android:orientation="horizontal" >
+
+                        <ImageView
+                                android:id="@+id/iv2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:background="@drawable/audio_list_l" />
+
+                        <TextView
+                                android:id="@+id/tv2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="right"
+                                android:paddingRight="20dp"
+                                android:text="”" />
+                    </LinearLayout>
+
+
+                    <RelativeLayout android:layout_width="match_parent"
+                                    android:layout_marginTop="8dp"
+                                    android:layout_gravity="center|left"
+                                    android:gravity="center|left"
+                                    android:id="@+id/video"
+                                    android:layout_height="wrap_content">
+                        <ImageView
+                                android:id="@+id/home_photo_item_photo_video"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/photo_failed"
+                                android:adjustViewBounds="true"
+                                android:layout_centerHorizontal="true"/>
+                        <ImageView
+                                android:id="@+id/growing_item_play_video"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/icn_play_big"
+                                android:layout_centerVertical="true"
+                                android:layout_centerHorizontal="true"
+                                />
+
+                    </RelativeLayout>
                 </LinearLayout>
                 <LinearLayout
                         android:id="@+id/growing_item_favours_detail"
                         android:orientation="horizontal"
+                        android:layout_marginLeft="55dp"
                         android:layout_width="match_parent" 
                         android:layout_height="wrap_content">
                     <ImageView
@@ -154,12 +199,13 @@
                 android:layout_height="0.5dp"
                 android:layout_below="@id/zxitb"
                 android:layout_marginTop="5dp"
-                android:background="#e9e9e9"
                 />
         <LinearLayout
                 android:id="@+id/zxita"
+                android:layout_marginLeft="55dp"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
+                android:layout_marginBottom="8dp"
                 android:layout_below="@id/zxita1"
                 android:orientation="horizontal"
                 >

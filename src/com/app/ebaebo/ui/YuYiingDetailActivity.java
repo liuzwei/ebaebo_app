@@ -1,5 +1,7 @@
 package com.app.ebaebo.ui;
 
+import android.app.ProgressDialog;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -40,7 +42,7 @@ public class YuYiingDetailActivity extends BaseActivity implements View.OnClickL
     private ImageView yypic;
     ImageLoader imageLoader = ImageLoader.getInstance();//图片加载类
     private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
-
+    private ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +50,12 @@ public class YuYiingDetailActivity extends BaseActivity implements View.OnClickL
         id =(String) getIntent().getExtras().get("yy");
         mRequestQueue = Volley.newRequestQueue(this);
         initView();
+        Resources res = getBaseContext().getResources();
+        String message = res.getString(R.string.please_wait).toString();
+        progressDialog = new ProgressDialog(YuYiingDetailActivity.this);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setMessage(message);
+        progressDialog.show();
         getData();
     }
 
@@ -91,9 +99,15 @@ public class YuYiingDetailActivity extends BaseActivity implements View.OnClickL
                             cont.setText(Html.fromHtml(yy.getContent(), null, new MxgsaTagHandler(YuYiingDetailActivity.this)));
                             cont.setClickable(true);
                             cont.setMovementMethod(LinkMovementMethod.getInstance());
+                            if (progressDialog != null) {
+                                progressDialog.dismiss();
+                            }
                         }catch (Exception e){
                             ErrorDATA errorDATA = gson.fromJson(s, ErrorDATA.class);
                             if (errorDATA.getMsg().equals("failed")){
+                                if (progressDialog != null) {
+                                    progressDialog.dismiss();
+                                }
                                 Toast.makeText(mContext, "网络错误", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -101,7 +115,9 @@ public class YuYiingDetailActivity extends BaseActivity implements View.OnClickL
                 },new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
             }
         });
         mRequestQueue.add(request);

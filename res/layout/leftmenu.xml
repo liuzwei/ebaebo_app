@@ -14,22 +14,68 @@
             <!--android:textColor="#ff959595"-->
             <!--android:textSize="14.0sp" />-->
 
-    <TextView
-            android:id="@+id/leftmenu_user"
-            android:layout_width="240dip"
-            android:layout_height="50.0dip"
-            android:background="@drawable/leftmenubackground"
-            android:clickable="true"
-            android:drawablePadding="1.0dip"
-            android:gravity="center_vertical"
-            android:paddingLeft="15.0dip"
-            android:paddingRight="10.0dip"
-            android:text="        陈大妈"
-            android:textColor="#FFFFFF"
-            android:drawableLeft="@drawable/leftmenu1"
-            android:layout_weight="11"
-            android:textSize="16.0sp" />
+    <!--<TextView-->
+            <!--android:id="@+id/leftmenu_user"-->
+            <!--android:layout_width="240dip"-->
+            <!--android:layout_height="50.0dip"-->
+            <!--android:background="@drawable/leftmenubackground"-->
+            <!--android:clickable="true"-->
+            <!--android:drawablePadding="1.0dip"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:paddingLeft="15.0dip"-->
+            <!--android:paddingRight="10.0dip"-->
+            <!--android:text="        陈大妈"-->
+            <!--android:textColor="#FFFFFF"-->
+            <!--android:drawableLeft="@drawable/leftmenu1"-->
+            <!--android:layout_weight="11"-->
+            <!--android:textSize="16.0sp" />-->
+        <LinearLayout android:layout_width="240dip"
+                      android:orientation="horizontal"
+                      android:background="@drawable/leftmenubackground"
+                      android:layout_height="60.0dip">
+                <com.app.ebaebo.widget.CircleImageView
+                          android:layout_width="40dp"
+                           android:src="@drawable/head"
+                           android:id="@+id/left_cover"
+                           android:layout_marginLeft="15dp"
+                           android:layout_marginTop="5dp"
+                           android:layout_marginBottom="5dp"
+                           android:layout_height="40dp"/>
+                <LinearLayout android:layout_width="wrap_content"
+                              android:orientation="vertical"
+                              android:layout_marginLeft="8dp"
+                              android:padding="3dp"
+                              android:gravity="center_vertical"
+                              android:layout_height="match_parent">
+                        <LinearLayout android:layout_width="wrap_content"
+                                      android:orientation="horizontal"
+                                      android:layout_weight="1"
+                                      android:gravity="center_vertical"
+                                      android:layout_height="wrap_content">
+                                <TextView android:layout_width="wrap_content"
+                                          android:text="张三"
+                                          android:id="@+id/left_name"
+                                          android:textSize="16sp"
+                                          android:singleLine="true"
+                                          android:layout_height="wrap_content"/>
+                                <TextView android:layout_width="wrap_content"
+                                          android:text="爸爸"
+                                          android:id="@+id/left_guanxi"
+                                          android:layout_marginLeft="10dp"
+                                          android:textSize="12sp"
+                                          android:singleLine="true"
+                                          android:layout_height="wrap_content"/>
+                        </LinearLayout>
 
+                        <TextView android:layout_width="wrap_content"
+                                  android:layout_marginTop="5dp"
+                                  android:text="学生爱宝宝班"
+                                  android:id="@+id/left_type"
+                                  android:layout_marginBottom="5dp"
+                                  android:textSize="12sp"
+                                  android:layout_height="wrap_content"/>
+                </LinearLayout>
+        </LinearLayout>
     <View
             android:layout_width="240dip"
             android:layout_height="2.0dip"

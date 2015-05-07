@@ -41,14 +41,23 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             >
-        <ListView
-                android:id="@+id/lstv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="@drawable/line"
-                android:scrollingCache="false"
-                android:fadingEdge="none"/>
-
+        <TextView android:layout_width="match_parent"
+                  android:text="1111"
+                  android:gravity="center"
+                  android:id="@+id/name"
+                  android:padding="8dp"
+                  android:layout_height="wrap_content"/>
+        <GridView
+                  android:id="@+id/lstv"
+                  android:layout_below="@+id/name"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:numColumns="4"
+                  android:verticalSpacing="10dp"
+                  android:horizontalSpacing="10dp"
+                  android:columnWidth="90dp"
+                  android:stretchMode="columnWidth"
+                  android:gravity="center"/>
         <LinearLayout
                 android:id="@+id/ll_main_progress"
                 android:layout_width="fill_parent"
@@ -68,6 +77,13 @@
                     android:layout_height="wrap_content"
                     android:text="正在加载....." />
         </LinearLayout>
+
+        <ImageView android:layout_width="match_parent"
+                   android:id="@+id/add"
+                   android:layout_marginTop="5dp"
+                   android:layout_below="@+id/lstv"
+                   android:src="@drawable/addphoto_button_pressed"
+                   android:layout_height="wrap_content"/>
 
     </RelativeLayout>
     <!-- 主体结束 -->

@@ -1,6 +1,8 @@
 package com.app.ebaebo.ui;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
@@ -30,6 +32,7 @@ public class JiaohuActivity extends BaseActivity implements View.OnClickListener
     private List<AccountMessage> list = new ArrayList<AccountMessage>();
     private JiaohuAdapter adapter;
     private TextView publishAll;//群发消息
+    private ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +48,12 @@ public class JiaohuActivity extends BaseActivity implements View.OnClickListener
                 startActivity(chat);
             }
         });
+        Resources res = getBaseContext().getResources();
+        String message = res.getString(R.string.please_wait).toString();
+        progressDialog = new ProgressDialog(JiaohuActivity.this);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setMessage(message);
+        progressDialog.show();
         getData();
     }
 
@@ -87,11 +96,17 @@ public class JiaohuActivity extends BaseActivity implements View.OnClickListener
                         }else {
                             Toast.makeText(mContext, "数据错误，请稍后重试", Toast.LENGTH_SHORT).show();
                         }
+                        if (progressDialog != null) {
+                            progressDialog.dismiss();
+                        }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
+                        if (progressDialog != null) {
+                            progressDialog.dismiss();
+                        }
                         Toast.makeText(mContext, "服务器异常，请稍后重试", Toast.LENGTH_SHORT).show();
                     }
                 }

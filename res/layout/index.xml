@@ -22,15 +22,24 @@
                 android:src="@drawable/message_tubiao"
                 android:paddingLeft="15dp"
                 android:paddingRight="10dp"/>
-        <Spinner
-                android:id="@+id/growing_manager_spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:layout_centerHorizontal="true"
-                android:alpha="1">
+        <!--<CustomerSpinner-->
+                <!--android:id="@+id/"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:layout_centerHorizontal="true"-->
+                <!--android:alpha="1">-->
 
-        </Spinner>
+        <!--</CustomerSpinner>-->
+        <com.app.ebaebo.widget.CustomerSpinner
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_centerInParent="true"
+                android:id="@+id/growing_manager_spinner"
+                android:layout_marginTop="7px"/>
+
         <!--<TextView-->
                 <!--android:id="@+id/growing_manager_txt"-->
                 <!--android:layout_width="wrap_content"-->
@@ -52,7 +61,9 @@
         <com.app.ebaebo.widget.ContentListView
                 android:id="@+id/index_pull_refresh_lsv"
                 android:layout_width="fill_parent"
-                android:divider="#00000000"
+                android:cacheColorHint="#00000000"
+                android:divider="#e9e9e9"
+                android:dividerHeight="1dp"
                 android:scrollingCache="false"
                 android:fadingEdge="none"
                 android:layout_height="fill_parent" />

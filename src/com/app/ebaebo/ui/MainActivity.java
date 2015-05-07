@@ -1,6 +1,8 @@
 package com.app.ebaebo.ui;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -13,7 +15,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.ebaebo.ActivityTack;
+import com.app.ebaebo.EbaeboApplication;
 import com.app.ebaebo.R;
+import com.app.ebaebo.adapter.AnimateFirstDisplayListener;
 import com.app.ebaebo.adapter.GrowingAdapter;
 import com.app.ebaebo.adapter.OnClickContentItemListener;
 import com.app.ebaebo.data.BabyDATA;
@@ -26,10 +30,13 @@ import com.app.ebaebo.entity.Growing;
 import com.app.ebaebo.util.*;
 import com.app.ebaebo.util.face.FaceConversionUtil;
 import com.app.ebaebo.widget.ContentListView;
+import com.app.ebaebo.widget.CustomerSpinner;
 import com.app.ebaebo.widget.DianmingDialog;
 import com.baidu.android.pushservice.PushConstants;
 import com.baidu.android.pushservice.PushManager;
 import com.google.gson.Gson;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
 import com.umeng.socialize.media.UMImage;
@@ -47,9 +54,17 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity implements
         View.OnClickListener,OnClickContentItemListener,ContentListView.OnRefreshListener, ContentListView.OnLoadListener {
+
+    private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
+    ImageLoader imageLoader = ImageLoader.getInstance();//图片加载类
+
     private ImageView leftbutton;
     private SlideMenu slideMenu;
-    private TextView user;//用户
+    private ImageView left_cover;//用户头像
+    private TextView left_name;//用户昵称
+    private TextView left_guanxi;
+    private TextView left_type;
+
     private TextView growup;//成长记录
     private TextView message;//交互信息
     private TextView photoAlbum;//班级相册
@@ -59,8 +74,7 @@ public class MainActivity extends BaseActivity implements
     private TextView callName;//点名
     private View callnameline;
     private TextView setting;//设置
-    private Spinner growingManager;//成长管理下拉
-    private ArrayAdapter<String> spinnerAdapter;
+    private CustomerSpinner growingManager;//成长管理下拉
     private RelativeLayout footLayout;
     private RelativeLayout text;//文字
     private RelativeLayout photo;//拍照
@@ -70,7 +84,7 @@ public class MainActivity extends BaseActivity implements
 
     private ContentListView listView;
     private GrowingAdapter adapter;
-
+    private ArrayAdapter<String> provinceAdapter;
     private String uid;
     private int pageIndex;
     private int pageSize;
@@ -78,7 +92,7 @@ public class MainActivity extends BaseActivity implements
     private Account account;
     private String identity;
     private Growing qGrowing;
-
+    private ProgressDialog progressDialog;
     private List<Player> players = new LinkedList<Player>();
     private long waitTime = 2000;
     private long touchTime = 0;
@@ -126,19 +140,28 @@ public class MainActivity extends BaseActivity implements
         }).start();
 
         if(identity.equals("0")){
-            user.setText("        "+account.getF_name());
+            left_name.setText(account.getF_name());
+            left_guanxi.setText("爸爸");
+            left_type.setText("学生  ");
             callName.setVisibility(View.GONE);
             callnameline.setVisibility(View.GONE);
+            imageLoader.displayImage(account.getF_cover(), left_cover, EbaeboApplication.txOptions,animateFirstListener );
         }
         if(identity.equals("1")){
-            user.setText("        "+account.getM_name());
+            left_name.setText(account.getM_name());
+            left_guanxi.setText("妈妈");
+            left_type.setText("学生  ");
             callName.setVisibility(View.GONE);
             callnameline.setVisibility(View.GONE);
+            imageLoader.displayImage(account.getM_cover(), left_cover, EbaeboApplication.txOptions, animateFirstListener);
         }
         if(account.getIs_teacher().equals("1")){
-            user.setText("        "+account.getNick_name());
+            left_name.setText(account.getNick_name());
+            left_guanxi.setText("老师");
+            left_type.setText(account.getDept());
             callName.setVisibility(View.VISIBLE);
             callnameline.setVisibility(View.VISIBLE);
+            imageLoader.displayImage(account.getCover(), left_cover, EbaeboApplication.txOptions, animateFirstListener);
         }
         // 设置分享内容
         mController.setShareContent("");
@@ -164,7 +187,11 @@ public class MainActivity extends BaseActivity implements
         });
         slideMenu = (SlideMenu) findViewById(R.id.slide_menu);
 
-        user = (TextView) slideMenu.findViewById(R.id.leftmenu_user);
+        left_cover = (ImageView) slideMenu.findViewById(R.id.left_cover);
+        left_name = (TextView) slideMenu.findViewById(R.id.left_name);
+        left_guanxi = (TextView) slideMenu.findViewById(R.id.left_guanxi);
+        left_type = (TextView) slideMenu.findViewById(R.id.left_type);
+
         growup = (TextView) slideMenu.findViewById(R.id.leftmenu_growup);
         message = (TextView) slideMenu.findViewById(R.id.leftmenu_message);
         photoAlbum = (TextView) slideMenu.findViewById(R.id.leftmenu_photo_album);
@@ -174,7 +201,8 @@ public class MainActivity extends BaseActivity implements
         callName = (TextView) slideMenu.findViewById(R.id.leftmenu_callname);
         callnameline = slideMenu.findViewById(R.id.callnameline);
         setting = (TextView) slideMenu.findViewById(R.id.leftmenu_setting);
-        growingManager = (Spinner) slideMenu.findViewById(R.id.growing_manager_spinner);
+        growingManager = (CustomerSpinner) slideMenu.findViewById(R.id.growing_manager_spinner);
+
         listView = (ContentListView) slideMenu.findViewById(R.id.index_pull_refresh_lsv);
         footLayout = (RelativeLayout) slideMenu.findViewById(R.id.index_foot_layout);
         text = (RelativeLayout) footLayout.findViewById(R.id.foot_content);
@@ -192,7 +220,6 @@ public class MainActivity extends BaseActivity implements
         listView.setOnRefreshListener(this);
         listView.setOnLoadListener(this);
 
-        user.setOnClickListener(this);
         growup.setOnClickListener(this);
         message.setOnClickListener(this);
         photoAlbum.setOnClickListener(this);
@@ -206,9 +233,6 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.leftmenu_user://用户
-
-                break;
             case R.id.leftmenu_growup://成长记录
                 if (slideMenu.isMainScreenShowing()) {
                     slideMenu.openMenu();
@@ -281,6 +305,13 @@ public class MainActivity extends BaseActivity implements
 
         switch (flag){
             case 1://收藏
+                Resources res = getBaseContext().getResources();
+                String message = res.getString(R.string.please_wait).toString();
+                progressDialog = new ProgressDialog(MainActivity.this);
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.setMessage(message);
+                progressDialog.show();
+
                 final Growing growing = growingList.get(position);
                 String cancel;
                 if ("1".equals(growing.getIs_favoured())){
@@ -308,7 +339,13 @@ public class MainActivity extends BaseActivity implements
                                             removeFavours(position);
                                         }
                                         adapter.notifyDataSetChanged();
+                                        if (progressDialog != null) {
+                                            progressDialog.dismiss();
+                                        }
                                     }else {
+                                        if (progressDialog != null) {
+                                            progressDialog.dismiss();
+                                        }
                                         Toast.makeText(mContext, "收藏失败，请稍后重试", Toast.LENGTH_SHORT).show();
                                     }
                                 }
@@ -317,7 +354,9 @@ public class MainActivity extends BaseActivity implements
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError volleyError) {
-
+                                if (progressDialog != null) {
+                                    progressDialog.dismiss();
+                                }
                             }
                         }
                 );
@@ -558,22 +597,18 @@ public class MainActivity extends BaseActivity implements
                                     names.add(babies.get(i-1).getName());
                                 }
                             }
-                            spinnerAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, names);
-                            spinnerAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
-                            growingManager.setAdapter(spinnerAdapter);
+                            provinceAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, names);
+                            growingManager.setAdapter(provinceAdapter);
                             growingManager.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     if (position == 0) {
                                         child_id = "";
-                                    } else{
-                                        Baby baby = babies.get(position-1);
+                                    } else {
+                                        Baby baby = babies.get(position - 1);
                                         child_id = baby.getId();
                                     }
                                     getData(ContentListView.REFRESH);
-
                                 }
-
                                 @Override
                                 public void onNothingSelected(AdapterView<?> parent) {
 
@@ -585,7 +620,6 @@ public class MainActivity extends BaseActivity implements
 //                                Log.i("ErrorData", "获取baby信息数据错误");
 //                            }
                         }
-
                     }
                 },
                 new Response.ErrorListener() {

@@ -13,6 +13,7 @@
     <!--<string name="error1">无数据</string>-->
 
     <string name="album_all">All Photos</string>
+    <string name="please_wait">请稍后</string>
 
     <string name="check_network_isuse">请检查当前网络是否可用</string>
     <string name="check_is_picture">请先选择要发布的图片</string>

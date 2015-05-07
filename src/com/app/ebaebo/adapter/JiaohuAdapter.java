@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.app.ebaebo.EbaeboApplication;
 import com.app.ebaebo.R;
 import com.app.ebaebo.entity.AccountMessage;
-import com.app.ebaebo.ui.Constants;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
@@ -62,7 +61,7 @@ public class JiaohuAdapter extends BaseAdapter {
        }
 
         AccountMessage message = list.get(position);
-        imageLoader.displayImage(String.format(Constants.API_HEAD+"%s", message.getCover()),
+        imageLoader.displayImage(message.getCover(),
                 viewHolder.photo, EbaeboApplication.txOptions,animateFirstListener);
         viewHolder.name.setText(message.getName());
         viewHolder.dept.setText(message.getDept());

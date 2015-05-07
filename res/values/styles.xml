@@ -198,4 +198,12 @@
         <item name="android:textColor">@color/normal_text</item>
         <item name="android:textSize">11sp</item>
     </style>
+    <style name="spinner_Dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
 </resources>

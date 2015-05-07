@@ -12,7 +12,9 @@
     <color name="zhuce_titlecolor">#878787</color>
     <color name="zhuce_xieyicolor">#000000</color>
     <color name="zhuce_ok3color">#131313</color>
-
+    <color name="white">#ffffff</color>
+    <color name="black_deep">#FF000000</color>
+    <color name="result_minor_text">#ffc0c0c0</color>
     <color name="index_item_bg">#ffe7e7e7</color>
     <color name="top_back_bg">#a40b0b</color>
     <color name="denglu_bt_bg">#ec3f31</color>
