@@ -14,7 +14,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.ebaebo.R;
-import com.app.ebaebo.data.ErrorDATA;
 import com.app.ebaebo.data.SuccessDATA;
 import com.app.ebaebo.entity.Account;
 import com.app.ebaebo.util.InternetURL;
@@ -98,10 +97,8 @@ public class SettingEmailActivity extends BaseActivity implements View.OnClickLi
                                 Toast.makeText(SettingEmailActivity.this, "获取验证码失败！", Toast.LENGTH_SHORT).show();
                             }
                         }catch (Exception e){
-                            ErrorDATA errorDATA = gson.fromJson(s, ErrorDATA.class);
-                            if (errorDATA.getMsg().equals("failed")){
-                                Toast.makeText(SettingEmailActivity.this, "网络错误", Toast.LENGTH_SHORT).show();
-                            }
+
+                            Toast.makeText(SettingEmailActivity.this, "网络错误", Toast.LENGTH_SHORT).show();
                         }
                     }
                 },new Response.ErrorListener() {
