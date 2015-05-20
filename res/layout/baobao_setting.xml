@@ -58,20 +58,24 @@
                        android:adjustViewBounds="true"
                        android:id="@+id/tx"/>
         </RelativeLayout>
-        <EditText android:layout_width="match_parent"
+
+        <TextView android:layout_width="match_parent"
                   android:layout_height="50dp"
                   android:textColor="#333333"
                   android:textSize="20sp"
-                  android:hint="名字：小刚"
+                  android:gravity="center"
+                  android:text="123"
+                  android:paddingLeft="13dp"
                   android:id="@+id/name"/>
         <TextView android:layout_width="match_parent"
                   android:layout_height="50dp"
                   android:textColor="#333333"
                   android:textSize="20sp"
+                  android:gravity="center"
                   android:text="关系：父子"
                   android:paddingLeft="13dp"
                   android:id="@+id/guanxi"/>
-        <TextView android:layout_width="wrap_content"
+        <Button android:layout_width="wrap_content"
                   android:text="确  定"
                   android:id="@+id/set"
                   android:textSize="20dp"

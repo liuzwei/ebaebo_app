@@ -163,10 +163,16 @@
         <meta-data android:name="UMENG_MESSAGE_SECRET" android:value="64eef779483348c5eff4d2e3bba233ec"/>
 
         <!-- 友盟自动更新 -->
-        <service android:name="com.umeng.update.net.DownloadingService" android:process=":DownloadingService">
+        <service
+                android:name="com.umeng.update.net.DownloadingService"
+                android:process=":DownloadingService">
         </service>
-        <activity android:name="com.umeng.update.UpdateDialogActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar">
+        <activity
+                android:name="com.umeng.update.UpdateDialogActivity"
+                android:theme="@android:style/Theme.Translucent.NoTitleBar">
         </activity>
+
+
         <activity android:configChanges="orientation|keyboard" android:launchMode="singleTask" android:name="com.umeng.socialize.view.ShareActivity" android:noHistory="true" android:theme="@style/Theme.UMDialog" android:windowSoftInputMode="stateVisible|adjustResize"/>
         <activity android:configChanges="keyboardHidden|orientation|screenSize" android:exported="true" android:name=".wxapi.WXEntryActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
 

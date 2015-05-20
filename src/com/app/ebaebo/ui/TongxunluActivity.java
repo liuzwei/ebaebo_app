@@ -17,6 +17,7 @@ import com.app.ebaebo.adapter.OnClickContentItemListener;
 import com.app.ebaebo.adapter.TongxunluAdapter;
 import com.app.ebaebo.data.ErrorDATA;
 import com.app.ebaebo.data.TongxunluDATA;
+import com.app.ebaebo.entity.Account;
 import com.app.ebaebo.entity.AccountMessage;
 import com.app.ebaebo.entity.Tongxunlu;
 import com.app.ebaebo.util.InternetURL;
@@ -41,10 +42,12 @@ public class TongxunluActivity extends BaseActivity implements OnClickContentIte
     private static boolean IS_REFRESH = true;
     private List<Tongxunlu> list = new ArrayList<Tongxunlu>();
     private RequestQueue mRequestQueue;
+    private Account account;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tongxunlu);
+        account = getGson().fromJson(sp.getString(Constants.ACCOUNT_KEY, ""), Account.class);
         initView();
         setTheme(R.style.index_theme);
         adapter = new TongxunluAdapter(list, this);
@@ -85,7 +88,7 @@ public class TongxunluActivity extends BaseActivity implements OnClickContentIte
     }
 
     private void getData(){
-        String uri = String.format(InternetURL.GET_TONGXUNLU_URL+"?school_id=%s&uid=%s&class_id=%s","1", "73", "1" );
+        String uri = String.format(InternetURL.GET_TONGXUNLU_URL+"?school_id=%s&uid=%s&class_id=%s",account.getSchool_id(), account.getUid(), account.getClass_id() );
         StringRequest request = new StringRequest(Request.Method.GET,
                 uri,
                 new Response.Listener<String>() {

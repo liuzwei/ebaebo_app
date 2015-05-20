@@ -1,6 +1,7 @@
 package com.app.ebaebo.ui;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,10 +13,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import com.android.volley.*;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -33,7 +31,6 @@ import com.app.ebaebo.util.upload.MultiPartStack;
 import com.app.ebaebo.util.upload.MultiPartStringRequest;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.util.HashMap;
@@ -48,14 +45,14 @@ public class MumSettingActivity extends BaseActivity implements View.OnClickList
     private ImageView tx;//头像
     private EditText name;
     private String nickName;
-    private TextView set;//设置
+    private Button set;//设置
     TextView settingTitle;
 
     private Account account;
     private static RequestQueue mSingleQueue;
     private String pics = "";
     private String identity;
-
+    private ProgressDialog progressDialog;
     ImageLoader imageLoader = ImageLoader.getInstance();//图片加载类
     private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
 
@@ -75,7 +72,7 @@ public class MumSettingActivity extends BaseActivity implements View.OnClickList
     private void initView(){
         back = (ImageView) findViewById(R.id.back);
         back.setOnClickListener(this);
-        set = (TextView) this.findViewById(R.id.mum_setting_sure);
+        set = (Button) this.findViewById(R.id.mum_setting_sure);
         set.setOnClickListener(this);
         tx = (ImageView) this.findViewById(R.id.mum_setting_tx);
         tx.setOnClickListener(this);
@@ -134,6 +131,17 @@ public class MumSettingActivity extends BaseActivity implements View.OnClickList
                         Toast.makeText(mContext, "请设置头像", Toast.LENGTH_SHORT).show();
                         return;
                     }
+                    progressDialog = new ProgressDialog(MumSettingActivity.this);
+                    progressDialog.setMessage("登录中...");
+                    progressDialog.setCanceledOnTouchOutside(false);
+                    progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            set.setClickable(true);
+                        }
+                    });
+                    progressDialog.show();
+                    set.setClickable(false);
                     setting(pics);
                 }
                 break;
@@ -178,17 +186,28 @@ public class MumSettingActivity extends BaseActivity implements View.OnClickList
                             if (errorDATA.getCode() == 200){
                                 resetAccount(name.getText().toString(), cover);
                                 Toast.makeText(mContext, "设置成功", Toast.LENGTH_SHORT).show();
+                                finish();
                             }else {
                                 Toast.makeText(mContext, "设置失败，请稍后重试1", Toast.LENGTH_SHORT).show();
                             }
                         }else {
                             Toast.makeText(mContext, "设置失败，请稍后重试", Toast.LENGTH_SHORT).show();
                         }
+                        if (progressDialog!=null)
+                        {
+                            progressDialog.dismiss();
+                        }
+                        set.setClickable(true);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
+                        if (progressDialog!=null)
+                        {
+                            progressDialog.dismiss();
+                        }
+                        set.setClickable(true);
                         Toast.makeText(mContext, "设置失败，请稍后重试", Toast.LENGTH_SHORT).show();
                     }
                 }

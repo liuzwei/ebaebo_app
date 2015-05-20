@@ -1,6 +1,7 @@
 package com.app.ebaebo.ui;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,10 +13,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import com.android.volley.*;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -47,7 +45,7 @@ public class TeacherSettingActivity extends BaseActivity implements View.OnClick
     private ImageView tx;//头像
     private EditText name;
     private String nickName;
-    private TextView set;//设置
+    private Button set;//设置
     TextView settingTitle;
 
     private Account account;
@@ -59,6 +57,7 @@ public class TeacherSettingActivity extends BaseActivity implements View.OnClick
 
     private static final File PHOTO_CACHE_DIR = new File(Environment.getExternalStorageDirectory() + "/ebaebo/PhotoCache");
 
+    private ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +72,7 @@ public class TeacherSettingActivity extends BaseActivity implements View.OnClick
 
         back = (ImageView) findViewById(R.id.back);
         back.setOnClickListener(this);
-        set = (TextView) this.findViewById(R.id.mum_setting_sure);
+        set = (Button) this.findViewById(R.id.mum_setting_sure);
         set.setOnClickListener(this);
         tx = (ImageView) this.findViewById(R.id.mum_setting_tx);
         tx.setOnClickListener(this);
@@ -116,6 +115,18 @@ public class TeacherSettingActivity extends BaseActivity implements View.OnClick
                         Toast.makeText(mContext, "请设置头像", Toast.LENGTH_SHORT).show();
                         return;
                     }
+
+                    progressDialog = new ProgressDialog(TeacherSettingActivity.this);
+                    progressDialog.setMessage("登录中...");
+                    progressDialog.setCanceledOnTouchOutside(false);
+                    progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            set.setClickable(true);
+                        }
+                    });
+                    set.setClickable(false);
+                    progressDialog.show();
                     setting(pics);
                 }
                 break;
@@ -149,9 +160,6 @@ public class TeacherSettingActivity extends BaseActivity implements View.OnClick
     };
 
     private void setting(final String cover){
-
-//        final String type = getGson().fromJson(sp.getString(Constants.IDENTITY, ""), String.class);
-//        String uri = String.format(InternetURL.FATHER_MOTHER_SETTING + "?uid=%s&type=%s&name=%s&cover=%s",account.getUid(), type,  nickName, cover);
         StringRequest request = new StringRequest(
                 Request.Method.POST,
                 InternetURL.FATHER_MOTHER_SETTING,
@@ -169,11 +177,21 @@ public class TeacherSettingActivity extends BaseActivity implements View.OnClick
                         }else {
                             Toast.makeText(mContext, "设置失败，请稍后重试", Toast.LENGTH_SHORT).show();
                         }
+                        if (progressDialog!=null)
+                        {
+                            progressDialog.dismiss();
+                        }
+                        set.setClickable(true);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
+                        if (progressDialog!=null)
+                        {
+                            progressDialog.dismiss();
+                        }
+                        set.setClickable(true);
                         Toast.makeText(mContext, "设置失败，请稍后重试", Toast.LENGTH_SHORT).show();
                     }
                 }

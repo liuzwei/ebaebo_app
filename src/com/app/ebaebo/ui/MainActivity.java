@@ -96,6 +96,7 @@ public class MainActivity extends BaseActivity implements
     private List<Player> players = new LinkedList<Player>();
     private long waitTime = 2000;
     private long touchTime = 0;
+    private String iswifi = "0";//0是开  1是关
 
     private List<Growing> growingList = new ArrayList<Growing>();
     private List<Baby> babies = new ArrayList<Baby>();//下拉列表宝宝
@@ -110,6 +111,7 @@ public class MainActivity extends BaseActivity implements
         setContentView(R.layout.activity_main);
         initView();
         String accountStr = sp.getString("account", "");
+
         if (!StringUtil.isNullOrEmpty(accountStr)){
             try{
                 account =getGson().fromJson(accountStr, Account.class);
@@ -284,8 +286,21 @@ public class MainActivity extends BaseActivity implements
                 startActivity(takePhoto);
                 break;
             case R.id.foot_video://摄像
-                Intent video = new Intent(MainActivity.this, PublishVideoActivity.class);
-                startActivity(video);
+            {
+                iswifi = getGson().fromJson(sp.getString(Constants.ISWIFI, ""), String.class);
+                if (StringUtil.isNullOrEmpty(iswifi)){
+                    //如果没设置过
+                    iswifi = "1";
+                }
+
+                if (iswifi.equals("0")){
+                    //关的
+                    Toast.makeText(mContext, "暂无WIFI，不能上传视频", Toast.LENGTH_SHORT).show();
+                }else{
+                    Intent video = new Intent(MainActivity.this, PublishVideoActivity.class);
+                    startActivity(video);
+                }
+            }
                 break;
             case R.id.foot_record://录音
                 Intent record = new Intent(MainActivity.this, PublishRecordActivity.class);

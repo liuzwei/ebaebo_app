@@ -23,6 +23,7 @@ public class Constants {
 
     public static final String GROWING_KEY = "growing";
     public static final String IDENTITY = "identity";
+    public static final String ISWIFI = "iswifi";
     public static final String ACCOUNT_KEY = "account";
     public static final String USERNAME_KEY = "username";
     public static final String PASSWORD_KEY = "password";

@@ -61,6 +61,7 @@ public class PublishVideoActivity extends BaseActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.publish_video_layout);
         initView();
+
         account = getGson().fromJson(sp.getString(Constants.ACCOUNT_KEY, ""), Account.class);
         getBabyList();
 

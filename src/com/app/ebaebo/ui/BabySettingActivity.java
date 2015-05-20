@@ -1,6 +1,7 @@
 package com.app.ebaebo.ui;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,7 +13,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,7 +23,10 @@ import com.android.volley.toolbox.Volley;
 import com.app.ebaebo.EbaeboApplication;
 import com.app.ebaebo.R;
 import com.app.ebaebo.adapter.AnimateFirstDisplayListener;
-import com.app.ebaebo.data.*;
+import com.app.ebaebo.data.BabySetDATA;
+import com.app.ebaebo.data.BabySetNCDATA;
+import com.app.ebaebo.data.ErrorDATA;
+import com.app.ebaebo.data.UploadDATA;
 import com.app.ebaebo.entity.Account;
 import com.app.ebaebo.entity.BabySet;
 import com.app.ebaebo.util.CommonUtil;
@@ -45,9 +49,9 @@ import java.util.Map;
 public class BabySettingActivity extends BaseActivity implements View.OnClickListener{
     ImageView back;//返回按钮
     private ImageView tx;//头像
-    private EditText nameText;//name
+    private TextView nameText;//name
     private TextView guanxiText;//关系
-    private TextView set;
+    private Button set;
     private String identity;
     private Account account;
     private RequestQueue mRequestQueue;
@@ -59,6 +63,7 @@ public class BabySettingActivity extends BaseActivity implements View.OnClickLis
     private static RequestQueue mSingleQueue;
     private String nickName;
     BabySet babySet = null;
+    private ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,11 +126,11 @@ public class BabySettingActivity extends BaseActivity implements View.OnClickLis
     private void initView(){
         back = (ImageView) findViewById(R.id.back);
         back.setOnClickListener(this);
-        set = (TextView) this.findViewById(R.id.set);
+        set = (Button) this.findViewById(R.id.set);
         set.setOnClickListener(this);
         tx = (ImageView) this.findViewById(R.id.tx);
         tx.setOnClickListener(this);
-        nameText = (EditText) this.findViewById(R.id.name);
+        nameText = (TextView) this.findViewById(R.id.name);
         guanxiText = (TextView) this.findViewById(R.id.guanxi);
 
     }
@@ -138,6 +143,7 @@ public class BabySettingActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.set:
                 //设置
+
                 nickName = nameText.getText().toString();
                 if (!StringUtil.isNullOrEmpty(pics)) {
                     Map<String, File> files = new HashMap<String, File>();
@@ -156,8 +162,20 @@ public class BabySettingActivity extends BaseActivity implements View.OnClickLis
                     }
                     if (StringUtil.isNullOrEmpty(pics)){
                         Toast.makeText(mContext, "请设置头像", Toast.LENGTH_SHORT).show();
+
                         return;
                     }
+                    progressDialog = new ProgressDialog(BabySettingActivity.this);
+                    progressDialog.setMessage("登录中...");
+                    progressDialog.setCanceledOnTouchOutside(false);
+                    progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            set.setClickable(true);
+                        }
+                    });
+                    progressDialog.show();
+                    set.setClickable(false);
                     setting(pics);
                 }
 
@@ -322,17 +340,28 @@ public class BabySettingActivity extends BaseActivity implements View.OnClickLis
                             BabySetNCDATA errorDATA = getGson().fromJson(s, BabySetNCDATA.class);
                             if (errorDATA.getCode() == 200){
                                 Toast.makeText(mContext, "设置成功", Toast.LENGTH_SHORT).show();
+                                finish();
                             }else {
                                 Toast.makeText(mContext, "设置失败，请稍后重试1", Toast.LENGTH_SHORT).show();
                             }
                         }else {
                             Toast.makeText(mContext, "设置失败，请稍后重试", Toast.LENGTH_SHORT).show();
                         }
+                        if (progressDialog!=null)
+                        {
+                            progressDialog.dismiss();
+                        }
+                        set.setClickable(true);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
+                        if (progressDialog!=null)
+                        {
+                            progressDialog.dismiss();
+                        }
+                        set.setClickable(true);
                         Toast.makeText(mContext, "设置失败，请稍后重试", Toast.LENGTH_SHORT).show();
                     }
                 }

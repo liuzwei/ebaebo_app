@@ -19,6 +19,7 @@ import com.app.ebaebo.data.ErrorDATA;
 import com.app.ebaebo.entity.Account;
 import com.app.ebaebo.util.*;
 import com.google.gson.Gson;
+import com.umeng.update.UmengUpdateAgent;
 
 /**
  * Created by liuzwei on 2014/11/11.
@@ -43,7 +44,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-
+        //umeng自动更新
+        UmengUpdateAgent.update(this);
         initView();
 
         mRequestQueue = Volley.newRequestQueue(this);
@@ -88,13 +90,19 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 final String pass = password.getText().toString();
 
                 if (name.isEmpty()){
-                    progressDialog.dismiss();
+                    if (progressDialog!=null)
+                    {
+                        progressDialog.dismiss();
+                    }
                     Toast.makeText(this, "用户名不能为空", Toast.LENGTH_SHORT).show();
                     loginBtn.setClickable(true);
                     return;
                 }
                 if (pass.isEmpty()){
-                    progressDialog.dismiss();
+                    if (progressDialog!=null)
+                    {
+                        progressDialog.dismiss();
+                    }
                     Toast.makeText(this, "密码不能为空", Toast.LENGTH_SHORT).show();
                     loginBtn.setClickable(true);
                     return;
@@ -128,13 +136,20 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                                     }
                                 }
                                 loginBtn.setClickable(true);
-                                progressDialog.dismiss();
+                                if (progressDialog!=null)
+                                {
+                                    progressDialog.dismiss();
+                                }
+
                             }
                         },new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError volleyError) {
                                 loginBtn.setClickable(true);
-                                progressDialog.dismiss();
+                                if (progressDialog!=null)
+                                {
+                                    progressDialog.dismiss();
+                                }
                                 Toast.makeText(mContext, "请求超时，稍后重试", Toast.LENGTH_SHORT).show();
                             }
                 });
